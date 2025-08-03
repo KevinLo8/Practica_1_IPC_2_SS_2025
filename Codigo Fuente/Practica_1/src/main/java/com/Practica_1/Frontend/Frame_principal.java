@@ -2,6 +2,8 @@ package com.Practica_1.Frontend;
 
 import javax.swing.*;
 
+import com.Practica_1.Backend.Conexión_DB.Conexión_DB;
+
 import java.awt.*;
 
 public class Frame_principal extends JFrame {
@@ -11,9 +13,13 @@ public class Frame_principal extends JFrame {
     private JDesktopPane desktop;
     private JTextArea jTextArea;
 
+    private Conexión_DB conexion;
+
     public Frame_principal(){
 
         initComponentes();
+        conexion = new Conexión_DB(jTextArea);
+
     }
 
     private void initComponentes(){
