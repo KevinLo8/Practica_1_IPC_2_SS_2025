@@ -6,22 +6,18 @@ import java.io.File;
 
 import javax.swing.*;
 
-import com.Practica_1.Backend.Datos.Data_Config;
 import com.Practica_1.Frontend.Frame_principal;
 
 public class JMI_Ajustes extends JMenuItem {
 
     private JTextField txf1, txf2, txf3;
     private JLabel lbl1, lbl2, lbl3, lbl4, lbl5, lbl6;
-    private Data_Config config;
     private Frame_principal frame;
     
     public JMI_Ajustes(Frame_principal frame) {
         super("Ajustes");
 
         this.frame = frame;
-
-        config = new Data_Config();
 
         addActionListener(new ActionListener() {
 
@@ -54,13 +50,10 @@ public class JMI_Ajustes extends JMenuItem {
 
         txf1 = new JTextField();
         txf1.setPreferredSize(new Dimension(250, 25));
-        txf1.setText(config.getArchivoEntrada());
         txf2 = new JTextField();
         txf2.setPreferredSize(new Dimension(300, 25));
-        txf2.setText(String.valueOf(config.getVelocidadProcesamiento()));
         txf3 = new JTextField();
         txf3.setPreferredSize(new Dimension(250, 25));
-        txf3.setText(config.getDirecciónSalida());
 
         JButton btn1 = new JButton("Seleccionar");
         JButton btn2 = new JButton("Seleccionar");
@@ -137,20 +130,6 @@ public class JMI_Ajustes extends JMenuItem {
         }
 
         fileChooser.showOpenDialog(frame);
-
-        try {
-            if (i == 1) {
-                lbl4.setText(" ");
-                config.setArchivoEntrada(fileChooser.getSelectedFile().getAbsolutePath());
-                txf1.setText(config.getArchivoEntrada());
-            } else {
-                lbl6.setText(" ");
-                config.setDirecciónSalida(fileChooser.getSelectedFile().getAbsolutePath());
-                txf3.setText(config.getDirecciónSalida());
-            }
-        } catch (NullPointerException e) {
-            
-        }
     }
 
     private void btnGuardarActionPerformer(){
