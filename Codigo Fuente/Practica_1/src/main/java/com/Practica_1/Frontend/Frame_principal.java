@@ -3,7 +3,6 @@ package com.Practica_1.Frontend;
 import javax.swing.*;
 
 import com.Practica_1.Backend.Conexión_DB.Conexión_DB;
-import com.Practica_1.Backend.Datos.Data_Config;
 import com.Practica_1.Frontend.MenuItem.*;
 
 import java.awt.*;
