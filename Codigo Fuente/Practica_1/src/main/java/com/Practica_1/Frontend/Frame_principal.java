@@ -3,6 +3,8 @@ package com.Practica_1.Frontend;
 import javax.swing.*;
 
 import com.Practica_1.Backend.Conexión_DB.Conexión_DB;
+import com.Practica_1.Backend.Datos.Data_Config;
+import com.Practica_1.Frontend.MenuItem.*;
 
 import java.awt.*;
 
@@ -37,6 +39,16 @@ public class Frame_principal extends JFrame {
         JMenu jM2 = new JMenu("Acciones");
         JMenu jM3 = new JMenu("Reportes");
 
+        jMenuBar.add(jM1);
+        jMenuBar.add(jM2);
+        jMenuBar.add(jM3);
+
+        JMI_Ajustes itemA1 = new JMI_Ajustes(this);
+        JMI_Salir itemA2 = new JMI_Salir();
+
+        jM1.add(itemA1);
+        jM1.add(itemA2);
+
         JScrollPane jScrollPane = new JScrollPane();
         jScrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
 
@@ -47,15 +59,15 @@ public class Frame_principal extends JFrame {
 
         jScrollPane.setViewportView(jTextArea);
 
-        jMenuBar.add(jM1);
-        jMenuBar.add(jM2);
-        jMenuBar.add(jM3);
-
         setJMenuBar(jMenuBar);
 
         desktop.add(jScrollPane);
         jScrollPane.setBounds((int)(getWidth() * 0.1), (int)(getHeight() * 0.5), (int)(getWidth() * 0.8), (int)(getHeight() * 0.3));
 
+    }
+
+    public Container getDesktop() {
+        return desktop;
     }
  
 }

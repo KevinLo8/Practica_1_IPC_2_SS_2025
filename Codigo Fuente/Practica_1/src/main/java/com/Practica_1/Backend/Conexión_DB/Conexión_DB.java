@@ -26,6 +26,7 @@ public class Conexión_DB {
             System.out.println("error al conectar a la DB");
             ex.printStackTrace();
         }
+        
     }
 
 }
