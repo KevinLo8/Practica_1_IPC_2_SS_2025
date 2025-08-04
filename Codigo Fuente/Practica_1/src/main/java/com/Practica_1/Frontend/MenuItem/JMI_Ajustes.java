@@ -38,7 +38,7 @@ public class JMI_Ajustes extends JMenuItem {
     
     private void btnAjustesActionPerformer(){
  
-        JInternalFrame iFrame = new JInternalFrame("Ajustes", false, true, false, false);
+        JInternalFrame iFrame = new JInternalFrame("Ajustes", false, true, false, true);
 
         JPanel pnl1 = new JPanel(new FlowLayout());
         JPanel pnl2 = new JPanel();

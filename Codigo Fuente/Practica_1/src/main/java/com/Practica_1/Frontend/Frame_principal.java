@@ -3,7 +3,6 @@ package com.Practica_1.Frontend;
 import javax.swing.*;
 
 import com.Practica_1.Backend.Conexión_DB.Conexión_DB;
-import com.Practica_1.Backend.Datos.Data_Config;
 import com.Practica_1.Frontend.MenuItem.*;
 
 import java.awt.*;
@@ -28,7 +27,7 @@ public class Frame_principal extends JFrame {
 
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setBounds((int)(dim.getWidth() * 0.2) / 2, (int)(dim.getHeight() * 0.2) / 2, (int)(dim.getWidth() * 0.8), (int)(dim.getHeight() * 0.8));
-        setTitle("Registro de Trajetas");
+        setTitle("Registro de Eventos");
         setResizable(false);
 
         desktop = new JDesktopPane();
@@ -46,8 +45,12 @@ public class Frame_principal extends JFrame {
         JMI_Ajustes itemA1 = new JMI_Ajustes(this);
         JMI_Salir itemA2 = new JMI_Salir();
 
+        JMI_Evento itemAc1 = new JMI_Evento(this);
+
         jM1.add(itemA1);
         jM1.add(itemA2);
+
+        jM2.add(itemAc1);
 
         JScrollPane jScrollPane = new JScrollPane();
         jScrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
@@ -62,12 +65,16 @@ public class Frame_principal extends JFrame {
         setJMenuBar(jMenuBar);
 
         desktop.add(jScrollPane);
-        jScrollPane.setBounds((int)(getWidth() * 0.1), (int)(getHeight() * 0.5), (int)(getWidth() * 0.8), (int)(getHeight() * 0.3));
+        jScrollPane.setBounds(0, (int)(getHeight() * 0.678), (int)(getWidth() - 17), (int)(getHeight() * 0.25));
 
     }
 
     public Container getDesktop() {
         return desktop;
+    }
+
+    public Conexión_DB getConexion() {
+        return conexion;
     }
  
 }
