@@ -168,14 +168,14 @@ public class IF_RegistrarEvento extends JInternalFrame {
             lbl3.setText("Seleccione un tipo de evento");
         }
 
-        if (chequearCampo(txf4, 50)) {
+        if (chequearCampo(txf4, 51)) {
             data.setTituloEvento(txf4.getText());
             completo++;
         } else {
             lbl4.setText("Ingrese un título valido");
         }
 
-        if (chequearCampo(txf5, 150)) {
+        if (chequearCampo(txf5, 151)) {
             data.setUbicacionEvento(txf5.getText());
             completo++;
         } else {
