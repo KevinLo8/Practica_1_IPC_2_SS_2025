@@ -111,7 +111,7 @@ public class IF_Participante extends JInternalFrame {
         Data_Participante data = new Data_Participante();
         int completo = 0;
 
-        if (chequearCampo(txf1, 45)) {
+        if (chequearCampo(txf1, 46)) {
             data.setNombreParticipante(txf1.getText());
             completo++;
         } else {
@@ -125,14 +125,15 @@ public class IF_Participante extends JInternalFrame {
             lbl2.setText("Seleccione un tipo de participante");
         } 
 
-        if (chequearCampo(txf3, 150)) {
+        if (chequearCampo(txf3, 151)) {
             data.setInstitucionParticipante(txf3.getText());
             completo++;
         } else {
             lbl3.setText("Ingrese una institución valida");
         }
 
-        if (txf4.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")) {
+        if (txf4.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
+            && chequearCampo(txf4, 51)) {
             data.setCorreoParticipante(txf4.getText());
             completo++;
         } else {

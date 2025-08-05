@@ -73,4 +73,54 @@ public class Conexión_DB {
         }
     }
 
+    public void guardarInscripción(Data_Inscripcion data) {
+        String query = "INSERT INTO inscripcion (correo_participante, codigo_evento, tipo_inscripcion) VALUES (?, ?, ?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, data.getCorreoParticipante());
+            preparedStatement.setString(2, data.getCodigoEvento());
+            preparedStatement.setString(3, data.getTipoInscripcion());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                jTextArea.append(" -> Inscripción registrada exitosamente.\n\n");
+            } else {
+                jTextArea.append(" -> Error al registrar la inscripción.\n\n");
+            }
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al guardar la inscripción: " + e.getMessage() + "\n\n");
+        }
+    }
+
+    public Boolean consultarParticipante(String correo) {
+        String query = "SELECT * FROM participante WHERE correo = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+        ) {
+            preparedStatement.setString(1, correo);
+            resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al consultar el participante: " + e.getMessage() + "\n\n");
+            return false;
+        }
+    }
+
+    public boolean consultarEvento(String codigo) {
+        String query = "SELECT * FROM evento WHERE codigo = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, codigo);
+            resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al consultar el evento: " + e.getMessage() + "\n\n");
+            return false;
+        }
+    }
+
 }

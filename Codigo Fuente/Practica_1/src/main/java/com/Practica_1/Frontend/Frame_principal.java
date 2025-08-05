@@ -47,12 +47,14 @@ public class Frame_principal extends JFrame {
 
         JMI_Evento itemAc1 = new JMI_Evento(this);
         JMI_Participante itemAc2 = new JMI_Participante(this);
+        JMI_Inscripcion itemAc3 = new JMI_Inscripcion(this);
 
         jM1.add(itemA1);
         jM1.add(itemA2);
 
         jM2.add(itemAc1);
         jM2.add(itemAc2);
+        jM2.add(itemAc3);
 
         JScrollPane jScrollPane = new JScrollPane();
         jScrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
