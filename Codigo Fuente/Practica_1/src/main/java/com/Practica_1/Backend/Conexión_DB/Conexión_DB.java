@@ -4,7 +4,7 @@ import java.sql.*;
 
 import javax.swing.JTextArea;
 
-import com.Practica_1.Backend.Datos.Data_Evento;
+import com.Practica_1.Backend.Datos.*;
 
 public class Conexión_DB {
 
@@ -50,6 +50,26 @@ public class Conexión_DB {
             }
         } catch (SQLException e) {
             jTextArea.append(" -> Error al guardar el evento: " + e.getMessage() + "\n\n");
+        }
+    }
+
+    public void guardarParticipante(Data_Participante data) {
+        String query = "INSERT INTO participante (nombre, tipo, institucion, correo) VALUES (?, ?, ?, ?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, data.getNombreParticipante());
+            preparedStatement.setString(2, data.getTipoParticipante());
+            preparedStatement.setString(3, data.getInstitucionParticipante());
+            preparedStatement.setString(4, data.getCorreoParticipante());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                jTextArea.append(" -> Participante registrado exitosamente.\n\n");
+            } else {
+                jTextArea.append(" -> Error al registrar el participante.\n\n");
+            }
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al guardar el participante: " + e.getMessage() + "\n\n");
         }
     }
 

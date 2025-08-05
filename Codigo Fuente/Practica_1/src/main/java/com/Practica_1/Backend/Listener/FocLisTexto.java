@@ -4,11 +4,11 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-public class FocusListenerCasillaPalabra implements FocusListener {
+public class FocLisTexto implements FocusListener {
 
     private JLabel lbl;
 
-    public FocusListenerCasillaPalabra(JLabel lbl) {
+    public FocLisTexto(JLabel lbl) {
         this.lbl = lbl;
     }
 

@@ -19,7 +19,7 @@ public class IF_RegistrarEvento extends JInternalFrame {
     private JLabel lblf1, lblf2, lblf3, lblf4 , lblf5, lblf6;
 
     public IF_RegistrarEvento(Frame_principal frame) {
-        super("Solicitud nueva", false, true, false, false);
+        super("Registrar Evento Nuevo", false, true, false, false);
         this.frame = frame;
 
         setSize(new Dimension(400, 575));
@@ -45,7 +45,7 @@ public class IF_RegistrarEvento extends JInternalFrame {
 
         lblf1 = new JLabel("Ingrese el código del evento");
         lblf2 = new JLabel("Ingrese la fecha del evento");
-        lblf3 = new JLabel("seleccione el tipo del evento");
+        lblf3 = new JLabel("Seleccione el tipo del evento");
         lblf4 = new JLabel("Ingrese el título del evento");
         lblf5 = new JLabel("Ingrese la ubicación del evento");
         lblf6 = new JLabel("Ingrese el cupo máximo del evento");
@@ -57,7 +57,7 @@ public class IF_RegistrarEvento extends JInternalFrame {
         lbl5 = new JLabel(" ");
         lbl6 = new JLabel(" ");
 
-        JButton btn1 = new JButton("Crear Solicitud");
+        JButton btn1 = new JButton("Guardar Evento");
 
         txf1 = new JTextField();
         txf1.setPreferredSize(new Dimension(300, 25));
@@ -121,12 +121,12 @@ public class IF_RegistrarEvento extends JInternalFrame {
             }
             
         });
-        txf1.addFocusListener(new FocusListenerCasillaPalabra(lbl1));
-        txf2.addFocusListener(new FocusListenerCasillaPalabra(lbl2));
-        jCB3.addFocusListener(new FocusListenerCasillaPalabra(lbl3));
-        txf4.addFocusListener(new FocusListenerCasillaPalabra(lbl4));
-        txf5.addFocusListener(new FocusListenerCasillaPalabra(lbl5));
-        txf6.addFocusListener(new FocusListenerCasillaPalabra(lbl6));
+        txf1.addFocusListener(new FocLisTexto(lbl1));
+        txf2.addFocusListener(new FocLisTexto(lbl2));
+        jCB3.addFocusListener(new FocLisTexto(lbl3));
+        txf4.addFocusListener(new FocLisTexto(lbl4));
+        txf5.addFocusListener(new FocLisTexto(lbl5));
+        txf6.addFocusListener(new FocLisTexto(lbl6));
 
     }
 
