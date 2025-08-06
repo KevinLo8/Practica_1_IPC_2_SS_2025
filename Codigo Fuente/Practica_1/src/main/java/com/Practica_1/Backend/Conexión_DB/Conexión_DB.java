@@ -92,6 +92,26 @@ public class Conexión_DB {
         }
     }
 
+    public void guardarPago(Data_Pago data) {
+        String query = "UPDATE inscripcion SET metodo_pago = ?, monto_pago = ? WHERE correo_participante = ? AND codigo_evento = ?";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, data.getTipoPago().toString());
+            preparedStatement.setDouble(2, data.getMontoPago());
+            preparedStatement.setString(3, data.getCorreoParticipante());
+            preparedStatement.setString(4, data.getNumeroEvento());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                jTextArea.append(" -> Pago registrado exitosamente.\n\n");
+            } else {
+                jTextArea.append(" -> Error al registrar el pago.\n\n");
+            }
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al guardar el pago: " + e.getMessage() + "\n\n");
+        }
+    }
+
     public Boolean consultarParticipante(String correo) {
         String query = "SELECT * FROM participante WHERE correo = ?";
         ResultSet resultSet = null;
@@ -119,6 +139,40 @@ public class Conexión_DB {
             return resultSet.next();
         } catch (SQLException e) {
             jTextArea.append(" -> Error al consultar el evento: " + e.getMessage() + "\n\n");
+            return false;
+        }
+    }
+
+    public boolean consultarInscripcion(String correo, String codigoEvento) {
+        String query = "SELECT * FROM inscripcion WHERE correo_participante = ? AND codigo_evento = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, correo);
+            preparedStatement.setString(2, codigoEvento);
+            resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al consultar la inscripción: " + e.getMessage() + "\n\n");
+            return false;
+        }
+    }
+
+    public boolean consultarPago(String correo, String codigoEvento) {
+        String query = "SELECT * FROM inscripcion WHERE correo_participante = ? AND codigo_evento = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, correo);
+            preparedStatement.setString(2, codigoEvento);
+            resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            return resultSet.getString("monto_pago").equals("0.00");
+            
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al consultar el pago: " + e.getMessage() + "\n\n");
             return false;
         }
     }
