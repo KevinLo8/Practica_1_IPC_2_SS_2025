@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import com.Practica_1.Backend.Datos.Data_Participante;
+import com.Practica_1.Backend.Exception.SelecionTipoException;
 import com.Practica_1.Backend.Listener.FocLisTexto;
 import com.Practica_1.Frontend.Frame_principal;
 
@@ -119,8 +120,12 @@ public class IF_Participante extends JInternalFrame {
         }
         
         if (jCB2.getSelectedIndex() != -1) {
+            try {
             data.setTipoParticipante(jCB2.getSelectedItem().toString());
             completo++;
+            } catch (SelecionTipoException e) {
+                lbl2.setText("Seleccione un tipo de participante valido");
+            }
         } else {
             lbl2.setText("Seleccione un tipo de participante");
         } 

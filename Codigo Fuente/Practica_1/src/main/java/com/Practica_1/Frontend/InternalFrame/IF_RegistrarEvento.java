@@ -7,6 +7,7 @@ import java.time.*;
 import javax.swing.*;
 
 import com.Practica_1.Backend.Datos.Data_Evento;
+import com.Practica_1.Backend.Exception.SelecionTipoException;
 import com.Practica_1.Backend.Listener.*;
 import com.Practica_1.Frontend.Frame_principal;
 
@@ -162,8 +163,12 @@ public class IF_RegistrarEvento extends JInternalFrame {
         }
 
         if (jCB3.getSelectedIndex() != -1) {
-            data.setTipoEvento(jCB3.getSelectedItem().toString());
-            completo++;
+            try {
+                data.setTipoEvento(jCB3.getSelectedItem().toString());
+                completo++;
+            } catch (SelecionTipoException e) {
+                lbl3.setText("Seleccione un tipo de evento valido");
+            }
         } else {
             lbl3.setText("Seleccione un tipo de evento");
         }

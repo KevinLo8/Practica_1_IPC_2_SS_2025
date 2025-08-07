@@ -1,6 +1,6 @@
 package com.Practica_1.Backend.Datos;
 
-import com.Practica_1.Backend.Exception.TipoPagoException;
+import com.Practica_1.Backend.Exception.SelecionTipoException;
 
 public class Data_Pago {
 
@@ -28,7 +28,7 @@ public class Data_Pago {
     public TipoPago getTipoPago() {
         return tipoPago;
     }
-    public void setTipoPago(String tipoPagoString) throws TipoPagoException {
+    public void setTipoPago(String tipoPagoString) throws SelecionTipoException {
         switch (tipoPagoString) {
             case "EFECTIVO":
                 this.tipoPago = TipoPago.EFECTIVO;
@@ -40,7 +40,7 @@ public class Data_Pago {
                 this.tipoPago = TipoPago.TARJETA;
                 break;
             default:
-                throw new TipoPagoException("Tipo de pago no válido: " + tipoPagoString);
+                throw new SelecionTipoException("Tipo de pago no válido: " + tipoPagoString);
         }
     }
     public double getMontoPago() {
