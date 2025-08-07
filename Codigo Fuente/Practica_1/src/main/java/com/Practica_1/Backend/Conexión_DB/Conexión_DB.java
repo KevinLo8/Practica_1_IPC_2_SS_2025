@@ -99,7 +99,7 @@ public class Conexión_DB {
             preparedStatement.setString(1, data.getTipoPago().toString());
             preparedStatement.setDouble(2, data.getMontoPago());
             preparedStatement.setString(3, data.getCorreoParticipante());
-            preparedStatement.setString(4, data.getNumeroEvento());
+            preparedStatement.setString(4, data.getCodigoEvento());
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
@@ -117,7 +117,7 @@ public class Conexión_DB {
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, data.getCorreoParticipante());
-            preparedStatement.setString(2, data.getNumeroEvento());
+            preparedStatement.setString(2, data.getCodigoEvento());
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
@@ -127,6 +127,30 @@ public class Conexión_DB {
             }
         } catch (SQLException e) {
             jTextArea.append(" -> Error al guardar la validación: " + e.getMessage() + "\n\n");
+        }
+    }
+
+    public void guardarActividad(Data_Actividad data) {
+        String query = "INSERT INTO actividad (codigo, codigo_evento, tipo, titulo, correo_impartidor, hora_inicio, hora_fin, cupo_maximo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, data.getCodigoActividad());
+            preparedStatement.setString(2, data.getCodigoEvento());
+            preparedStatement.setString(3, data.getTipoActividad().toString());
+            preparedStatement.setString(4, data.getTituloActividad());
+            preparedStatement.setString(5, data.getCorreoImpartidor());
+            preparedStatement.setTime(6, Time.valueOf(data.getHoraInicio() + ":00"));
+            preparedStatement.setTime(7, Time.valueOf(data.getHoraFin() + ":00"));
+            preparedStatement.setInt(8, data.getCupoMaximo());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                jTextArea.append(" -> Actividad registrada exitosamente.\n\n");
+            } else {
+                jTextArea.append(" -> Error al registrar la actividad.\n\n");
+            }
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al guardar la actividad: " + e.getMessage() + "\n\n");
         }
     }
 
@@ -213,4 +237,36 @@ public class Conexión_DB {
         }
     }
 
+    public boolean consultarActividad(String codigoActividad) {
+        String query = "SELECT * FROM actividad WHERE codigo = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, codigoActividad);
+            resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al consultar la actividad: " + e.getMessage() + "\n\n");
+            return false;
+        }
+    }
+
+    public boolean revisarTipoInscripcion(String correo, String codigoEvento) {
+        String query = "SELECT * FROM inscripcion WHERE correo_participante = ? AND codigo_evento = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, correo);
+            preparedStatement.setString(2, codigoEvento);
+            resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            return !resultSet.getString("tipo_inscripcion").equals("ASISTENTE");
+            
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al revisar el tipo de inscripción: " + e.getMessage() + "\n\n");
+            return false;
+        }
+    }
 }

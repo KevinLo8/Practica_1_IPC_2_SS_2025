@@ -43,7 +43,7 @@ public class IF_Pago extends JInternalFrame {
         JPanel pnl5 = new JPanel();
 
         lblf1 = new JLabel("Ingrese el correo electrónico del participante");
-        lblf2 = new JLabel("Ingrese el número de evento");
+        lblf2 = new JLabel("Ingrese el codigo de evento");
         lblf3 = new JLabel("Seleccione el tipo de pago");
         lblf4 = new JLabel("Ingrese el monto del pago");
 
@@ -122,10 +122,10 @@ public class IF_Pago extends JInternalFrame {
         }
         
         if (chequearCampo(txf2, 8)) {
-            data.setNumeroEvento(txf2.getText());
+            data.setCodigoEvento(TOOL_TIP_TEXT_KEY);
             completo++;
         } else {
-            lbl2.setText("Ingrese un número de evento valido");
+            lbl2.setText("Ingrese un código de evento valido");
         } 
 
         if (jCB3.getSelectedIndex() != -1) {
@@ -160,10 +160,10 @@ public class IF_Pago extends JInternalFrame {
     }
 
     private boolean revisarInscripcion(Data_Pago data) {
-        if (!frame.getConexion().consultarInscripcion(data.getCorreoParticipante(), data.getNumeroEvento())) {
+        if (!frame.getConexion().consultarInscripcion(data.getCorreoParticipante(), data.getCodigoEvento())) {
             JOptionPane.showMessageDialog(frame, "No existe la inscripción ingresada. Por favor registrar la inscripción primero.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
-        } else if (!frame.getConexion().consultarPago(data.getCorreoParticipante(), data.getNumeroEvento())) {
+        } else if (!frame.getConexion().consultarPago(data.getCorreoParticipante(), data.getCodigoEvento())) {
             JOptionPane.showMessageDialog(frame, "Ya existe un pago registrado para esta inscripción.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         } else {

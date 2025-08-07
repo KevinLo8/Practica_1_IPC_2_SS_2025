@@ -196,10 +196,22 @@ public class IF_RegistrarEvento extends JInternalFrame {
 
         if (completo == 6) {
 
-            frame.getConexion().guardarEvento(data);
+            if(revisarEvento(data)) {
 
-            setVisible(false);
+                frame.getConexion().guardarEvento(data);
+                setVisible(false);
+
+            }
+
         }
+    }
+
+    public boolean revisarEvento(Data_Evento data) {
+        if (frame.getConexion().consultarEvento(data.getCodigoEvento())) {
+            JOptionPane.showMessageDialog(frame, "Ya existe un evento con el código ingresado.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
     }
 
     private boolean chequearCampo(JTextField campo, int tamaño) {

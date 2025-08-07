@@ -38,7 +38,7 @@ public class IF_Validacion extends JInternalFrame {
         JPanel pnl3 = new JPanel();
 
         lblf1 = new JLabel("Ingrese el correo electrónico del participante");
-        lblf2 = new JLabel("Ingrese el número de evento");
+        lblf2 = new JLabel("Ingrese el código de evento");
 
         lbl1 = new JLabel(" ");
         lbl2 = new JLabel(" ");
@@ -91,10 +91,10 @@ public class IF_Validacion extends JInternalFrame {
         }
         
         if (chequearCampo(txf2, 8)) {
-            data.setNumeroEvento(txf2.getText());
+            data.setCodigoEvento(txf2.getText());
             completo++;
         } else {
-            lbl2.setText("Ingrese un número de evento valido");
+            lbl2.setText("Ingrese un código de evento valido");
         } 
 
         if (completo == 2) {
@@ -110,15 +110,13 @@ public class IF_Validacion extends JInternalFrame {
     }
 
     private boolean revisarInscripcion(Data_Validacion data) {
-        if (!frame.getConexion().consultarInscripcion(data.getCorreoParticipante(), data.getNumeroEvento())) {
+        if (!frame.getConexion().consultarInscripcion(data.getCorreoParticipante(), data.getCodigoEvento())) {
             JOptionPane.showMessageDialog(frame, "No existe la inscripción ingresada. Por favor registrar la inscripción primero.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
-        } 
-        else if (frame.getConexion().consultarPago(data.getCorreoParticipante(), data.getNumeroEvento())) {
+        } else if (frame.getConexion().consultarPago(data.getCorreoParticipante(), data.getCodigoEvento())) {
             JOptionPane.showMessageDialog(frame, "No se ha realizado el pago de la inscripción. Por favor registrar el pago primero.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
-        } 
-        else if (!frame.getConexion().consultarValidacion(data.getCorreoParticipante(), data.getNumeroEvento())) {
+        } else if (!frame.getConexion().consultarValidacion(data.getCorreoParticipante(), data.getCodigoEvento())) {
             JOptionPane.showMessageDialog(frame, "Esta Inscripción ya ha sido validada.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         } else {

@@ -9,7 +9,7 @@ public class Data_Pago {
     }
 
     private String correoParticipante;
-    private String numeroEvento;
+    private String codigoEvento;
     private TipoPago tipoPago;
     private double montoPago;
 
@@ -19,11 +19,11 @@ public class Data_Pago {
     public void setCorreoParticipante(String correoParticipante) {
         this.correoParticipante = correoParticipante;
     }
-    public String getNumeroEvento() {
-        return numeroEvento;
+    public String getCodigoEvento() {
+        return codigoEvento;
     }
-    public void setNumeroEvento(String nombreEvento) {
-        this.numeroEvento = nombreEvento;
+    public void setCodigoEvento(String codigoEvento) {
+        this.codigoEvento = codigoEvento;
     }
     public TipoPago getTipoPago() {
         return tipoPago;
