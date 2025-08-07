@@ -147,12 +147,23 @@ public class IF_Participante extends JInternalFrame {
 
         if (completo == 4) {
 
-            frame.getConexion().guardarParticipante(data);
+            if (revisarParticipante (data)) {
 
-            setVisible(false);
+                frame.getConexion().guardarParticipante(data);
+                setVisible(false);
+
+            }
         }
     }
 
+    public boolean revisarParticipante(Data_Participante data) {
+        if (frame.getConexion().consultarParticipante(data.getCorreoParticipante())) {
+            JOptionPane.showMessageDialog(frame, "Ya existe un participante registrado con este correo.", "Error", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+        return true;
+    }
+    
     private boolean chequearCampo(JTextField campo, int tamaño) {
         return (campo.getText().length() < tamaño && !campo.getText().isEmpty());
     }
