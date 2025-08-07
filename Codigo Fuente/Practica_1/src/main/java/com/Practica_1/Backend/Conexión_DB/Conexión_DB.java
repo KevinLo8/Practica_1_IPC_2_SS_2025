@@ -37,7 +37,7 @@ public class Conexión_DB {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, data.getCodigoEvento());
             preparedStatement.setDate(2, Date.valueOf(data.getFechaEvento()));
-            preparedStatement.setString(3, data.getTipoEvento());
+            preparedStatement.setString(3, data.getTipoEvento().toString());
             preparedStatement.setString(4, data.getTituloEvento());
             preparedStatement.setString(5, data.getUbicacionEvento());
             preparedStatement.setInt(6, data.getCupoEvento());
@@ -58,7 +58,7 @@ public class Conexión_DB {
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, data.getNombreParticipante());
-            preparedStatement.setString(2, data.getTipoParticipante());
+            preparedStatement.setString(2, data.getTipoParticipante().toString());
             preparedStatement.setString(3, data.getInstitucionParticipante());
             preparedStatement.setString(4, data.getCorreoParticipante());
 
@@ -79,7 +79,7 @@ public class Conexión_DB {
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, data.getCorreoParticipante());
             preparedStatement.setString(2, data.getCodigoEvento());
-            preparedStatement.setString(3, data.getTipoInscripcion());
+            preparedStatement.setString(3, data.getTipoInscripcion().toString());
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
@@ -109,6 +109,24 @@ public class Conexión_DB {
             }
         } catch (SQLException e) {
             jTextArea.append(" -> Error al guardar el pago: " + e.getMessage() + "\n\n");
+        }
+    }
+
+    public void guardarValidacion(Data_Validacion data) {
+        String query = "UPDATE inscripcion SET estado_validacion = 1 WHERE correo_participante = ? AND codigo_evento = ?";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, data.getCorreoParticipante());
+            preparedStatement.setString(2, data.getNumeroEvento());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                jTextArea.append(" -> Validación registrada exitosamente.\n\n");
+            } else {
+                jTextArea.append(" -> Error al registrar la validación.\n\n");
+            }
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al guardar la validación: " + e.getMessage() + "\n\n");
         }
     }
 
@@ -173,6 +191,24 @@ public class Conexión_DB {
             
         } catch (SQLException e) {
             jTextArea.append(" -> Error al consultar el pago: " + e.getMessage() + "\n\n");
+            return false;
+        }
+    }
+
+    public boolean consultarValidacion(String correo, String codigoEvento) {
+        String query = "SELECT * FROM inscripcion WHERE correo_participante = ? AND codigo_evento = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, correo);
+            preparedStatement.setString(2, codigoEvento);
+            resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            return resultSet.getString("estado_validacion").equals("0");
+            
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al consultar la validación: " + e.getMessage() + "\n\n");
             return false;
         }
     }

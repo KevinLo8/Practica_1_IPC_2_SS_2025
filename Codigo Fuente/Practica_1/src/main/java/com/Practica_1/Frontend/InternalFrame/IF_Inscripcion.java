@@ -6,6 +6,7 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import com.Practica_1.Backend.Datos.Data_Inscripcion;
+import com.Practica_1.Backend.Exception.SelecionTipoException;
 import com.Practica_1.Backend.Listener.FocLisTexto;
 import com.Practica_1.Frontend.Frame_principal;
 
@@ -117,8 +118,12 @@ public class IF_Inscripcion extends JInternalFrame {
         } 
 
         if (jCB3.getSelectedIndex() != -1) {
+            try {
             data.setTipoInscripcion(jCB3.getSelectedItem().toString());
             completo++;
+            } catch (SelecionTipoException e) {
+                lbl3.setText("Seleccione un tipo de inscripción válido");
+            }
         } else {
             lbl3.setText("Seleccione un tipo de inscripción");
         }

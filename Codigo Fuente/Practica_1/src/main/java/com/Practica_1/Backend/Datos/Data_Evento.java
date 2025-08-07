@@ -2,11 +2,17 @@ package com.Practica_1.Backend.Datos;
 
 import java.time.LocalDate;
 
+import com.Practica_1.Backend.Exception.SelecionTipoException;
+
 public class Data_Evento {
+
+    public enum TipoEvento {
+        CHARLA, CONGRESO, TALLER, DEBATE
+    }
 
     private String codigoEvento;
     private LocalDate fechaEvento;
-    private String tipoEvento;
+    private TipoEvento tipoEvento;
     private String tituloEvento;
     private String ubicacionEvento;
     private int cupoEvento;
@@ -23,11 +29,26 @@ public class Data_Evento {
     public void setFechaEvento(LocalDate fechaEvento) {
         this.fechaEvento = fechaEvento;
     }
-    public String getTipoEvento() {
+    public TipoEvento getTipoEvento() {
         return tipoEvento;
     }
-    public void setTipoEvento(String tipoEvento) {
-        this.tipoEvento = tipoEvento;
+    public void setTipoEvento(String tipoEvento) throws SelecionTipoException {
+        switch (tipoEvento) {
+            case "CHARLA":
+                this.tipoEvento = TipoEvento.CHARLA;
+                break;
+            case "CONGRESO":
+                this.tipoEvento = TipoEvento.CONGRESO;
+                break;
+            case "TALLER":
+                this.tipoEvento = TipoEvento.TALLER;
+                break;
+            case "DEBATE":
+                this.tipoEvento = TipoEvento.DEBATE;
+                break;
+            default:
+                throw new SelecionTipoException("Tipo de evento no válido: " + tipoEvento);
+        }
     }
     public String getTituloEvento() {
         return tituloEvento;
