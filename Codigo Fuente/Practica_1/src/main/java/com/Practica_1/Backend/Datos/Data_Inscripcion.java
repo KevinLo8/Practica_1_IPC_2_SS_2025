@@ -10,10 +10,28 @@ public class Data_Inscripcion {
         TALLERISTA,
         OTRO
     }
+        
+    public enum TipoPago {
+        EFECTIVO, 
+        TRANSFERENCIA, 
+        TARJETA
+    }
 
-    public String correoParticipante;
-    public String codigoEvento;
-    public TipoInscripcion tipoInscripcion;
+    public Data_Inscripcion() {
+    }
+
+    public Data_Inscripcion(double montoPago, int validacion) {
+        this.montoPago = montoPago;
+        this.validacion = validacion == 1;
+    }
+
+    private String correoParticipante;
+    private String codigoEvento;
+    private TipoInscripcion tipoInscripcion;
+    private TipoPago tipoPago;
+    private double montoPago;
+    private boolean validacion;
+
 
     public String getCorreoParticipante() {
         return correoParticipante;
@@ -47,6 +65,33 @@ public class Data_Inscripcion {
             default:
                 throw new SelecionTipoException("Tipo de inscripción no válido: " + tipoInscripcion);
         }
+    }
+    public TipoPago getTipoPago() {
+        return tipoPago;
+    }
+    public void setTipoPago(String tipoPagoString) throws SelecionTipoException {
+        switch (tipoPagoString) {
+            case "EFECTIVO":
+                this.tipoPago = TipoPago.EFECTIVO;
+                break;
+            case "TRANSFERENCIA":
+                this.tipoPago = TipoPago.TRANSFERENCIA;
+                break;
+            case "TARJETA":
+                this.tipoPago = TipoPago.TARJETA;
+                break;
+            default:
+                throw new SelecionTipoException("Tipo de pago no válido: " + tipoPagoString);
+        }
+    }
+    public double getMontoPago() {
+        return montoPago;
+    }
+    public void setMontoPago(double montoPago) {
+        this.montoPago = montoPago;
+    }
+    public boolean getValidacion() {
+        return validacion;
     }
 
 }

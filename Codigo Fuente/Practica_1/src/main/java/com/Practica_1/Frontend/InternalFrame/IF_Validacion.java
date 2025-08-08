@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import com.Practica_1.Backend.Datos.Data_Validacion;
+import com.Practica_1.Backend.Datos.Data_Inscripcion;
 import com.Practica_1.Backend.Listener.FocLisTexto;
 import com.Practica_1.Frontend.Frame_principal;
 
@@ -79,7 +79,7 @@ public class IF_Validacion extends JInternalFrame {
 
     private void btnCrearActionPerformer(){
 
-        Data_Validacion data = new Data_Validacion();
+        Data_Inscripcion data = new Data_Inscripcion();
         int completo = 0;
 
         if (txf1.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
@@ -109,7 +109,7 @@ public class IF_Validacion extends JInternalFrame {
         }
     }
 
-    private boolean revisarInscripcion(Data_Validacion data) {
+    private boolean revisarInscripcion(Data_Inscripcion data) {
         if (!frame.getConexion().consultarInscripcion(data.getCorreoParticipante(), data.getCodigoEvento())) {
             JOptionPane.showMessageDialog(frame, "No existe la inscripción ingresada. Por favor registrar la inscripción primero.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;

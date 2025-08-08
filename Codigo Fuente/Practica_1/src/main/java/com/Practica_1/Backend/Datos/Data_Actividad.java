@@ -11,6 +11,15 @@ public class Data_Actividad {
         OTRA
     }
 
+    public Data_Actividad() {
+        // Constructor por defecto
+    }
+
+    public Data_Actividad(String correoImpartidor, int cupoMaximo) {
+        setCorreoImpartidor(correoImpartidor);
+        setCupoMaximo(cupoMaximo);
+    }
+
     public String codigoActividad;
     public String codigoEvento;
     public TipoActividad tipoActividad;

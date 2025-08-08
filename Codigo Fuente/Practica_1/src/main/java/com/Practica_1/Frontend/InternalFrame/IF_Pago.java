@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import com.Practica_1.Backend.Datos.Data_Pago;
+import com.Practica_1.Backend.Datos.Data_Inscripcion;
 import com.Practica_1.Backend.Exception.SelecionTipoException;
 import com.Practica_1.Backend.Listener.FocLisDinero;
 import com.Practica_1.Backend.Listener.FocLisTexto;
@@ -110,7 +110,7 @@ public class IF_Pago extends JInternalFrame {
 
     private void btnCrearActionPerformer(){
 
-        Data_Pago data = new Data_Pago();
+        Data_Inscripcion data = new Data_Inscripcion();
         int completo = 0;
 
         if (txf1.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
@@ -159,7 +159,7 @@ public class IF_Pago extends JInternalFrame {
         }
     }
 
-    private boolean revisarInscripcion(Data_Pago data) {
+    private boolean revisarInscripcion(Data_Inscripcion data) {
         if (!frame.getConexion().consultarInscripcion(data.getCorreoParticipante(), data.getCodigoEvento())) {
             JOptionPane.showMessageDialog(frame, "No existe la inscripción ingresada. Por favor registrar la inscripción primero.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
