@@ -92,7 +92,7 @@ public class Conexión_DB {
         }
     }
 
-    public void guardarPago(Data_Pago data) {
+    public void guardarPago(Data_Inscripcion data) {
         String query = "UPDATE inscripcion SET metodo_pago = ?, monto_pago = ? WHERE correo_participante = ? AND codigo_evento = ?";
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -112,7 +112,7 @@ public class Conexión_DB {
         }
     }
 
-    public void guardarValidacion(Data_Validacion data) {
+    public void guardarValidacion(Data_Inscripcion data) {
         String query = "UPDATE inscripcion SET estado_validacion = 1 WHERE correo_participante = ? AND codigo_evento = ?";
         
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -151,6 +151,24 @@ public class Conexión_DB {
             }
         } catch (SQLException e) {
             jTextArea.append(" -> Error al guardar la actividad: " + e.getMessage() + "\n\n");
+        }
+    }
+
+    public void guardarAsistencia(Data_Asistencia data) {
+        String query = "INSERT INTO asistencia (codigo_actividad, correo_participante) VALUES (?, ?)";
+        
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, data.getCodigoActividad());
+            preparedStatement.setString(2, data.getCorreoParticipante());
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            if (rowsAffected > 0) {
+                jTextArea.append(" -> Asistencia registrada exitosamente.\n\n");
+            } else {
+                jTextArea.append(" -> Error al registrar la asistencia.\n\n");
+            }
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al guardar la asistencia: " + e.getMessage() + "\n\n");
         }
     }
 
@@ -266,6 +284,83 @@ public class Conexión_DB {
             
         } catch (SQLException e) {
             jTextArea.append(" -> Error al revisar el tipo de inscripción: " + e.getMessage() + "\n\n");
+            return false;
+        }
+    }
+
+    public Data_Inscripcion consultarInsAsistencia(String correo, String codigoActividad) {
+        String query = "SELECT * FROM inscripcion i JOIN actividad a ON i.codigo_evento = a.codigo_evento WHERE i.correo_participante = ? AND a.codigo = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, correo);
+            preparedStatement.setString(2, codigoActividad);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new Data_Inscripcion(resultSet.getDouble("monto_pago"), resultSet.getInt("estado_validacion"));                
+            } else {
+                return null;
+            }
+            
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al revisar la inscripción para el evento: " + e.getMessage() + "\n\n");
+            return null;
+        }
+    }
+
+    public Data_Actividad consultarActAsistencia(String codigoActividad) {
+        String query = "SELECT * FROM actividad WHERE codigo = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, codigoActividad);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new Data_Actividad(resultSet.getString("correo_impartidor"), resultSet.getInt("cupo_maximo"));
+            } else {
+                return null;
+            }
+            
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al consultar la actividad para asistencia: " + e.getMessage() + "\n\n");
+            return null;
+        }
+    }
+
+    public boolean revisarAsistencia(String correo, String codigoActividad) {
+        String query = "SELECT * FROM asistencia WHERE correo_participante = ? AND codigo_actividad = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, correo);
+            preparedStatement.setString(2, codigoActividad);
+            resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al revisar la asistencia: " + e.getMessage() + "\n\n");
+            return false;
+        }
+    }
+
+    public boolean revisarCupoAsistencia(String codigoActividad, int cupoMaximo) {
+        String query = "SELECT * FROM asistencia WHERE codigo = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, codigoActividad);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                cupoMaximo--;
+            }
+            
+            return 0 >= cupoMaximo;
+            
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al revisar el cupo de asistencia: " + e.getMessage() + "\n\n");
             return false;
         }
     }
