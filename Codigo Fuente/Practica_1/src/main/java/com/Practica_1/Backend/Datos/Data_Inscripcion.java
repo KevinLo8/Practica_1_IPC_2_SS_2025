@@ -25,6 +25,16 @@ public class Data_Inscripcion {
         this.validacion = validacion == 1;
     }
 
+    public Data_Inscripcion(String correoParticipante, String codigoEvento, String tipoInscripcion,
+            String tipoPago, double montoPago, int validacion) throws SelecionTipoException {
+        this.correoParticipante = correoParticipante;
+        this.codigoEvento = codigoEvento;
+        setTipoInscripcion(tipoInscripcion);
+        setTipoPago(tipoPago);
+        this.montoPago = montoPago;
+        this.validacion = validacion == 1;
+    }
+
     private String correoParticipante;
     private String codigoEvento;
     private TipoInscripcion tipoInscripcion;

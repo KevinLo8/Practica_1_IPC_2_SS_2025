@@ -5,7 +5,7 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import com.Practica_1.Backend.Datos.Data_Actividad;
+import com.Practica_1.Backend.Datos.*;
 import com.Practica_1.Backend.Exception.SelecionTipoException;
 import com.Practica_1.Backend.Listener.FocLisTexto;
 import com.Practica_1.Frontend.Frame_principal;
@@ -254,13 +254,17 @@ public class IF_Actividad extends JInternalFrame {
     
 
     private boolean revisarImpartidor(Data_Actividad data) {
+
+        Data_Inscripcion data_ins = frame.getConexion().consultarInscripcion(data.getCorreoImpartidor(),
+                data.getCodigoEvento());
+
         if (!frame.getConexion().consultarParticipante(data.getCorreoImpartidor())) {
             JOptionPane.showMessageDialog(frame, "El correo electrónico del impartidor no está registrado. Por favor registrar el participante primero.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
-        } else if (!frame.getConexion().consultarInscripcion(data.getCorreoImpartidor(), data.getCodigoEvento())) {
+        } else if (data_ins == null) {
             JOptionPane.showMessageDialog(frame, "El impartidor no está inscrito en el evento. Por favor inscribir al participante primero.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
-        } else if (frame.getConexion().consultarValidacion(data.getCorreoImpartidor(), data.getCodigoEvento())) {
+        } else if (data_ins.getValidacion() == false) {
             JOptionPane.showMessageDialog(frame, "El impartidor no está validado para el evento. Por favor validar al participante primero.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         } else if (!frame.getConexion().revisarTipoInscripcion(data.getCorreoImpartidor(), data.getCodigoEvento())) {
