@@ -5,6 +5,7 @@ import java.sql.*;
 import javax.swing.JTextArea;
 
 import com.Practica_1.Backend.Datos.*;
+import com.Practica_1.Backend.Exception.SelecionTipoException;
 
 public class Conexión_DB {
 
@@ -28,12 +29,12 @@ public class Conexión_DB {
             System.out.println("error al conectar a la DB");
             ex.printStackTrace();
         }
-        
+
     }
 
     public void guardarEvento(Data_Evento data) {
         String query = "INSERT INTO evento (codigo, fecha, tipo, titulo, ubicacion, cupo) VALUES (?, ?, ?, ?, ?, ?)";
-        
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, data.getCodigoEvento());
             preparedStatement.setDate(2, Date.valueOf(data.getFechaEvento()));
@@ -55,7 +56,7 @@ public class Conexión_DB {
 
     public void guardarParticipante(Data_Participante data) {
         String query = "INSERT INTO participante (nombre, tipo, institucion, correo) VALUES (?, ?, ?, ?)";
-        
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, data.getNombreParticipante());
             preparedStatement.setString(2, data.getTipoParticipante().toString());
@@ -75,7 +76,7 @@ public class Conexión_DB {
 
     public void guardarInscripción(Data_Inscripcion data) {
         String query = "INSERT INTO inscripcion (correo_participante, codigo_evento, tipo_inscripcion) VALUES (?, ?, ?)";
-        
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, data.getCorreoParticipante());
             preparedStatement.setString(2, data.getCodigoEvento());
@@ -94,7 +95,7 @@ public class Conexión_DB {
 
     public void guardarPago(Data_Inscripcion data) {
         String query = "UPDATE inscripcion SET metodo_pago = ?, monto_pago = ? WHERE correo_participante = ? AND codigo_evento = ?";
-        
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, data.getTipoPago().toString());
             preparedStatement.setDouble(2, data.getMontoPago());
@@ -114,7 +115,7 @@ public class Conexión_DB {
 
     public void guardarValidacion(Data_Inscripcion data) {
         String query = "UPDATE inscripcion SET estado_validacion = 1 WHERE correo_participante = ? AND codigo_evento = ?";
-        
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, data.getCorreoParticipante());
             preparedStatement.setString(2, data.getCodigoEvento());
@@ -132,7 +133,7 @@ public class Conexión_DB {
 
     public void guardarActividad(Data_Actividad data) {
         String query = "INSERT INTO actividad (codigo, codigo_evento, tipo, titulo, correo_impartidor, hora_inicio, hora_fin, cupo_maximo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-        
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, data.getCodigoActividad());
             preparedStatement.setString(2, data.getCodigoEvento());
@@ -156,7 +157,7 @@ public class Conexión_DB {
 
     public void guardarAsistencia(Data_Asistencia data) {
         String query = "INSERT INTO asistencia (codigo_actividad, correo_participante) VALUES (?, ?)";
-        
+
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, data.getCodigoActividad());
             preparedStatement.setString(2, data.getCorreoParticipante());
@@ -176,8 +177,7 @@ public class Conexión_DB {
         String query = "SELECT * FROM participante WHERE correo = ?";
         ResultSet resultSet = null;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
-        ) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);) {
             preparedStatement.setString(1, correo);
             resultSet = preparedStatement.executeQuery();
 
@@ -203,7 +203,7 @@ public class Conexión_DB {
         }
     }
 
-    public boolean consultarInscripcion(String correo, String codigoEvento) {
+    public Data_Inscripcion consultarInscripcion(String correo, String codigoEvento) {
         String query = "SELECT * FROM inscripcion WHERE correo_participante = ? AND codigo_evento = ?";
         ResultSet resultSet = null;
 
@@ -212,46 +212,20 @@ public class Conexión_DB {
             preparedStatement.setString(2, codigoEvento);
             resultSet = preparedStatement.executeQuery();
 
-            return resultSet.next();
+            if (resultSet.next()) {
+                return new Data_Inscripcion(resultSet.getString("correo_participante"),
+                        resultSet.getString("codigo_evento"),
+                        resultSet.getString("tipo_inscripcion"), resultSet.getString("metodo_pago"),
+                        resultSet.getDouble("monto_pago"), resultSet.getInt("estado_validacion"));
+            } else {
+                return null;
+            }
         } catch (SQLException e) {
             jTextArea.append(" -> Error al consultar la inscripción: " + e.getMessage() + "\n\n");
-            return false;
-        }
-    }
-
-    public boolean consultarPago(String correo, String codigoEvento) {
-        String query = "SELECT * FROM inscripcion WHERE correo_participante = ? AND codigo_evento = ?";
-        ResultSet resultSet = null;
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, correo);
-            preparedStatement.setString(2, codigoEvento);
-            resultSet = preparedStatement.executeQuery();
-
-            resultSet.next();
-            return resultSet.getString("monto_pago").equals("0.00");
-            
-        } catch (SQLException e) {
-            jTextArea.append(" -> Error al consultar el pago: " + e.getMessage() + "\n\n");
-            return false;
-        }
-    }
-
-    public boolean consultarValidacion(String correo, String codigoEvento) {
-        String query = "SELECT * FROM inscripcion WHERE correo_participante = ? AND codigo_evento = ?";
-        ResultSet resultSet = null;
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, correo);
-            preparedStatement.setString(2, codigoEvento);
-            resultSet = preparedStatement.executeQuery();
-
-            resultSet.next();
-            return resultSet.getString("estado_validacion").equals("0");
-            
-        } catch (SQLException e) {
-            jTextArea.append(" -> Error al consultar la validación: " + e.getMessage() + "\n\n");
-            return false;
+            return null;
+        } catch (SelecionTipoException e) {
+            jTextArea.append(" -> Error al mapear los tipos de inscripción o pago: " + e.getMessage() + "\n\n");
+            return null;
         }
     }
 
@@ -281,7 +255,7 @@ public class Conexión_DB {
 
             resultSet.next();
             return !resultSet.getString("tipo_inscripcion").equals("ASISTENTE");
-            
+
         } catch (SQLException e) {
             jTextArea.append(" -> Error al revisar el tipo de inscripción: " + e.getMessage() + "\n\n");
             return false;
@@ -298,11 +272,11 @@ public class Conexión_DB {
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                return new Data_Inscripcion(resultSet.getDouble("monto_pago"), resultSet.getInt("estado_validacion"));                
+                return new Data_Inscripcion(resultSet.getDouble("monto_pago"), resultSet.getInt("estado_validacion"));
             } else {
                 return null;
             }
-            
+
         } catch (SQLException e) {
             jTextArea.append(" -> Error al revisar la inscripción para el evento: " + e.getMessage() + "\n\n");
             return null;
@@ -322,7 +296,7 @@ public class Conexión_DB {
             } else {
                 return null;
             }
-            
+
         } catch (SQLException e) {
             jTextArea.append(" -> Error al consultar la actividad para asistencia: " + e.getMessage() + "\n\n");
             return null;
@@ -356,12 +330,118 @@ public class Conexión_DB {
             while (resultSet.next()) {
                 cupoMaximo--;
             }
-            
+
             return 0 >= cupoMaximo;
-            
+
         } catch (SQLException e) {
             jTextArea.append(" -> Error al revisar el cupo de asistencia: " + e.getMessage() + "\n\n");
             return false;
         }
     }
+
+    public Data_Participante solicitarParticipante(String correo) {
+        String query = "SELECT * FROM participante WHERE correo = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, correo);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+
+                Data_Participante data = new Data_Participante(resultSet.getString("nombre"),
+                        resultSet.getString("tipo"),
+                        resultSet.getString("institucion"), resultSet.getString("correo"));
+
+                return data;
+
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al solicitar el participante: " + e.getMessage() + "\n\n");
+            return null;
+        }
+
+    }
+
+    public Data_Evento solicitarEvento(String codigo) {
+        String query = "SELECT * FROM evento WHERE codigo = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, codigo);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+
+                Data_Evento data = new Data_Evento(resultSet.getString("codigo"),
+                        resultSet.getDate("fecha").toLocalDate(),
+                        resultSet.getString("tipo"), resultSet.getString("titulo"), resultSet.getString("ubicacion"),
+                        resultSet.getInt("cupo"));
+
+                return data;
+
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al solicitar el evento: " + e.getMessage() + "\n\n");
+            return null;
+        }
+
+    }
+
+    public Data_Actividad[] solicitarAsistencias(String correo, String codigo) {
+        String query = "SELECT * FROM asistencia JOIN actividad "
+                + "ON asistencia.codigo_actividad = actividad.codigo "
+                + "WHERE correo_participante = ? AND codigo_evento = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, correo);
+            preparedStatement.setString(2, codigo);
+            resultSet = preparedStatement.executeQuery();
+
+            Data_Actividad[] asistencias = new Data_Actividad[0];
+
+            if (resultSet.next()) {
+
+                do {
+
+                    Data_Actividad data = new Data_Actividad(resultSet.getString("codigo"),
+                            resultSet.getString("codigo_evento"), resultSet.getString("tipo"),
+                            resultSet.getString("titulo"), resultSet.getString("correo_impartidor"),
+                            resultSet.getTime("hora_inicio").toString(), resultSet.getTime("hora_fin").toString(),
+                            resultSet.getInt("cupo_maximo"));
+
+                    Data_Actividad[] asisTemp = new Data_Actividad[asistencias.length + 1];
+
+                    int i = 0;
+                    while (i < asistencias.length) {
+                        asisTemp[i] = asistencias[i];
+                        i++;
+                    }
+
+                    asisTemp[asistencias.length] = data;
+
+                    asistencias = asisTemp;
+
+                } while (resultSet.next());
+
+                return asistencias;
+
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al solicitar el evento: " + e.getMessage() + "\n\n");
+            return null;
+        }
+
+    }
+
 }

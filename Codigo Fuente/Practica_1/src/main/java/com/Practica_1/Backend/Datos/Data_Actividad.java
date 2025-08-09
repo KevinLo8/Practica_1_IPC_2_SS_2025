@@ -15,9 +15,24 @@ public class Data_Actividad {
         // Constructor por defecto
     }
 
-    public Data_Actividad(String correoImpartidor, int cupoMaximo) {
+    public Data_Actividad(String correoImpartidor, int cupo) {
         setCorreoImpartidor(correoImpartidor);
-        setCupoMaximo(cupoMaximo);
+        setCupoMaximo(cupo);
+    }
+
+    public Data_Actividad(String codigo, String codigoEvento, String tipo, String titulo, String correoImpartidor, String horaInicio, String horaFin, int cupo) {
+        try {
+            codigoActividad = codigo;
+            this.codigoEvento = codigoEvento;
+            setTipoActividad(tipo);
+            tituloActividad = titulo;
+            this.correoImpartidor = correoImpartidor;
+            this.horaInicio = horaInicio;
+            this.horaFin = horaFin;
+            cupoMaximo = cupo;
+        } catch (SelecionTipoException e) {
+            e.printStackTrace();
+        }
     }
 
     public String codigoActividad;

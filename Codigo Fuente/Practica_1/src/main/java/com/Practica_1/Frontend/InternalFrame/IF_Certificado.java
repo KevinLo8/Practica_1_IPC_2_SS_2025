@@ -2,28 +2,30 @@ package com.Practica_1.Frontend.InternalFrame;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 
 import javax.swing.*;
 
-import com.Practica_1.Backend.Datos.Data_Inscripcion;
-import com.Practica_1.Backend.Exception.SelecionTipoException;
+import com.Practica_1.Backend.ConexiónArchivo.ConexionArchivo;
+import com.Practica_1.Backend.Datos.*;
+import com.Practica_1.Backend.Exception.ArchivoExistenteException;
+import com.Practica_1.Backend.GeneradorHTML.GeneradorHTML;
 import com.Practica_1.Backend.Listener.FocLisTexto;
 import com.Practica_1.Frontend.Frame_principal;
 
-public class IF_Inscripcion extends JInternalFrame {
+public class IF_Certificado extends JInternalFrame {
 
     private Frame_principal frame;
     private JTextField txf1, txf2;
-    private JComboBox<String> jCB3;
-    private JLabel lbl1, lbl2, lbl3;
-    private JLabel lblf1, lblf2, lblf3;
+    private JLabel lbl1, lbl2;
+    private JLabel lblf1, lblf2;
 
-    public IF_Inscripcion(Frame_principal frame) {
-        super("Inscribir Participante En Evento", false, true, false, false);
+    public IF_Certificado(Frame_principal frame) {
+        super("Crear Certificado", false, true, false, false);
         this.frame = frame;
 
         setSize(new Dimension(400, 425));
-        setLayout(new GridLayout(4, 1, 0, 5));
+        setLayout(new GridLayout(5, 1, 0, 5));
 
         frame.getDesktop().add(this);
 
@@ -38,36 +40,23 @@ public class IF_Inscripcion extends JInternalFrame {
         JPanel pnl1 = new JPanel();
         JPanel pnl2 = new JPanel();
         JPanel pnl3 = new JPanel();
-        JPanel pnl4 = new JPanel();
 
-        lblf1 = new JLabel("Ingrese el correo del participante");
+        lblf1 = new JLabel("Ingrese el correo electrónico del participante");
         lblf2 = new JLabel("Ingrese el código del evento");
-        lblf3 = new JLabel("Seleccione el tipo de inscripción");
 
         lbl1 = new JLabel(" ");
         lbl2 = new JLabel(" ");
-        lbl3 = new JLabel(" ");
 
-        JButton btn1 = new JButton("Guardar Inscripción");
+        JButton btn1 = new JButton("Crear Certificado");
 
         txf1 = new JTextField();
         txf1.setPreferredSize(new Dimension(300, 25));
         txf2 = new JTextField();
         txf2.setPreferredSize(new Dimension(300, 25));
 
-        jCB3 = new JComboBox<>();
-        jCB3.setPreferredSize(new Dimension(300, 25));
-        jCB3.setBackground(Color.WHITE);
-
-        jCB3.addItem("ASISTENTE");
-        jCB3.addItem("CONFERENCISTA");
-        jCB3.addItem("TALLERISTA");
-        jCB3.addItem("OTRO");
-
         add(pnl1);
         add(pnl2);
         add(pnl3);
-        add(pnl4);
 
         pnl1.add(lblf1, BorderLayout.NORTH);
         pnl1.add(txf1);
@@ -77,11 +66,7 @@ public class IF_Inscripcion extends JInternalFrame {
         pnl2.add(txf2);
         pnl2.add(lbl2, BorderLayout.SOUTH);
 
-        pnl3.add(lblf3, BorderLayout.NORTH);
-        pnl3.add(jCB3);
-        pnl3.add(lbl3, BorderLayout.SOUTH);
-
-        pnl4.add(btn1);
+        pnl3.add(btn1);
 
         btn1.addActionListener(new ActionListener() {
 
@@ -93,13 +78,12 @@ public class IF_Inscripcion extends JInternalFrame {
         });
         txf1.addFocusListener(new FocLisTexto(lbl1));
         txf2.addFocusListener(new FocLisTexto(lbl2));
-        jCB3.addFocusListener(new FocLisTexto(lbl3));
 
     }
 
     private void btnCrearActionPerformer() {
 
-        Data_Inscripcion data = new Data_Inscripcion();
+        Data_Certificado data = new Data_Certificado();
         int completo = 0;
 
         if (txf1.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
@@ -107,54 +91,62 @@ public class IF_Inscripcion extends JInternalFrame {
             data.setCorreoParticipante(txf1.getText());
             completo++;
         } else {
-            lbl1.setText("Ingrese un correo electrónico válido");
+            lbl1.setText("Ingrese un correo electrónico valido");
         }
 
         if (chequearCampo(txf2, 8)) {
             data.setCodigoEvento(txf2.getText());
             completo++;
         } else {
-            lbl2.setText("Ingrese un código de evento válido");
+            lbl2.setText("Ingrese un código de actividad valido");
         }
 
-        if (jCB3.getSelectedIndex() != -1) {
-            try {
-                data.setTipoInscripcion(jCB3.getSelectedItem().toString());
-                completo++;
-            } catch (SelecionTipoException e) {
-                lbl3.setText("Seleccione un tipo de inscripción válido");
-            }
-        } else {
-            lbl3.setText("Seleccione un tipo de inscripción");
-        }
+        if (completo == 2) {
 
-        if (completo == 3) {
+            Data_Participante data_Participante = frame.getConexion().solicitarParticipante(data.getCorreoParticipante());
+            Data_Actividad[] data_Actividad = frame.getConexion().solicitarAsistencias(data.getCorreoParticipante(), data.getCodigoEvento());
 
-            if (revisarDatos(data)) {
+            if (revisarCertificado(data, data_Participante, data_Actividad)) {
 
-                frame.getConexion().guardarInscripción(data);
+                String htmlCertificado = GeneradorHTML.CertificadoHTML(data_Participante, data.getCodigoEvento(), data_Actividad);
+
+                String nombreCertificado = data.getCorreoParticipante() + "_" + data.getCodigoEvento();
+                nombreCertificado = ConexionArchivo.GenerarNombre(frame.getPathSalida(), nombreCertificado);
+
+                try {
+                    ConexionArchivo.guardarArchivo(frame.getPathSalida(), htmlCertificado, nombreCertificado);
+                } catch (IOException e) {
+                    JOptionPane.showMessageDialog(frame,
+                            "Ha ocurrido un error al guardar el archivo.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                } catch (ArchivoExistenteException e) {
+                    JOptionPane.showMessageDialog(frame,
+                            "Ya existe un archivo con el nombre que se intento guardar.",
+                            "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
                 setVisible(false);
 
             }
+
         }
     }
 
-    private boolean revisarDatos(Data_Inscripcion data) {
+    private boolean revisarCertificado(Data_Certificado data, Data_Participante data_Par, Data_Actividad[] data_act) {
 
-        Data_Inscripcion data_ins = frame.getConexion().consultarInscripcion(data.getCorreoParticipante(),
-                data.getCodigoEvento());
+        Data_Evento data_Eve = frame.getConexion().solicitarEvento(data.getCodigoEvento());
 
-        if (!frame.getConexion().consultarParticipante(data.getCorreoParticipante())) {
+        if (data_Par == null) {
             JOptionPane.showMessageDialog(frame, "El participante no está registrado. Por favor, regístrelo primero.",
                     "Error", JOptionPane.ERROR_MESSAGE);
             return false;
-        } else if (!frame.getConexion().consultarEvento(data.getCodigoEvento())) {
+        } else if (data_Eve == null) {
             JOptionPane.showMessageDialog(frame, "El evento no está registrado. Por favor, regístrelo primero.",
                     "Error", JOptionPane.ERROR_MESSAGE);
             return false;
-        } else if (data_ins != null) {
-            JOptionPane.showMessageDialog(frame, "El participante ya está inscrito en este evento.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
+        } else if (data_act.length == 0) {
+            JOptionPane.showMessageDialog(frame, "El participante no ha registrado ningina asistencia.",
+                    "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         } else {
             return true;
@@ -172,7 +164,6 @@ public class IF_Inscripcion extends JInternalFrame {
         setVisible(true);
         txf1.setText("");
         txf2.setText("");
-        jCB3.setSelectedIndex(-1);
 
     }
 

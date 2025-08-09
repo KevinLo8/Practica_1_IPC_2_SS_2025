@@ -29,10 +29,10 @@ public class IF_Pago extends JInternalFrame {
         frame.getDesktop().add(this);
 
         initComponentes();
-        
+
     }
 
-    private void initComponentes(){
+    private void initComponentes() {
 
         setDefaultCloseOperation(HIDE_ON_CLOSE);
 
@@ -99,7 +99,7 @@ public class IF_Pago extends JInternalFrame {
             public void actionPerformed(ActionEvent e) {
                 btnCrearActionPerformer();
             }
-            
+
         });
         txf1.addFocusListener(new FocLisTexto(lbl1));
         txf2.addFocusListener(new FocLisTexto(lbl2));
@@ -108,39 +108,39 @@ public class IF_Pago extends JInternalFrame {
 
     }
 
-    private void btnCrearActionPerformer(){
+    private void btnCrearActionPerformer() {
 
         Data_Inscripcion data = new Data_Inscripcion();
         int completo = 0;
 
         if (txf1.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
-            && chequearCampo(txf1, 51)) {
+                && chequearCampo(txf1, 51)) {
             data.setCorreoParticipante(txf1.getText());
             completo++;
         } else {
             lbl1.setText("Ingrese un correo electrónico valido");
         }
-        
+
         if (chequearCampo(txf2, 8)) {
             data.setCodigoEvento(TOOL_TIP_TEXT_KEY);
             completo++;
         } else {
             lbl2.setText("Ingrese un código de evento valido");
-        } 
+        }
 
         if (jCB3.getSelectedIndex() != -1) {
             try {
                 data.setTipoPago(jCB3.getSelectedItem().toString());
                 completo++;
             } catch (SelecionTipoException e) {
-            lbl3.setText("Seleccione un tipo de pago valido");
+                lbl3.setText("Seleccione un tipo de pago valido");
             }
         } else {
             lbl3.setText("Seleccione un tipo de pago");
         }
 
         if (chequearCampo(txf4, 10) && txf4.getText().matches("^[0-9]+(\\.[0-9]{1,2})?$")
-            && Double.parseDouble(txf4.getText()) > 0) {
+                && Double.parseDouble(txf4.getText()) > 0) {
             data.setMontoPago(Double.parseDouble(txf4.getText()));
             completo++;
         } else {
@@ -153,24 +153,31 @@ public class IF_Pago extends JInternalFrame {
 
                 frame.getConexion().guardarPago(data);
                 setVisible(false);
-                
+
             }
 
         }
     }
 
     private boolean revisarInscripcion(Data_Inscripcion data) {
-        if (!frame.getConexion().consultarInscripcion(data.getCorreoParticipante(), data.getCodigoEvento())) {
-            JOptionPane.showMessageDialog(frame, "No existe la inscripción ingresada. Por favor registrar la inscripción primero.", "Error", JOptionPane.ERROR_MESSAGE);
+
+        Data_Inscripcion data_ins = frame.getConexion().consultarInscripcion(data.getCorreoParticipante(),
+                data.getCodigoEvento());
+
+        if (data_ins == null) {
+            JOptionPane.showMessageDialog(frame,
+                    "No existe la inscripción ingresada. Por favor registrar la inscripción primero.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
             return false;
-        } else if (!frame.getConexion().consultarPago(data.getCorreoParticipante(), data.getCodigoEvento())) {
-            JOptionPane.showMessageDialog(frame, "Ya existe un pago registrado para esta inscripción.", "Error", JOptionPane.ERROR_MESSAGE);
+        } else if (data_ins.getMontoPago() > 0) {
+            JOptionPane.showMessageDialog(frame, "Ya existe un pago registrado para esta inscripción.", "Error",
+                    JOptionPane.ERROR_MESSAGE);
             return false;
         } else {
             return true;
         }
-    }   
-    
+    }
+
     private boolean chequearCampo(JTextField campo, int tamaño) {
         return (campo.getText().length() < tamaño && !campo.getText().isEmpty());
     }

@@ -110,13 +110,16 @@ public class IF_Validacion extends JInternalFrame {
     }
 
     private boolean revisarInscripcion(Data_Inscripcion data) {
-        if (!frame.getConexion().consultarInscripcion(data.getCorreoParticipante(), data.getCodigoEvento())) {
+
+        Data_Inscripcion data_ins = frame.getConexion().consultarInscripcion(data.getCorreoParticipante(), data.getCodigoEvento());
+
+        if (data_ins == null) {
             JOptionPane.showMessageDialog(frame, "No existe la inscripción ingresada. Por favor registrar la inscripción primero.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
-        } else if (frame.getConexion().consultarPago(data.getCorreoParticipante(), data.getCodigoEvento())) {
+        } else if (data_ins.getMontoPago() == 0) {
             JOptionPane.showMessageDialog(frame, "No se ha realizado el pago de la inscripción. Por favor registrar el pago primero.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
-        } else if (!frame.getConexion().consultarValidacion(data.getCorreoParticipante(), data.getCodigoEvento())) {
+        } else if (data_ins.getValidacion() == true) {
             JOptionPane.showMessageDialog(frame, "Esta Inscripción ya ha sido validada.", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         } else {

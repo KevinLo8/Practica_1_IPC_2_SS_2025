@@ -4,17 +4,31 @@ import com.Practica_1.Backend.Exception.SelecionTipoException;
 
 public class Data_Participante {
 
+    private String nombreParticipante;
+    private TipoParticipante tipoParticipante;
+    private String institucionParticipante;
+    private String correoParticipante;
+    
     public enum TipoParticipante {
         ESTUDIANTE,
         PROFESIONAL,
         INVITADO
     }
 
-    private String nombreParticipante;
-    private TipoParticipante tipoParticipante;
-    private String institucionParticipante;
-    private String correoParticipante;
-    
+    public Data_Participante() {
+    }
+
+    public Data_Participante(String nombre, String tipo, String intitucion, String correo) {
+        try {
+            nombreParticipante = nombre;
+            setTipoParticipante(tipo);
+            institucionParticipante = intitucion;
+            correoParticipante = correo;
+        } catch (SelecionTipoException e) {
+            e.printStackTrace();
+        }
+    }
+
     public String getNombreParticipante() {
         return nombreParticipante;
     }

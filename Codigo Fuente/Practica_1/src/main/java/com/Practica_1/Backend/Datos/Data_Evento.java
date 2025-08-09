@@ -6,16 +6,32 @@ import com.Practica_1.Backend.Exception.SelecionTipoException;
 
 public class Data_Evento {
 
-    public enum TipoEvento {
-        CHARLA, CONGRESO, TALLER, DEBATE
-    }
-
     private String codigoEvento;
     private LocalDate fechaEvento;
     private TipoEvento tipoEvento;
     private String tituloEvento;
     private String ubicacionEvento;
     private int cupoEvento;
+
+    public enum TipoEvento {
+        CHARLA, CONGRESO, TALLER, DEBATE
+    }
+
+    public Data_Evento(){
+    }
+
+    public Data_Evento(String codigo, LocalDate fecha, String tipo, String titulo, String ubicacion, int cupo){
+        try {
+            codigoEvento = codigo;
+            fechaEvento = fecha;
+            setTipoEvento(tipo);
+            tituloEvento = titulo;
+            ubicacionEvento = ubicacion;
+            cupoEvento = cupo;
+        } catch (SelecionTipoException e) {
+            e.printStackTrace();
+        }
+    }
 
     public String getCodigoEvento() {
         return codigoEvento;
