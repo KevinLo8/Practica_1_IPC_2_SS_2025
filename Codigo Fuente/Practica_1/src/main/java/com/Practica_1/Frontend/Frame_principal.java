@@ -12,7 +12,7 @@ public class Frame_principal extends JFrame {
     private static Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
     private JDesktopPane desktop;
-    private JTextArea jTextArea;
+    private JTextArea textLOG;
 
     private String pathEntrada;
     private String pathSalida;
@@ -23,7 +23,7 @@ public class Frame_principal extends JFrame {
     public Frame_principal() {
 
         initComponentes();
-        conexion = new Conexión_DB(jTextArea);
+        conexion = new Conexión_DB(textLOG);
 
     }
 
@@ -43,43 +43,33 @@ public class Frame_principal extends JFrame {
         JMenu jM2 = new JMenu("Acciones");
         JMenu jM3 = new JMenu("Reportes");
 
+        JScrollPane jScrollPane = new JScrollPane();
+        jScrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
+
+        textLOG = new JTextArea("\n -> Aplicación Inicializada.\n\n");
+        textLOG.setEditable(false);
+        textLOG.setBackground(Color.BLACK);
+        textLOG.setForeground(Color.WHITE);
+
         jMenuBar.add(jM1);
         jMenuBar.add(jM2);
         jMenuBar.add(jM3);
 
-        JMI_Ajustes itemA1 = new JMI_Ajustes(this);
-        JMI_Salir itemA2 = new JMI_Salir();
+        jM1.add(new JMI_Ajustes(this));
+        jM1.add(new JMI_Salir());
 
-        JMI_Evento itemAc1 = new JMI_Evento(this);
-        JMI_Participante itemAc2 = new JMI_Participante(this);
-        JMI_Inscripcion itemAc3 = new JMI_Inscripcion(this);
-        JMI_Pago itemAc4 = new JMI_Pago(this);
-        JMI_Validacion itemAc5 = new JMI_Validacion(this);
-        JMI_Actividad itemAc6 = new JMI_Actividad(this);
-        JMI_Asistencia itemAC7 = new JMI_Asistencia(this);
-        JMI_Certificado itemAC8 = new JMI_Certificado(this);
+        jM2.add(new JMI_Evento(this));
+        jM2.add(new JMI_Participante(this));
+        jM2.add(new JMI_Inscripcion(this));
+        jM2.add(new JMI_Pago(this));
+        jM2.add(new JMI_Validacion(this));
+        jM2.add(new JMI_Actividad(this));
+        jM2.add(new JMI_Asistencia(this));
+        jM2.add(new JMI_Certificado(this));
 
-        jM1.add(itemA1);
-        jM1.add(itemA2);
+        jM3.add(new JMI_RepParticipantes(this, textLOG));
 
-        jM2.add(itemAc1);
-        jM2.add(itemAc2);
-        jM2.add(itemAc3);
-        jM2.add(itemAc4);
-        jM2.add(itemAc5);
-        jM2.add(itemAc6);
-        jM2.add(itemAC7);
-        jM2.add(itemAC8);
-
-        JScrollPane jScrollPane = new JScrollPane();
-        jScrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
-
-        jTextArea = new JTextArea("\n -> Aplicación Inicializada.\n\n");
-        jTextArea.setEditable(false);
-        jTextArea.setBackground(Color.BLACK);
-        jTextArea.setForeground(Color.WHITE);
-
-        jScrollPane.setViewportView(jTextArea);
+        jScrollPane.setViewportView(textLOG);
 
         setJMenuBar(jMenuBar);
 

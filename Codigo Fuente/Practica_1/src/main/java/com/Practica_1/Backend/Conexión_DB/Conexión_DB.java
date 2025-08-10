@@ -366,6 +366,73 @@ public class Conexión_DB {
 
     }
 
+    public Data_Participante[] solicitarParticipantes(String evento, String tipo, String institucion) {
+        String query = "SELECT * FROM participante p JOIN inscripcion i ON p.correo = i.correo_participante WHERE i.codigo_evento = ?";
+        ResultSet resultSet = null;
+
+        if (!tipo.equals("")) {
+            query = query + " AND p.tipo = ?";
+        }
+
+        if (!institucion.equals("")) {
+            query = query + " AND p.institucion = ?";
+        }
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            int i = 1;
+
+            preparedStatement.setString(i, evento);
+            i++;
+
+            if (!tipo.equals("")) {
+                preparedStatement.setString(i, tipo);
+                i++;
+            }
+
+            if (!institucion.equals("")) {
+                preparedStatement.setString(i, institucion);
+            }
+
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+
+                Data_Participante[] participantes = new Data_Participante[0];
+
+                do {
+
+                    Data_Participante data = new Data_Participante(resultSet.getString("nombre"),
+                            resultSet.getString("tipo"), resultSet.getString("institucion"),
+                            resultSet.getString("correo"), resultSet.getBoolean("estado_validacion"));
+
+                    Data_Participante[] partTemp = new Data_Participante[participantes.length + 1];
+
+                    i = 0;
+                    while (i < participantes.length) {
+                        partTemp[i] = participantes[i];
+                        i++;
+                    }
+
+                    partTemp[participantes.length] = data;
+
+                    participantes = partTemp;
+
+                } while (resultSet.next());
+
+                return participantes;
+
+            } else {
+                return null;
+            }
+
+        } catch (SQLException e) {
+            jTextArea.append(" -> Error al solicitar el participante: " + e.getMessage() + "\n\n");
+            return null;
+        }
+
+    }
+
     public Data_Evento solicitarEvento(String codigo) {
         String query = "SELECT * FROM evento WHERE codigo = ?";
         ResultSet resultSet = null;
@@ -377,8 +444,8 @@ public class Conexión_DB {
             if (resultSet.next()) {
 
                 Data_Evento data = new Data_Evento(resultSet.getString("codigo"),
-                        resultSet.getDate("fecha").toLocalDate(),
-                        resultSet.getString("tipo"), resultSet.getString("titulo"), resultSet.getString("ubicacion"),
+                        resultSet.getDate("fecha").toLocalDate(), resultSet.getString("tipo"),
+                        resultSet.getString("titulo"), resultSet.getString("ubicacion"),
                         resultSet.getInt("cupo"));
 
                 return data;
