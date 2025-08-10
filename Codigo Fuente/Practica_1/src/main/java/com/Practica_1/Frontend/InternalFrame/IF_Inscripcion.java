@@ -141,7 +141,7 @@ public class IF_Inscripcion extends JInternalFrame {
 
     private boolean revisarDatos(Data_Inscripcion data) {
 
-        Data_Inscripcion data_ins = frame.getConexion().consultarInscripcion(data.getCorreoParticipante(),
+        Data_Inscripcion data_ins = frame.getConexion().solicitarInscripcion(data.getCorreoParticipante(),
                 data.getCodigoEvento());
 
         if (!frame.getConexion().consultarParticipante(data.getCorreoParticipante())) {

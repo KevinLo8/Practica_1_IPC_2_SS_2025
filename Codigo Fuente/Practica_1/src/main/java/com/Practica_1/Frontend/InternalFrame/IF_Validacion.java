@@ -111,7 +111,7 @@ public class IF_Validacion extends JInternalFrame {
 
     private boolean revisarInscripcion(Data_Inscripcion data) {
 
-        Data_Inscripcion data_ins = frame.getConexion().consultarInscripcion(data.getCorreoParticipante(), data.getCodigoEvento());
+        Data_Inscripcion data_ins = frame.getConexion().solicitarInscripcion(data.getCorreoParticipante(), data.getCodigoEvento());
 
         if (data_ins == null) {
             JOptionPane.showMessageDialog(frame, "No existe la inscripción ingresada. Por favor registrar la inscripción primero.", "Error", JOptionPane.ERROR_MESSAGE);

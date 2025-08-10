@@ -13,11 +13,11 @@ import com.Practica_1.Backend.GeneradorHTML.GeneradorHTML;
 import com.Practica_1.Frontend.Frame_principal;
 import com.Practica_1.Frontend.InternalFrame.IF_RepParticipantes;
 
-public class ProcReporteParticipantes {
+public class ProcRepParticipantes {
 
     private Frame_principal frame;
 
-    public ProcReporteParticipantes(Frame_principal frame) {
+    public ProcRepParticipantes(Frame_principal frame) {
 
         this.frame = frame;
 
@@ -25,13 +25,13 @@ public class ProcReporteParticipantes {
 
     public void crearReporte(IF_RepParticipantes if_RepPar, String evento, String tipoPar, String institucionPar) throws ErrProcException {
 
-        if (!frame.getConexion().consultarEvento(evento)) {
+        if (evento.length() > 7) {
+            throw new ErrProcException("Ingrese un código de evento válido");
+        } else if (!frame.getConexion().consultarEvento(evento)) {
             throw new ErrProcException("El evento no está registrado. Por favor, regístrelo primero.");
-        }
-        if (revisarTipo(tipoPar)) {
+        } else if (revisarTipo(tipoPar)) {
             throw new ErrProcException("Seleccione un tipo de participante valido");
-        }
-        if ((institucionPar.trim().length() > 150)) {
+        } else if (institucionPar.length() > 150) {
             throw new ErrProcException("Ingrese un nombre de intitucion que sea valido.");
         }
 

@@ -35,14 +35,15 @@ public class Data_Actividad {
         }
     }
 
-    public String codigoActividad;
-    public String codigoEvento;
-    public TipoActividad tipoActividad;
-    public String tituloActividad;
-    public String correoImpartidor;
-    public String horaInicio;
-    public String horaFin;
-    public int cupoMaximo;
+    private String codigoActividad;
+    private String codigoEvento;
+    private TipoActividad tipoActividad;
+    private String tituloActividad;
+    private String correoImpartidor;
+    private String horaInicio;
+    private String horaFin;
+    private int cupoMaximo;
+    private int participantes;
 
     public String getCodigoActividad() {
         return codigoActividad;
@@ -106,6 +107,12 @@ public class Data_Actividad {
     }
     public void setCupoMaximo(int cupoMaximo) {
         this.cupoMaximo = cupoMaximo;
+    }
+    public int getParticipantes() {
+        return participantes;
+    }
+    public void setParticipantes(int participantes) {
+        this.participantes = participantes;
     }
 
 }
