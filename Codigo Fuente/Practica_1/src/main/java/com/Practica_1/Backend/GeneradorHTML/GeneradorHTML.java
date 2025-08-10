@@ -81,4 +81,43 @@ public class GeneradorHTML {
         return stringHTML;
     }
 
+    public static String ReporteActividadesHTML(Data_Actividad[] actividades) {
+
+        String stringHTML = null;
+
+        
+        stringHTML = ("<html>");
+        stringHTML = (stringHTML + "<head>");
+        stringHTML = (stringHTML + "<title>Reporte de actividades</title>");
+        stringHTML = (stringHTML + "</head>");
+        stringHTML = (stringHTML + "<body>");
+
+        stringHTML = (stringHTML + "<FONT SIZE=5><p>Reporte de participantes</p></font>");
+
+        stringHTML = (stringHTML + "<table border=\"1\"><tr><th>CÓDIGO DE LA ACTIVIDAD</th>");
+        stringHTML = (stringHTML + "<th>CÓDIGO DEL EVENTO</th>");
+        stringHTML = (stringHTML + "<th>TÍTULO DE LA ACTIVIDAD</th>");
+        stringHTML = (stringHTML + "<th>NOMBRE DEL ENCARGADO</th>");
+        stringHTML = (stringHTML + "<th>HORA DE INICIO</th>");
+        stringHTML = (stringHTML + "<th>CUPO MÁXIMO</th>");
+        stringHTML = (stringHTML + "<th>CANTIDAD DE PARTICIPANTES</th></tr>");
+
+        for (Data_Actividad data : actividades) {
+            stringHTML = (stringHTML + "<tr><th>" + data.getCodigoActividad() + "</th>");
+            stringHTML = (stringHTML + "<th>" + data.getCodigoEvento() + "</th>");
+            stringHTML = (stringHTML + "<th>" + data.getTituloActividad() + "</th>");
+            stringHTML = (stringHTML + "<th>" + data.getCorreoImpartidor() + "</th>");
+            stringHTML = (stringHTML + "<th>" + data.getHoraInicio().toString() + "</th>");
+            stringHTML = (stringHTML + "<th>" + data.getCupoMaximo() + "</th>");
+            stringHTML = (stringHTML + "<th>" + data.getParticipantes() + "</th></tr>");
+
+        }
+
+        stringHTML = (stringHTML + "</table>");
+        stringHTML = (stringHTML + "</body>");
+        stringHTML = (stringHTML + "</html>");
+
+        return stringHTML;
+    }
+
 }

@@ -255,7 +255,7 @@ public class IF_Actividad extends JInternalFrame {
 
     private boolean revisarImpartidor(Data_Actividad data) {
 
-        Data_Inscripcion data_ins = frame.getConexion().consultarInscripcion(data.getCorreoImpartidor(),
+        Data_Inscripcion data_ins = frame.getConexion().solicitarInscripcion(data.getCorreoImpartidor(),
                 data.getCodigoEvento());
 
         if (!frame.getConexion().consultarParticipante(data.getCorreoImpartidor())) {

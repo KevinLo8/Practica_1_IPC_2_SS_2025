@@ -64,10 +64,11 @@ public class Frame_principal extends JFrame {
         jM2.add(new JMI_Pago(this));
         jM2.add(new JMI_Validacion(this));
         jM2.add(new JMI_Actividad(this));
-        jM2.add(new JMI_Asistencia(this));
+        jM2.add(new JMI_Asistencia(this, textLOG));
         jM2.add(new JMI_Certificado(this));
 
         jM3.add(new JMI_RepParticipantes(this, textLOG));
+        jM3.add(new JMI_RepActividades(this, textLOG));
 
         jScrollPane.setViewportView(textLOG);
 

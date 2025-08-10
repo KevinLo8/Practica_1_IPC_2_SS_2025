@@ -6,20 +6,20 @@ import java.awt.event.*;
 import javax.swing.*;
 
 import com.Practica_1.Backend.Exception.ErrProcException;
-import com.Practica_1.Backend.Procesador.ProcRepParticipantes;
+import com.Practica_1.Backend.Procesador.ProcRepActividades;
 import com.Practica_1.Frontend.Frame_principal;
 
-public class IF_RepParticipantes extends IF_Padre {
+public class IF_RepActividades extends IF_Padre {
 
     private JTextField txf1, txf3;
     private JComboBox<String> jCB2;
     private JLabel lblf1, lblf2, lblf3;
-    private ProcRepParticipantes prp;
+    private ProcRepActividades pra;
 
-    public IF_RepParticipantes(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Crear Reporte De Participantes", 400, 425, 4);
+    public IF_RepActividades(Frame_principal frame, JTextArea textLOG) {
+        super(frame, textLOG, "Crear Reporte De Actividades", 400, 425, 4);
 
-        prp = new ProcRepParticipantes(frame);
+        pra = new ProcRepActividades(frame);
 
         initComponentes();
 
@@ -34,7 +34,7 @@ public class IF_RepParticipantes extends IF_Padre {
 
         lblf1 = new JLabel("Ingrese el código del evento");
         lblf2 = new JLabel("Seleccione el ipo de participante (Opcional)");
-        lblf3 = new JLabel("Ingrese la institución del participante (Opcional)");
+        lblf3 = new JLabel("Ingrese el correo del encargado (Opcional)");
 
         JButton btn1 = new JButton("Crear Reporte");
 
@@ -47,9 +47,10 @@ public class IF_RepParticipantes extends IF_Padre {
         jCB2.setPreferredSize(new Dimension(300, 25));
         jCB2.setBackground(Color.WHITE);
 
-        jCB2.addItem("ESTUDIANTE");
-        jCB2.addItem("PROFESIONAL");
-        jCB2.addItem("INVITADO");
+        jCB2.addItem("CHARLA");
+        jCB2.addItem("TALLER");
+        jCB2.addItem("DEBATE");
+        jCB2.addItem("OTRA");
 
         add(pnl1);
         add(pnl2);
@@ -89,11 +90,11 @@ public class IF_RepParticipantes extends IF_Padre {
                 tipo = jCB2.getSelectedItem().toString();
             }
             
-            prp.crearReporte(this, txf1.getText().trim(), tipo, txf3.getText().trim());
+            pra.crearReporte(this, txf1.getText().trim(), tipo, txf3.getText().trim());
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al crear el reporte de participantes\n\n");
+            textLOG.append(" -> Error al crear el reporte de actividades\n\n");
         }
 
     }
@@ -106,6 +107,6 @@ public class IF_RepParticipantes extends IF_Padre {
     }
 
     public void invisible(){
-        hacerInvisible(" -> Reporte de participantes creado con exito.\n\n");
+        hacerInvisible(" -> Reporte de actividades creado con exito.\n\n");
     }
 }

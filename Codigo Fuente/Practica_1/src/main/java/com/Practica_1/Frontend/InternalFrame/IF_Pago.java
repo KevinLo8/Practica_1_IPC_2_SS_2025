@@ -161,7 +161,7 @@ public class IF_Pago extends JInternalFrame {
 
     private boolean revisarInscripcion(Data_Inscripcion data) {
 
-        Data_Inscripcion data_ins = frame.getConexion().consultarInscripcion(data.getCorreoParticipante(),
+        Data_Inscripcion data_ins = frame.getConexion().solicitarInscripcion(data.getCorreoParticipante(),
                 data.getCodigoEvento());
 
         if (data_ins == null) {
