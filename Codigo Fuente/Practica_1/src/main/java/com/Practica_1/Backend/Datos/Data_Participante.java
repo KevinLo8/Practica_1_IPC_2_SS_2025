@@ -8,6 +8,7 @@ public class Data_Participante {
     private TipoParticipante tipoParticipante;
     private String institucionParticipante;
     private String correoParticipante;
+    private Boolean asistenciaValidada;
     
     public enum TipoParticipante {
         ESTUDIANTE,
@@ -24,6 +25,18 @@ public class Data_Participante {
             setTipoParticipante(tipo);
             institucionParticipante = intitucion;
             correoParticipante = correo;
+        } catch (SelecionTipoException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Data_Participante(String nombre, String tipo, String intitucion, String correo, boolean validacion) {
+        try {
+            nombreParticipante = nombre;
+            setTipoParticipante(tipo);
+            institucionParticipante = intitucion;
+            correoParticipante = correo;
+            asistenciaValidada = validacion;
         } catch (SelecionTipoException e) {
             e.printStackTrace();
         }
@@ -64,6 +77,12 @@ public class Data_Participante {
     }
     public void setCorreoParticipante(String correoParticipante) {
         this.correoParticipante = correoParticipante;
+    }
+    public Boolean getAsistenciaValidada() {
+        return asistenciaValidada;
+    }
+    public void setAsistenciaValidada(Boolean asistenciaValidada) {
+        this.asistenciaValidada = asistenciaValidada;
     }
 
 }
