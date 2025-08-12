@@ -9,7 +9,7 @@ import com.Practica_1.Backend.Exception.SelecionTipoException;
 
 public class Conexión_DB {
 
-    private static final String URL_MYSQL = "jdbc:mysql://localhost:3306/ADMINISTRACION_EVENTOS";
+    private static final String URL_MYSQL = "jdbc:mysql://localhost:3306/adminstracion_eventos";
     private static final String USER = "admindba";
     private static final String PASSWORD = "12345";
 
