@@ -65,7 +65,8 @@ public class ProcRepEventos {
             throw new ErrProcException("Se necesita que se rellene por lo menos 1 de los datos requeridos");
         }
 
-        Data_Evento[] eventos = frame.getConexion().solicitarEventos(tipo, fechaInicio, fechaFin, dataCupoMin, dataCupoMax);
+        Data_Evento[] eventos = frame.getConexion().solicitarEventos(tipo, fechaInicio, fechaFin, dataCupoMin,
+                dataCupoMax);
 
         String htmlreporte = GeneradorHTML.ReporteEventosInicioHTML();
 
@@ -193,16 +194,22 @@ public class ProcRepEventos {
     private String generarTexto(Data_Evento evento, int numero) {
         String texto;
 
-        Data_Participante[] participantes = frame.getConexion().solicitarParticipantes(evento.getCodigoEvento(), "", "");
+        Data_Participante[] participantes = frame.getConexion().solicitarParticipantes(evento.getCodigoEvento(), "",
+                "");
 
         int montoTotal = 0, participantesValidos = 0, participantesNoValidos = 0;
 
         for (Data_Participante part : participantes) {
-            Data_Inscripcion insc = frame.getConexion().solicitarInscripcion(part.getCorreoParticipante(), evento.getCodigoEvento());
+            Data_Inscripcion insc = frame.getConexion().solicitarInscripcion(part.getCorreoParticipante(),
+                    evento.getCodigoEvento());
 
             montoTotal += insc.getMontoPago();
             part.setMontoPago(insc.getMontoPago());
-            part.setMetodoPago(insc.getTipoPago().toString());
+            if (insc.getTipoPago() == null) {
+                part.setMetodoPago("NINGUNO");
+            } else {
+                part.setMetodoPago(insc.getTipoPago().toString());
+            }
             if (insc.getValidacion()) {
                 participantesValidos++;
             } else {
@@ -210,7 +217,8 @@ public class ProcRepEventos {
             }
         }
 
-        texto = GeneradorHTML.ReporteEventosHTML(numero, evento, participantes, montoTotal, participantesValidos, participantesNoValidos);
+        texto = GeneradorHTML.ReporteEventosHTML(numero, evento, participantes, montoTotal, participantesValidos,
+                participantesNoValidos);
 
         return texto;
     }

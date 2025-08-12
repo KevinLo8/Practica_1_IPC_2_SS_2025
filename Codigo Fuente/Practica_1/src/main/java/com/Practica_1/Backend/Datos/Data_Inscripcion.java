@@ -10,10 +10,10 @@ public class Data_Inscripcion {
         TALLERISTA,
         OTRO
     }
-        
+
     public enum TipoPago {
-        EFECTIVO, 
-        TRANSFERENCIA, 
+        EFECTIVO,
+        TRANSFERENCIA,
         TARJETA
     }
 
@@ -42,22 +42,26 @@ public class Data_Inscripcion {
     private double montoPago;
     private boolean validacion;
 
-
     public String getCorreoParticipante() {
         return correoParticipante;
     }
+
     public void setCorreoParticipante(String correoParticipante) {
         this.correoParticipante = correoParticipante;
     }
+
     public String getCodigoEvento() {
         return codigoEvento;
     }
+
     public void setCodigoEvento(String codigoEvento) {
         this.codigoEvento = codigoEvento;
     }
+
     public TipoInscripcion getTipoInscripcion() {
         return tipoInscripcion;
     }
+
     public void setTipoInscripcion(String tipoInscripcion) throws SelecionTipoException {
         switch (tipoInscripcion) {
             case "ASISTENTE":
@@ -76,30 +80,39 @@ public class Data_Inscripcion {
                 throw new SelecionTipoException("Tipo de inscripción no válido: " + tipoInscripcion);
         }
     }
+
     public TipoPago getTipoPago() {
         return tipoPago;
     }
+
     public void setTipoPago(String tipoPagoString) throws SelecionTipoException {
-        switch (tipoPagoString) {
-            case "EFECTIVO":
-                this.tipoPago = TipoPago.EFECTIVO;
-                break;
-            case "TRANSFERENCIA":
-                this.tipoPago = TipoPago.TRANSFERENCIA;
-                break;
-            case "TARJETA":
-                this.tipoPago = TipoPago.TARJETA;
-                break;
-            default:
-                throw new SelecionTipoException("Tipo de pago no válido: " + tipoPagoString);
+        if (tipoPagoString == null) {
+            this.tipoPago = null;
+        } else {
+            switch (tipoPagoString) {
+                case "EFECTIVO":
+                    this.tipoPago = TipoPago.EFECTIVO;
+                    break;
+                case "TRANSFERENCIA":
+                    this.tipoPago = TipoPago.TRANSFERENCIA;
+                    break;
+                case "TARJETA":
+                    this.tipoPago = TipoPago.TARJETA;
+                    break;
+                default:
+                    throw new SelecionTipoException("Tipo de pago no válido: " + tipoPagoString);
+            }
         }
     }
+
     public double getMontoPago() {
         return montoPago;
     }
+
     public void setMontoPago(double montoPago) {
         this.montoPago = montoPago;
     }
+
     public boolean getValidacion() {
         return validacion;
     }
