@@ -141,20 +141,20 @@ public class GeneradorHTML {
 
         String stringHTML = "";
 
-        stringHTML = (stringHTML + "<FONT SIZE=5><p>Evento No. " + numero + "</p></font>");
+        stringHTML = (stringHTML + "<FONT SIZE=5><p>Evento No. " + (numero + 1) + "</p></font>");
 
         stringHTML = (stringHTML + "<p>CODIGO DE EVENTO:</p>");
-        stringHTML = (stringHTML + "<p>&emsp;&emsp;" + evento.getCodigoEvento() + "</p>");
+        stringHTML = (stringHTML + "<p>&emsp;&emsp;&emsp;&emsp;" + evento.getCodigoEvento() + "</p>");
         stringHTML = (stringHTML + "<p>FECHA DE EVENTO:</p>");
-        stringHTML = (stringHTML + "<p>&emsp;&emsp;" + evento.getFechaEvento().toString() + "</p>");
+        stringHTML = (stringHTML + "<p>&emsp;&emsp;&emsp;&emsp;" + evento.getFechaEvento().toString() + "</p>");
         stringHTML = (stringHTML + "<p>TITULO DE EVENTO:</p>");
-        stringHTML = (stringHTML + "<p>&emsp;&emsp;" + evento.getTituloEvento() + "</p>");
+        stringHTML = (stringHTML + "<p>&emsp;&emsp;&emsp;&emsp;" + evento.getTituloEvento() + "</p>");
         stringHTML = (stringHTML + "<p>TIPO DE EVENTO:</p>");
-        stringHTML = (stringHTML + "<p>&emsp;&emsp;" + evento.getTipoEvento().toString() + "</p>");
+        stringHTML = (stringHTML + "<p>&emsp;&emsp;&emsp;&emsp;" + evento.getTipoEvento().toString() + "</p>");
         stringHTML = (stringHTML + "<p>UBICACION:</p>");
-        stringHTML = (stringHTML + "<p>&emsp;&emsp;" + evento.getUbicacionEvento() + "</p>");
+        stringHTML = (stringHTML + "<p>&emsp;&emsp;&emsp;&emsp;" + evento.getUbicacionEvento() + "</p>");
         stringHTML = (stringHTML + "<p>CUPO MAXIMO:</p>");
-        stringHTML = (stringHTML + "<p>&emsp;&emsp;" + evento.getCupoEvento() + "</p>");
+        stringHTML = (stringHTML + "<p>&emsp;&emsp;&emsp;&emsp;" + evento.getCupoEvento() + "</p>");
 
         stringHTML = (stringHTML + "<table border=1><tr><th>CORREO DEL PARTICIPANTE</th>");
         stringHTML = (stringHTML + "<th>NOMBRE DEL PARTICIPANTE</th>");
@@ -174,11 +174,11 @@ public class GeneradorHTML {
         stringHTML = (stringHTML + "</table>");
 
         stringHTML = (stringHTML + "<p>MONTO TOTAL:</p>");
-        stringHTML = (stringHTML + "<p>&emsp;&emsp;" + montoTotal + "</p>");
+        stringHTML = (stringHTML + "<p>&emsp;&emsp;&emsp;&emsp;" + montoTotal + "</p>");
         stringHTML = (stringHTML + "<p>PARTICIPANTES VALIDADOS:</p>");
-        stringHTML = (stringHTML + "<p>&emsp;&emsp;" + participantesValidos + "</p>");
+        stringHTML = (stringHTML + "<p>&emsp;&emsp;&emsp;&emsp;" + participantesValidos + "</p>");
         stringHTML = (stringHTML + "<p>PARTICIPANTES NO VALIDADOS:</p>");
-        stringHTML = (stringHTML + "<p>&emsp;&emsp;" + participantesNoValidos + "</p>");
+        stringHTML = (stringHTML + "<p>&emsp;&emsp;&emsp;&emsp;" + participantesNoValidos + "</p>");
 
         return stringHTML;
 
