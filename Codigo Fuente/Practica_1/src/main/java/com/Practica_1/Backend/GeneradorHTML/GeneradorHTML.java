@@ -1,11 +1,12 @@
 package com.Practica_1.Backend.GeneradorHTML;
 
 import com.Practica_1.Backend.Datos.Data_Actividad;
+import com.Practica_1.Backend.Datos.Data_Evento;
 import com.Practica_1.Backend.Datos.Data_Participante;
 
 public class GeneradorHTML {
 
-    public static String CertificadoHTML(Data_Participante data_Par, String codigoEvento, Data_Actividad[] data_Act){
+    public static String CertificadoHTML(Data_Participante data_Par, String codigoEvento, Data_Actividad[] data_Act) {
 
         String stringHTML = null;
 
@@ -16,8 +17,10 @@ public class GeneradorHTML {
         stringHTML = (stringHTML + "<body>");
 
         stringHTML = (stringHTML + "<FONT SIZE=5><p>Certificado De Asistencia</p></font>");
-        stringHTML = (stringHTML + "<FONT SIZE=2><p>Se le otorga este certificado a: " + data_Par.getNombreParticipante() + ".</p></font>");
-        stringHTML = (stringHTML + "<FONT SIZE=2><p>Por asistir a actividades del evento: " + codigoEvento + ".</p></font>");
+        stringHTML = (stringHTML + "<FONT SIZE=2><p>Se le otorga este certificado a: "
+                + data_Par.getNombreParticipante() + ".</p></font>");
+        stringHTML = (stringHTML + "<FONT SIZE=2><p>Por asistir a actividades del evento: " + codigoEvento
+                + ".</p></font>");
 
         stringHTML = (stringHTML + "<table border=\"1\"><tr><th>CODIGO</th>");
         stringHTML = (stringHTML + "<th>TIPO</th>");
@@ -45,7 +48,6 @@ public class GeneradorHTML {
 
         String stringHTML = null;
 
-        
         stringHTML = ("<html>");
         stringHTML = (stringHTML + "<head>");
         stringHTML = (stringHTML + "<title>Reporte de participantes</title>");
@@ -83,9 +85,8 @@ public class GeneradorHTML {
 
     public static String ReporteActividadesHTML(Data_Actividad[] actividades) {
 
-        String stringHTML = null;
+        String stringHTML = "";
 
-        
         stringHTML = ("<html>");
         stringHTML = (stringHTML + "<head>");
         stringHTML = (stringHTML + "<title>Reporte de actividades</title>");
@@ -114,6 +115,70 @@ public class GeneradorHTML {
         }
 
         stringHTML = (stringHTML + "</table>");
+        stringHTML = (stringHTML + "</body>");
+        stringHTML = (stringHTML + "</html>");
+
+        return stringHTML;
+    }
+
+    public static String ReporteEventosInicioHTML() {
+
+        String stringHTML = null;
+
+        stringHTML = ("<html>");
+        stringHTML = (stringHTML + "<head>");
+        stringHTML = (stringHTML + "<title>Reporte de actividades</title>");
+        stringHTML = (stringHTML + "</head>");
+        stringHTML = (stringHTML + "<body>");
+
+        stringHTML = (stringHTML + "<FONT SIZE=5><p>Reporte de eventos</p></font>");
+
+        return stringHTML;
+    }
+
+    public static String ReporteEventosHTML(int numero, Data_Evento evento, Data_Participante[] participantes, int montoTotal,
+        int participantesValidos, int participantesNoValidos) {
+
+        String stringHTML = "";
+
+        stringHTML = (stringHTML + "<FONT SIZE=4><p>Evento No. " + numero + "</p></font>");
+
+        stringHTML = (stringHTML + "<p>CODIGO DE EVENTO:" + evento.getCodigoEvento() + "</p>");
+        stringHTML = (stringHTML + "<p>FECHA DE EVENTO:" + evento.getFechaEvento().toString() + "</p>");
+        stringHTML = (stringHTML + "<p>TITULO DE EVENTO:" + evento.getTituloEvento() + "</p>");
+        stringHTML = (stringHTML + "<p>TIPO DE EVENTO:" + evento.getTipoEvento().toString() + "</p>");
+        stringHTML = (stringHTML + "<p>UBICACION:" + evento.getUbicacionEvento() + "</p>");
+        stringHTML = (stringHTML + "<p>CUPO MAXIMO:" + evento.getCupoEvento() + "</p>");
+
+        stringHTML = (stringHTML + "<table border=1><tr><th>CORREO DEL PARTICIPANTE</th>");
+        stringHTML = (stringHTML + "<th>NOMBRE DEL PARTICIPANTE</th>");
+        stringHTML = (stringHTML + "<th>TIPO DE PARTICIPANTE</th>");
+        stringHTML = (stringHTML + "<th>MÉTODO DE PAGO</th>");
+        stringHTML = (stringHTML + "<th>MONTO PAGADO</th>");
+
+        for (Data_Participante data : participantes) {
+            stringHTML = (stringHTML + "<tr><th>" + data.getCorreoParticipante() + "</th>");
+            stringHTML = (stringHTML + "<th>" + data.getNombreParticipante() + "</th>");
+            stringHTML = (stringHTML + "<th>" + data.getTipoParticipante().toString() + "</th>");
+            stringHTML = (stringHTML + "<th>" + data.getMetodoPago() + "</th>");
+            stringHTML = (stringHTML + "<th>" + String.valueOf(data.getMontoPago()) + "</th></tr>");
+
+        }
+
+        stringHTML = (stringHTML + "</table>");
+
+        stringHTML = (stringHTML + "<p>MONTO TOTAL :" + montoTotal + "</p>");
+        stringHTML = (stringHTML + "<p>PARTICIPANTES VALIDADOS: " + participantesValidos + "</p>");
+        stringHTML = (stringHTML + "<p>PARTICIPANTES NO VALIDADOS: " + participantesNoValidos + "</p>");
+
+        return stringHTML;
+
+    }
+
+    public static String ReporteEventosFinHTML() {
+
+        String stringHTML = "";
+
         stringHTML = (stringHTML + "</body>");
         stringHTML = (stringHTML + "</html>");
 

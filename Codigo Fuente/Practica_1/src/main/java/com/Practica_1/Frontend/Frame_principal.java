@@ -69,6 +69,7 @@ public class Frame_principal extends JFrame {
 
         jM3.add(new JMI_RepParticipantes(this, textLOG));
         jM3.add(new JMI_RepActividades(this, textLOG));
+        jM3.add(new JMI_RepEventos(this, textLOG));
 
         jScrollPane.setViewportView(textLOG);
 
