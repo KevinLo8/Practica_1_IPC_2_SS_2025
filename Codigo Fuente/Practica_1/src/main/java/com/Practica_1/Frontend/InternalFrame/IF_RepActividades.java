@@ -33,7 +33,7 @@ public class IF_RepActividades extends IF_Padre {
         JPanel pnl4 = new JPanel();
 
         lblf1 = new JLabel("Ingrese el código del evento");
-        lblf2 = new JLabel("Seleccione el ipo de participante (Opcional)");
+        lblf2 = new JLabel("Seleccione el tipo de actividad (Opcional)");
         lblf3 = new JLabel("Ingrese el correo del encargado (Opcional)");
 
         JButton btn1 = new JButton("Crear Reporte");
@@ -107,6 +107,6 @@ public class IF_RepActividades extends IF_Padre {
     }
 
     public void invisible(){
-        hacerInvisible(" -> Reporte de actividades creado con exito.\n\n");
+        hacerInvisible(" -> Reporte de actividades creado exitosamente.\n\n");
     }
 }

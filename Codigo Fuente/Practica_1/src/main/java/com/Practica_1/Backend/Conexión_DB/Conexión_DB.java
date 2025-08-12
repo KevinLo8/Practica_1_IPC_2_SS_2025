@@ -393,6 +393,90 @@ public class Conexión_DB {
 
     }
 
+    public Data_Evento[] solicitarEventos(String tipo, String fechaInicial, String fechaFinal, int cupoMinimo, int cupoMaximo) {
+        String query = "SELECT * FROM evento WHERE";
+        ResultSet resultSet = null;
+
+        int i = 1;
+        if (!tipo.equals("")) {
+            query = query + " tipo = ?";
+        }
+
+        if (!fechaInicial.equals("") && !fechaFinal.equals("")) {
+            if (i > 1) {
+                query = query + " AND";
+            }
+            query = query + " fecha BETWEEN ? AND ?";
+        }
+
+        if (cupoMinimo >= 0 && cupoMaximo > 0) {
+            if (i > 1) {
+                query = query + " AND";
+            }
+            query = query + " cupo BETWEEN ? AND ?";
+        }
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            i = 1;
+
+            if (!tipo.equals("")) {
+                preparedStatement.setString(i, tipo);
+                i++;
+            }
+
+            if (!fechaInicial.equals("") && !fechaFinal.equals("")) {
+                preparedStatement.setString(i, fechaInicial);
+                i++;
+                preparedStatement.setString(i, fechaFinal);
+                i++;
+            }
+
+            if (cupoMinimo >= 0 && cupoMaximo > 0) {
+                preparedStatement.setInt(i, cupoMinimo);
+                i++;
+                preparedStatement.setInt(i, cupoMaximo);
+                i++;
+            }
+
+            resultSet = preparedStatement.executeQuery();
+
+            Data_Evento[] eventos = new Data_Evento[0];
+
+            if (resultSet.next()) {
+
+                do {
+
+                Data_Evento data = new Data_Evento(resultSet.getString("codigo"),
+                        resultSet.getDate("fecha").toLocalDate(), resultSet.getString("tipo"),
+                        resultSet.getString("titulo"), resultSet.getString("ubicacion"),
+                        resultSet.getInt("cupo"));
+
+                    Data_Evento[] evenTemp = new Data_Evento[eventos.length + 1];
+
+                    i = 0;
+                    while (i < eventos.length) {
+                        evenTemp[i] = eventos[i];
+                        i++;
+                    }
+
+                    evenTemp[eventos.length] = data;
+
+                    eventos = evenTemp;
+
+                } while (resultSet.next());
+
+            }
+
+            return eventos;
+
+        } catch (SQLException e) {
+            //jTextArea.append(" -> Error al solicitar el participante: " + e.getMessage() + "\n\n");
+            return null;
+        }
+
+    }
+
     public Data_Inscripcion solicitarInscripcion(String correo, String codigoEvento) {
         String query = "SELECT * FROM inscripcion WHERE correo_participante = ? AND codigo_evento = ?";
         ResultSet resultSet = null;

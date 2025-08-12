@@ -9,6 +9,8 @@ public class Data_Participante {
     private String institucionParticipante;
     private String correoParticipante;
     private Boolean asistenciaValidada;
+    private double montoPago;
+    private String metodoPago;
     
     public enum TipoParticipante {
         ESTUDIANTE,
@@ -83,6 +85,18 @@ public class Data_Participante {
     }
     public void setAsistenciaValidada(Boolean asistenciaValidada) {
         this.asistenciaValidada = asistenciaValidada;
+    }
+    public double getMontoPago() {
+        return montoPago;
+    }
+    public void setMontoPago(double montoPago) {
+        this.montoPago = montoPago;
+    }
+    public String getMetodoPago() {
+        return metodoPago;
+    }
+    public void setMetodoPago(String metodoPago) {
+        this.metodoPago = metodoPago;
     }
 
 }
