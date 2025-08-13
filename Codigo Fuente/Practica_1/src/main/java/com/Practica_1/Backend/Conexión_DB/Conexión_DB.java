@@ -280,9 +280,15 @@ public class Conexión_DB {
 
             if (resultSet.next()) {
 
-                Data_Participante data = new Data_Participante(resultSet.getString("nombre"),
-                        resultSet.getString("tipo"),
-                        resultSet.getString("institucion"), resultSet.getString("correo"));
+                Data_Participante data = null;
+                
+                try {
+                    data = new Data_Participante(resultSet.getString("nombre"),
+                            resultSet.getString("tipo"),
+                            resultSet.getString("institucion"), resultSet.getString("correo"));
+                } catch (SelecionTipoException e) {
+                    e.printStackTrace();
+                }
 
                 return data;
 
