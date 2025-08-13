@@ -87,7 +87,7 @@ public class Conexión_DB {
         }
     }
 
-    public void guardarPago(Data_Inscripcion data) {
+    public void guardarPago(Data_Inscripcion data) throws ErrProcException {
         String query = "UPDATE inscripcion SET metodo_pago = ?, monto_pago = ? WHERE correo_participante = ? AND codigo_evento = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -97,13 +97,11 @@ public class Conexión_DB {
             preparedStatement.setString(4, data.getCodigoEvento());
 
             int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
-                jTextArea.append(" -> Pago registrado exitosamente.\n\n");
-            } else {
-                jTextArea.append(" -> Error al registrar el pago.\n\n");
+            if (rowsAffected == 0) {
+                throw new ErrProcException("Error al registrar el pago");
             }
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al guardar el pago: " + e.getMessage() + "\n\n");
+            throw new ErrProcException("Error al guardar el pago");
         }
     }
 
