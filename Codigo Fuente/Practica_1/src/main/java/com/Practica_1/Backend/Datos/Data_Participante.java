@@ -11,7 +11,7 @@ public class Data_Participante {
     private Boolean asistenciaValidada;
     private double montoPago;
     private String metodoPago;
-    
+
     public enum TipoParticipante {
         ESTUDIANTE,
         PROFESIONAL,
@@ -21,15 +21,12 @@ public class Data_Participante {
     public Data_Participante() {
     }
 
-    public Data_Participante(String nombre, String tipo, String intitucion, String correo) {
-        try {
-            nombreParticipante = nombre;
-            setTipoParticipante(tipo);
-            institucionParticipante = intitucion;
-            correoParticipante = correo;
-        } catch (SelecionTipoException e) {
-            e.printStackTrace();
-        }
+    public Data_Participante(String nombre, String tipo, String intitucion, String correo)
+            throws SelecionTipoException {
+        nombreParticipante = nombre;
+        setTipoParticipante(tipo);
+        institucionParticipante = intitucion;
+        correoParticipante = correo;
     }
 
     public Data_Participante(String nombre, String tipo, String intitucion, String correo, boolean validacion) {
@@ -47,12 +44,15 @@ public class Data_Participante {
     public String getNombreParticipante() {
         return nombreParticipante;
     }
+
     public void setNombreParticipante(String nombreParticipante) {
         this.nombreParticipante = nombreParticipante;
     }
+
     public TipoParticipante getTipoParticipante() {
         return tipoParticipante;
     }
+
     public void setTipoParticipante(String tipoParticipante) throws SelecionTipoException {
         switch (tipoParticipante) {
             case "ESTUDIANTE":
@@ -68,33 +68,43 @@ public class Data_Participante {
                 throw new SelecionTipoException("Tipo de participante no válido: " + tipoParticipante);
         }
     }
+
     public String getInstitucionParticipante() {
         return institucionParticipante;
     }
+
     public void setInstitucionParticipante(String institucionParticipante) {
         this.institucionParticipante = institucionParticipante;
     }
+
     public String getCorreoParticipante() {
         return correoParticipante;
     }
+
     public void setCorreoParticipante(String correoParticipante) {
         this.correoParticipante = correoParticipante;
     }
+
     public Boolean getAsistenciaValidada() {
         return asistenciaValidada;
     }
+
     public void setAsistenciaValidada(Boolean asistenciaValidada) {
         this.asistenciaValidada = asistenciaValidada;
     }
+
     public double getMontoPago() {
         return montoPago;
     }
+
     public void setMontoPago(double montoPago) {
         this.montoPago = montoPago;
     }
+
     public String getMetodoPago() {
         return metodoPago;
     }
+
     public void setMetodoPago(String metodoPago) {
         this.metodoPago = metodoPago;
     }
