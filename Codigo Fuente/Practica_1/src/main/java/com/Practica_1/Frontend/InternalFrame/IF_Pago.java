@@ -104,7 +104,7 @@ public class IF_Pago extends JInternalFrame {
         txf1.addFocusListener(new FocLisTexto(lbl1));
         txf2.addFocusListener(new FocLisTexto(lbl2));
         jCB3.addFocusListener(new FocLisTexto(lbl3));
-        txf4.addFocusListener(new FocLisDinero(txf4, lbl4));
+        txf4.addFocusListener(new FocLisDinero(txf4));
 
     }
 

@@ -26,14 +26,12 @@ public class Conexión_DB {
             this.jTextArea.append(" -> Conexión a la base de datos establecida.\n\n");
         } catch (SQLException ex) {
             this.jTextArea.append(" -> Error al conectar a la base de datos.\n\n");
-            System.out.println("error al conectar a la DB");
-            ex.printStackTrace();
         }
 
     }
 
     public void guardarEvento(Data_Evento data) {
-        String query = "INSERT INTO evento (codigo, fecha, tipo, titulo, ubicacion, cupo) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO evento (codigo, fecha, tipo, titulo, ubicacion, cupo, costo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setString(1, data.getCodigoEvento());
@@ -42,6 +40,7 @@ public class Conexión_DB {
             preparedStatement.setString(4, data.getTituloEvento());
             preparedStatement.setString(5, data.getUbicacionEvento());
             preparedStatement.setInt(6, data.getCupoEvento());
+            preparedStatement.setDouble(7, data.getCostoinscripcion());
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
@@ -375,10 +374,16 @@ public class Conexión_DB {
 
             if (resultSet.next()) {
 
-                Data_Evento data = new Data_Evento(resultSet.getString("codigo"),
-                        resultSet.getDate("fecha").toLocalDate(), resultSet.getString("tipo"),
-                        resultSet.getString("titulo"), resultSet.getString("ubicacion"),
-                        resultSet.getInt("cupo"));
+                Data_Evento data = null;
+
+                try {
+                    data = new Data_Evento(resultSet.getString("codigo"),
+                            resultSet.getDate("fecha").toLocalDate(), resultSet.getString("tipo"),
+                            resultSet.getString("titulo"), resultSet.getString("ubicacion"),
+                            resultSet.getInt("cupo"), resultSet.getDouble("costo"));
+                } catch (SelecionTipoException e) {
+                    e.printStackTrace();
+                }
 
                 return data;
 
@@ -447,10 +452,16 @@ public class Conexión_DB {
 
                 do {
 
-                Data_Evento data = new Data_Evento(resultSet.getString("codigo"),
-                        resultSet.getDate("fecha").toLocalDate(), resultSet.getString("tipo"),
-                        resultSet.getString("titulo"), resultSet.getString("ubicacion"),
-                        resultSet.getInt("cupo"));
+                Data_Evento data = null;
+
+                try {
+                    data = new Data_Evento(resultSet.getString("codigo"),
+                            resultSet.getDate("fecha").toLocalDate(), resultSet.getString("tipo"),
+                            resultSet.getString("titulo"), resultSet.getString("ubicacion"),
+                            resultSet.getInt("cupo"), resultSet.getDouble("costo"));
+                } catch (SelecionTipoException e) {
+                    e.printStackTrace();
+                }
 
                     Data_Evento[] evenTemp = new Data_Evento[eventos.length + 1];
 
