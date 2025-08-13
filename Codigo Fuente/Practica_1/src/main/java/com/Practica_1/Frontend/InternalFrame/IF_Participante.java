@@ -99,7 +99,7 @@ public class IF_Participante extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al guardar el evento.\n\n");
+            textLOG.append(" -> Error al guardar el participante.\n\n");
         }
 
     }
@@ -113,7 +113,7 @@ public class IF_Participante extends IF_Padre {
     }
 
     public void invisible() {
-        hacerInvisible(" -> Reporte de participantes creado exitosamente.\n\n");
+        hacerInvisible(" -> Participante registrado exitosamente.\n\n");
     }
 
 }

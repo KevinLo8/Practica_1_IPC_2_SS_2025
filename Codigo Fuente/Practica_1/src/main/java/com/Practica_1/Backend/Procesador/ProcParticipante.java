@@ -15,11 +15,11 @@ public class ProcParticipante {
 
     public void guardarAsistencia(IF_Participante if_Eve, String nombre, String tipo, String institucion, String correo) throws ErrProcException {
 
-        if (nombre.length() > 45) {
+        if (nombre.length() > 45 || nombre.isEmpty()) {
             throw new ErrProcException("Ingrese un nombre valido");
         } else if (tipo.isEmpty()) {
             throw new ErrProcException("Seleccione un tipo de participante valido");
-        } else if (institucion.length() > 150) {
+        } else if (institucion.length() > 150 || institucion.isEmpty()) {
             throw new ErrProcException("Ingrese una institución valida");
         } else if (correo.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$") || correo.length() > 255) {
             throw new ErrProcException("Ingrese un correo electrónico valido");

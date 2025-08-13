@@ -5,6 +5,7 @@ import java.sql.*;
 import javax.swing.JTextArea;
 
 import com.Practica_1.Backend.Datos.*;
+import com.Practica_1.Backend.Exception.ErrProcException;
 import com.Practica_1.Backend.Exception.SelecionTipoException;
 
 public class Conexión_DB {
@@ -30,7 +31,7 @@ public class Conexión_DB {
 
     }
 
-    public void guardarEvento(Data_Evento data) {
+    public void guardarEvento(Data_Evento data) throws ErrProcException {
         String query = "INSERT INTO evento (codigo, fecha, tipo, titulo, ubicacion, cupo, costo) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -43,17 +44,15 @@ public class Conexión_DB {
             preparedStatement.setDouble(7, data.getCostoinscripcion());
 
             int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
-                jTextArea.append(" -> Evento registrado exitosamente.\n\n");
-            } else {
-                jTextArea.append(" -> Error al registrar el evento.\n\n");
+            if (rowsAffected == 0) {
+                throw new ErrProcException("Error al registrar el evento");
             }
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al guardar el evento: " + e.getMessage() + "\n\n");
+            throw new ErrProcException("Error al guardar el evento");
         }
     }
 
-    public void guardarParticipante(Data_Participante data) {
+    public void guardarParticipante(Data_Participante data) throws ErrProcException {
         String query = "INSERT INTO participante (nombre, tipo, institucion, correo) VALUES (?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -63,17 +62,15 @@ public class Conexión_DB {
             preparedStatement.setString(4, data.getCorreoParticipante());
 
             int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
-                jTextArea.append(" -> Participante registrado exitosamente.\n\n");
-            } else {
-                jTextArea.append(" -> Error al registrar el participante.\n\n");
+            if (rowsAffected == 0) {
+                throw new ErrProcException("Error al registrar el participante");
             }
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al guardar el participante: " + e.getMessage() + "\n\n");
+            throw new ErrProcException("Error al guardar el participante");
         }
     }
 
-    public void guardarInscripción(Data_Inscripcion data) {
+    public void guardarInscripción(Data_Inscripcion data) throws ErrProcException {
         String query = "INSERT INTO inscripcion (correo_participante, codigo_evento, tipo_inscripcion) VALUES (?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -82,13 +79,11 @@ public class Conexión_DB {
             preparedStatement.setString(3, data.getTipoInscripcion().toString());
 
             int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
-                jTextArea.append(" -> Inscripción registrada exitosamente.\n\n");
-            } else {
-                jTextArea.append(" -> Error al registrar la inscripción.\n\n");
+            if (rowsAffected == 0) {
+                throw new ErrProcException("Error al registrar la inscripción");
             }
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al guardar la inscripción: " + e.getMessage() + "\n\n");
+            throw new ErrProcException("Error al guardar la inscripción");
         }
     }
 
@@ -154,22 +149,20 @@ public class Conexión_DB {
         }
     }
 
-    public void guardarAsistencia(int iD, String correo, String codigo) {
+    public void guardarAsistencia(int iD, String correo, String codigo) throws ErrProcException {
         String query = "INSERT INTO asistencia (ID, codigo_actividad, correo_participante) VALUES (?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, iD);
-            preparedStatement.setString(2,codigo);
+            preparedStatement.setString(2, codigo);
             preparedStatement.setString(3, correo);
 
             int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
-                jTextArea.append("");
-            } else {
-                jTextArea.append(" -> Error al registrar la asistencia.\n\n");
+            if (rowsAffected == 0) {
+                throw new ErrProcException("Error al registrar la asistencia");
             }
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al guardar la asistencia: " + e.getMessage() + "\n\n");
+            throw new ErrProcException("Error al guardar la asistencia");
         }
     }
 
@@ -256,7 +249,8 @@ public class Conexión_DB {
         String query = "SELECT * FROM asistencia WHERE codigo_actividad = ?";
         ResultSet resultSet = null;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query,ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_READ_ONLY)) {
             preparedStatement.setString(1, codigoActividad);
             resultSet = preparedStatement.executeQuery();
 
@@ -281,7 +275,7 @@ public class Conexión_DB {
             if (resultSet.next()) {
 
                 Data_Participante data = null;
-                
+
                 try {
                     data = new Data_Participante(resultSet.getString("nombre"),
                             resultSet.getString("tipo"),
@@ -404,7 +398,8 @@ public class Conexión_DB {
 
     }
 
-    public Data_Evento[] solicitarEventos(String tipo, String fechaInicial, String fechaFinal, int cupoMinimo, int cupoMaximo) {
+    public Data_Evento[] solicitarEventos(String tipo, String fechaInicial, String fechaFinal, int cupoMinimo,
+            int cupoMaximo) {
         String query = "SELECT * FROM evento WHERE";
         ResultSet resultSet = null;
 
@@ -458,16 +453,16 @@ public class Conexión_DB {
 
                 do {
 
-                Data_Evento data = null;
+                    Data_Evento data = null;
 
-                try {
-                    data = new Data_Evento(resultSet.getString("codigo"),
-                            resultSet.getDate("fecha").toLocalDate(), resultSet.getString("tipo"),
-                            resultSet.getString("titulo"), resultSet.getString("ubicacion"),
-                            resultSet.getInt("cupo"), resultSet.getDouble("costo"));
-                } catch (SelecionTipoException e) {
-                    e.printStackTrace();
-                }
+                    try {
+                        data = new Data_Evento(resultSet.getString("codigo"),
+                                resultSet.getDate("fecha").toLocalDate(), resultSet.getString("tipo"),
+                                resultSet.getString("titulo"), resultSet.getString("ubicacion"),
+                                resultSet.getInt("cupo"), resultSet.getDouble("costo"));
+                    } catch (SelecionTipoException e) {
+                        e.printStackTrace();
+                    }
 
                     Data_Evento[] evenTemp = new Data_Evento[eventos.length + 1];
 
@@ -488,7 +483,8 @@ public class Conexión_DB {
             return eventos;
 
         } catch (SQLException e) {
-            //jTextArea.append(" -> Error al solicitar el participante: " + e.getMessage() + "\n\n");
+            // jTextArea.append(" -> Error al solicitar el participante: " + e.getMessage()
+            // + "\n\n");
             return null;
         }
 
@@ -683,7 +679,8 @@ public class Conexión_DB {
         ResultSet resultSet = null;
 
         try {
-            Statement statementID = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY);
+            Statement statementID = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+                    ResultSet.CONCUR_READ_ONLY);
             resultSet = statementID.executeQuery(query);
 
             if (!resultSet.isLast()) {
@@ -703,7 +700,8 @@ public class Conexión_DB {
         String query = "SELECT * FROM asistencia WHERE codigo_actividad = ?";
         ResultSet resultSet = null;
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE, ResultSet.CONCUR_READ_ONLY)) {
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_READ_ONLY)) {
             preparedStatement.setString(1, codigo);
             resultSet = preparedStatement.executeQuery();
 

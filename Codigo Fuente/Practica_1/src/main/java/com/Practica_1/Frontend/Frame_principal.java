@@ -60,7 +60,7 @@ public class Frame_principal extends JFrame {
 
         jM2.add(new JMI_Evento(this, textLOG));
         jM2.add(new JMI_Participante(this, textLOG));
-        jM2.add(new JMI_Inscripcion(this));
+        jM2.add(new JMI_Inscripcion(this, textLOG));
         jM2.add(new JMI_Pago(this));
         jM2.add(new JMI_Validacion(this));
         jM2.add(new JMI_Actividad(this));
