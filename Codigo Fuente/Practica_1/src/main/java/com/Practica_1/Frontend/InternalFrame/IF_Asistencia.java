@@ -18,7 +18,7 @@ public class IF_Asistencia extends IF_Padre {
     private ProcAsistencia pa;
 
     public IF_Asistencia(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Registrar Asistencia", 400, 425, 3);
+        super(frame, textLOG, "Registrar Asistencia", 400, 250, 3);
 
         pa = new ProcAsistencia(frame);
 
@@ -80,7 +80,7 @@ public class IF_Asistencia extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al crear el reporte de participantes\n\n");
+            textLOG.append(" -> Error al guardar la asistencia.\n\n");
         }
 
     }

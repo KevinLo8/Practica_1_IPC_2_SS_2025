@@ -142,7 +142,7 @@ public class IF_Evento extends IF_Padre {
     }
 
     public void invisible(){
-        hacerInvisible(" -> Reporte de participantes creado exitosamente.\n\n");
+        hacerInvisible(" -> Evento registrado exitosamente.\n\n");
     }
 
 }

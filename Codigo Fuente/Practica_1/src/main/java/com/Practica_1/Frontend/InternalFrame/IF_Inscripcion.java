@@ -5,30 +5,22 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import com.Practica_1.Backend.Datos.Data_Inscripcion;
-import com.Practica_1.Backend.Exception.SelecionTipoException;
-import com.Practica_1.Backend.Listener.FocLisTexto;
+import com.Practica_1.Backend.Exception.ErrProcException;
+import com.Practica_1.Backend.Procesador.ProcInscripcion;
 import com.Practica_1.Frontend.Frame_principal;
 
-public class IF_Inscripcion extends JInternalFrame {
+public class IF_Inscripcion extends IF_Padre {
 
     private Frame_principal frame;
     private JTextField txf1, txf2;
     private JComboBox<String> jCB3;
-    private JLabel lbl1, lbl2, lbl3;
     private JLabel lblf1, lblf2, lblf3;
+    private ProcInscripcion pi;
 
-    public IF_Inscripcion(Frame_principal frame) {
-        super("Inscribir Participante En Evento", false, true, false, false);
-        this.frame = frame;
-
-        setSize(new Dimension(400, 425));
-        setLayout(new GridLayout(4, 1, 0, 5));
-
-        frame.getDesktop().add(this);
-
+    public IF_Inscripcion(Frame_principal frame, JTextArea textLOG) {
+        super(frame, textLOG, "Inscribir Participante En Evento", 400, 350, 4);
         initComponentes();
-
+        pi = new ProcInscripcion(frame);
     }
 
     private void initComponentes() {
@@ -43,10 +35,6 @@ public class IF_Inscripcion extends JInternalFrame {
         lblf1 = new JLabel("Ingrese el correo del participante");
         lblf2 = new JLabel("Ingrese el código del evento");
         lblf3 = new JLabel("Seleccione el tipo de inscripción");
-
-        lbl1 = new JLabel(" ");
-        lbl2 = new JLabel(" ");
-        lbl3 = new JLabel(" ");
 
         JButton btn1 = new JButton("Guardar Inscripción");
 
@@ -70,16 +58,13 @@ public class IF_Inscripcion extends JInternalFrame {
         add(pnl4);
 
         pnl1.add(lblf1, BorderLayout.NORTH);
-        pnl1.add(txf1);
-        pnl1.add(lbl1, BorderLayout.SOUTH);
+        pnl1.add(txf1, BorderLayout.SOUTH);
 
         pnl2.add(lblf2, BorderLayout.NORTH);
-        pnl2.add(txf2);
-        pnl2.add(lbl2, BorderLayout.SOUTH);
+        pnl2.add(txf2, BorderLayout.SOUTH);
 
         pnl3.add(lblf3, BorderLayout.NORTH);
-        pnl3.add(jCB3);
-        pnl3.add(lbl3, BorderLayout.SOUTH);
+        pnl3.add(jCB3, BorderLayout.SOUTH);
 
         pnl4.add(btn1);
 
@@ -87,93 +72,40 @@ public class IF_Inscripcion extends JInternalFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                btnCrearActionPerformer();
+                btnGuardarActionPerformer();
             }
 
         });
-        txf1.addFocusListener(new FocLisTexto(lbl1));
-        txf2.addFocusListener(new FocLisTexto(lbl2));
-        jCB3.addFocusListener(new FocLisTexto(lbl3));
 
     }
 
-    private void btnCrearActionPerformer() {
+    private void btnGuardarActionPerformer() {
 
-        Data_Inscripcion data = new Data_Inscripcion();
-        int completo = 0;
+        try {
+            String tipoString = "";
 
-        if (txf1.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
-                && chequearCampo(txf1, 51)) {
-            data.setCorreoParticipante(txf1.getText());
-            completo++;
-        } else {
-            lbl1.setText("Ingrese un correo electrónico válido");
-        }
-
-        if (chequearCampo(txf2, 8)) {
-            data.setCodigoEvento(txf2.getText());
-            completo++;
-        } else {
-            lbl2.setText("Ingrese un código de evento válido");
-        }
-
-        if (jCB3.getSelectedIndex() != -1) {
-            try {
-                data.setTipoInscripcion(jCB3.getSelectedItem().toString());
-                completo++;
-            } catch (SelecionTipoException e) {
-                lbl3.setText("Seleccione un tipo de inscripción válido");
+            if (jCB3.getSelectedIndex() != -1) {
+                tipoString = jCB3.getSelectedItem().toString();
             }
-        } else {
-            lbl3.setText("Seleccione un tipo de inscripción");
-        }
 
-        if (completo == 3) {
+            pi.guardarAsistencia(this, txf1.getText(), txf2.getText(), tipoString);
 
-            if (revisarDatos(data)) {
-
-                frame.getConexion().guardarInscripción(data);
-                setVisible(false);
-
-            }
-        }
-    }
-
-    private boolean revisarDatos(Data_Inscripcion data) {
-
-        Data_Inscripcion data_ins = frame.getConexion().solicitarInscripcion(data.getCorreoParticipante(),
-                data.getCodigoEvento());
-
-        if (!frame.getConexion().consultarParticipante(data.getCorreoParticipante())) {
-            JOptionPane.showMessageDialog(frame, "El participante no está registrado. Por favor, regístrelo primero.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (!frame.getConexion().consultarEvento(data.getCodigoEvento())) {
-            JOptionPane.showMessageDialog(frame, "El evento no está registrado. Por favor, regístrelo primero.",
-                    "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (data_ins != null) {
-            JOptionPane.showMessageDialog(frame, "El participante ya está inscrito en este evento.", "Error",
-                    JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else {
-            return true;
+        } catch (ErrProcException e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            textLOG.append(" -> Error al guardar el evento.\n\n");
         }
 
     }
 
-    private boolean chequearCampo(JTextField campo, int tamaño) {
-        return (campo.getText().length() < tamaño && !campo.getText().isEmpty());
-    }
-
-    public void hacerVisible() {
-
-        setLocation((frame.getWidth() - 400) / 2, (frame.getHeight() - 425) / 2);
-        setVisible(true);
+    public void visible() {
+        hacerVisible();
         txf1.setText("");
         txf2.setText("");
         jCB3.setSelectedIndex(-1);
+    }
 
+    public void invisible(){
+        hacerInvisible(" -> Inscripción registrada exitosamente.\n\n");
     }
 
 }

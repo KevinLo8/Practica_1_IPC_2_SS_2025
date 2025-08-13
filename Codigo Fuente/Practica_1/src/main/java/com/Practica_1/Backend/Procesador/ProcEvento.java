@@ -20,15 +20,15 @@ public class ProcEvento {
     public void guardarAsistencia(IF_Evento if_Eve, String codigo, String fecha, String tipo, String titulo,
             String ubicacion, String cupo, String costo) throws ErrProcException {
 
-        if (codigo.length() > 7) {
+        if (codigo.length() > 7 || codigo.isEmpty()) {
             throw new ErrProcException("Ingrese un código de evento válido");
         } else if (fecha.matches("\\d{2}/\\d{2}/\\d{4}")) {
             throw new ErrProcException("Ingrese una fecha del evento valida");
         } else if (tipo.isEmpty()) {
             throw new ErrProcException("Seleccione un tipo de evento valido");
-        } else if (titulo.length() > 50) {
+        } else if (titulo.length() > 50 || titulo.isEmpty()) {
             throw new ErrProcException("Ingrese una titulo de evento valido");
-        } else if (ubicacion.length() > 150) {
+        } else if (ubicacion.length() > 150 || ubicacion.isEmpty()) {
             throw new ErrProcException("Ingrese una ubicación valida");
         } else if (cupo.matches("\\d+")) {
             throw new ErrProcException("Ingrese un cupo máximo valido");
