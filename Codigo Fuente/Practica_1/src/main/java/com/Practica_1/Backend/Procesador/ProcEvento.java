@@ -20,7 +20,7 @@ public class ProcEvento {
     public void guardarAsistencia(IF_Evento if_Eve, String codigo, String fecha, String tipo, String titulo,
             String ubicacion, String cupo, String costo) throws ErrProcException {
 
-        if (codigo.length() > 7 || codigo.isEmpty()) {
+        if (!codigo.matches("EVT-\\d{8}")) {
             throw new ErrProcException("Ingrese un código de evento válido");
         } else if (fecha.matches("\\d{2}/\\d{2}/\\d{4}")) {
             throw new ErrProcException("Ingrese una fecha del evento valida");

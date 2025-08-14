@@ -24,7 +24,7 @@ public class ProcRepActividades {
 
     public void crearReporte(IF_RepActividades if_RepAct, String evento, String tipoAct, String correo) throws ErrProcException {
 
-        if (evento.length() > 7) {
+        if (!evento.matches("EVT-\\d{8}")) {
             throw new ErrProcException("Ingrese un código de evento válido");
         } else if (!frame.getConexion().consultarEvento(evento)) {
             throw new ErrProcException("El evento no está registrado. Por favor, regístrelo primero.");
