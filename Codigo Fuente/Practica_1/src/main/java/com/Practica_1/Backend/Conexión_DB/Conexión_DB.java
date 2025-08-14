@@ -571,11 +571,17 @@ public class Conexión_DB {
 
                 do {
 
-                    Data_Actividad data = new Data_Actividad(resultSet.getString("codigo"),
-                            resultSet.getString("codigo_evento"), resultSet.getString("tipo"),
-                            resultSet.getString("titulo"), resultSet.getString("correo_impartidor"),
-                            resultSet.getTime("hora_inicio").toString(), resultSet.getTime("hora_fin").toString(),
-                            resultSet.getInt("cupo_maximo"));
+                    Data_Actividad data = null;
+
+                    try {
+                        data = new Data_Actividad(resultSet.getString("codigo"),
+                                resultSet.getString("codigo_evento"), resultSet.getString("tipo"),
+                                resultSet.getString("titulo"), resultSet.getString("correo_impartidor"),
+                                resultSet.getTime("hora_inicio").toString(), resultSet.getTime("hora_fin").toString(),
+                                resultSet.getInt("cupo_maximo"));
+                    } catch (SelecionTipoException e) {
+                        e.printStackTrace();
+                    }
 
                     Data_Actividad[] actiTemp = new Data_Actividad[actividades.length + 1];
 
@@ -639,11 +645,17 @@ public class Conexión_DB {
 
                 do {
 
-                    Data_Actividad data = new Data_Actividad(resultSet.getString("codigo"),
-                            resultSet.getString("codigo_evento"), resultSet.getString("tipo"),
-                            resultSet.getString("titulo"), resultSet.getString("correo_impartidor"),
-                            resultSet.getTime("hora_inicio").toString(), resultSet.getTime("hora_fin").toString(),
-                            resultSet.getInt("cupo_maximo"));
+                    Data_Actividad data = null;
+
+                    try {
+                        data = new Data_Actividad(resultSet.getString("codigo"),
+                                resultSet.getString("codigo_evento"), resultSet.getString("tipo"),
+                                resultSet.getString("titulo"), resultSet.getString("correo_impartidor"),
+                                resultSet.getTime("hora_inicio").toString(), resultSet.getTime("hora_fin").toString(),
+                                resultSet.getInt("cupo_maximo"));
+                    } catch (SelecionTipoException e) {
+                        e.printStackTrace();
+                    }
 
                     Data_Actividad[] asisTemp = new Data_Actividad[asistencias.length + 1];
 

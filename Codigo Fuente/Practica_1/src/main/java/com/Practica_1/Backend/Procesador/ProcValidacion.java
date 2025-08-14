@@ -15,7 +15,7 @@ public class ProcValidacion {
 
     public void guardarPago(IF_Validacion if_Val, String correo, String codigo) throws ErrProcException {
 
-        if (correo.length() > 50 || correo.isEmpty()) {
+        if (!correo.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$") || correo.length() > 255) {
             throw new ErrProcException("Ingrese un correo electrónico válido");
         } else if (codigo.matches("EVT-\\d{8}")) {
             throw new ErrProcException("Ingrese un código de evento válido");

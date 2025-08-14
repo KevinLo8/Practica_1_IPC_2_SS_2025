@@ -5,35 +5,25 @@ import java.awt.event.*;
 
 import javax.swing.*;
 
-import com.Practica_1.Backend.Datos.*;
-import com.Practica_1.Backend.Exception.SelecionTipoException;
-import com.Practica_1.Backend.Listener.FocLisTexto;
+import com.Practica_1.Backend.Exception.ErrProcException;
+import com.Practica_1.Backend.Procesador.ProcActividad;
 import com.Practica_1.Frontend.Frame_principal;
 
-public class IF_Actividad extends JInternalFrame {
+public class IF_Actividad extends IF_Padre {
 
     private Frame_principal frame;
     private JTextField txf1, txf2, txf4, txf5, txf6, txf7, txf8;
-    private JLabel lbl1, lbl2, lbl3, lbl4, lbl5, lbl6, lbl7, lbl8;
     private JComboBox<String> jCB3;
     private JLabel lblf1, lblf2, lblf3, lblf4, lblf5, lblf6, lblf7, lblf8;
+    private ProcActividad pa;
 
-    public IF_Actividad(Frame_principal frame) {
-        super("Registrar Actividad", false, true, false, false);
-        this.frame = frame;
-
-        setSize(new Dimension(400, 725));
-        setLayout(new GridLayout(9, 1, 0, 5));
-
-        frame.getDesktop().add(this);
-
+    public IF_Actividad(Frame_principal frame, JTextArea textLOG) {
+        super(frame, textLOG, "Registrar Actividad", 400, 700, 9);
         initComponentes();
-        
+        pa = new ProcActividad(frame);
     }
 
-    private void initComponentes(){
-
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
+    private void initComponentes() {
 
         JPanel pnl1 = new JPanel();
         JPanel pnl2 = new JPanel();
@@ -53,16 +43,6 @@ public class IF_Actividad extends JInternalFrame {
         lblf6 = new JLabel("Ingrese la hora de inicio (HH:MM)");
         lblf7 = new JLabel("Ingrese la hora de fin (HH:MM)");
         lblf8 = new JLabel("Ingrese el cupo máximo de participantes");
-
-
-        lbl1 = new JLabel(" ");
-        lbl2 = new JLabel(" ");
-        lbl3 = new JLabel(" ");
-        lbl4 = new JLabel(" ");
-        lbl5 = new JLabel(" ");
-        lbl6 = new JLabel(" ");
-        lbl7 = new JLabel(" ");
-        lbl8 = new JLabel(" ");
 
         jCB3 = new JComboBox<String>();
         jCB3.setPreferredSize(new Dimension(300, 25));
@@ -101,36 +81,28 @@ public class IF_Actividad extends JInternalFrame {
         add(pnl9);
 
         pnl1.add(lblf1, BorderLayout.NORTH);
-        pnl1.add(txf1);
-        pnl1.add(lbl1, BorderLayout.SOUTH);
+        pnl1.add(txf1, BorderLayout.SOUTH);
 
         pnl2.add(lblf2, BorderLayout.NORTH);
-        pnl2.add(txf2);
-        pnl2.add(lbl2, BorderLayout.SOUTH);
+        pnl2.add(txf2, BorderLayout.SOUTH);
 
         pnl3.add(lblf3, BorderLayout.NORTH);
-        pnl3.add(jCB3);
-        pnl3.add(lbl3, BorderLayout.SOUTH);
+        pnl3.add(jCB3, BorderLayout.SOUTH);
 
         pnl4.add(lblf4, BorderLayout.NORTH);
-        pnl4.add(txf4);
-        pnl4.add(lbl4, BorderLayout.SOUTH);
+        pnl4.add(txf4, BorderLayout.SOUTH);
 
         pnl5.add(lblf5, BorderLayout.NORTH);
-        pnl5.add(txf5);
-        pnl5.add(lbl5, BorderLayout.SOUTH);
+        pnl5.add(txf5, BorderLayout.SOUTH);
 
         pnl6.add(lblf6, BorderLayout.NORTH);
-        pnl6.add(txf6);
-        pnl6.add(lbl6, BorderLayout.SOUTH);
+        pnl6.add(txf6, BorderLayout.SOUTH);
 
         pnl7.add(lblf7, BorderLayout.NORTH);
-        pnl7.add(txf7);
-        pnl7.add(lbl7, BorderLayout.SOUTH);
+        pnl7.add(txf7, BorderLayout.SOUTH);
 
         pnl8.add(lblf8, BorderLayout.NORTH);
-        pnl8.add(txf8);
-        pnl8.add(lbl8, BorderLayout.SOUTH);
+        pnl8.add(txf8, BorderLayout.SOUTH);
 
         pnl9.add(btn1);
 
@@ -138,150 +110,34 @@ public class IF_Actividad extends JInternalFrame {
 
             @Override
             public void actionPerformed(ActionEvent e) {
-                btnCrearActionPerformer();
+                btnGuardarActionPerformer();
             }
-            
+
         });
-        txf1.addFocusListener(new FocLisTexto(lbl1));
-        txf2.addFocusListener(new FocLisTexto(lbl2));
-        txf4.addFocusListener(new FocLisTexto(lbl4));
-        txf5.addFocusListener(new FocLisTexto(lbl5));
-        txf6.addFocusListener(new FocLisTexto(lbl6));
-        txf7.addFocusListener(new FocLisTexto(lbl7));
-        txf8.addFocusListener(new FocLisTexto(lbl8));
 
     }
 
-    private void btnCrearActionPerformer(){
+    private void btnGuardarActionPerformer() {
 
-        Data_Actividad data = new Data_Actividad();
-        int completo = 0;
+        try {
+            String tipoString = "";
 
-        if (chequearCampo(txf1, 8)) {
-            data.setCodigoActividad(txf1.getText());
-            completo++;
-        } else {
-            lbl1.setText("Ingrese un código de actividad válido");
-        }
-        
-        if (chequearCampo(txf2, 8)) {
-            data.setCodigoEvento(txf2.getText());
-            completo++;
-        } else {
-            lbl2.setText("Imgrese un código de evento válido");
-        } 
-
-        if (jCB3.getSelectedIndex() != -1) {
-            try {
-                data.setTipoActividad(jCB3.getSelectedItem().toString());
-                completo++;
-            } catch (SelecionTipoException e) {
-                lbl3.setText("Seleccione un tipo de actividad válido");
-            }
-        } else {
-            lbl3.setText("Seleccione un tipo de actividad");
-        }
-
-        if (chequearCampo(txf4, 201)) {
-            data.setTituloActividad(txf4.getText());
-            completo++;
-        } else {
-            lbl4.setText("Ingrese un título de actividad válido");
-        }
-
-        if (txf5.getText().matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
-            && chequearCampo(txf5, 51)) {
-            data.setCorreoImpartidor(txf5.getText());
-            completo++;
-        } else {
-            lbl5.setText("Ingrese un correo electrónico válido");
-        }
-
-        if (txf6.getText().matches("^([01]?[0-9]|2[0-3]):[0-5][0-9]$")
-            && chequearCampo(txf6, 6)) {
-            data.setHoraInicio(txf6.getText());
-            completo++;
-        } else {
-            lbl6.setText("Ingrese una hora de inicio válida (HH:MM)");
-        }
-
-        if (txf7.getText().matches("^([01][0-9]|2[0-3]):[0-5][0-9]$")
-            && chequearCampo(txf7, 6)) {
-            data.setHoraFin(txf7.getText());
-            completo++;
-        } else {
-            lbl7.setText("Ingrese una hora de fin válida (HH:MM)");
-        }
-
-        if (txf8.getText().matches("\\d+")) {
-            data.setCupoMaximo(Integer.parseInt(txf8.getText()));
-            completo++;
-        } else {
-            lbl8.setText("Ingrese un cupo máximo válido");
-        }
-
-        if (completo == 8) {
-
-            if (revisarActividad(data)) {
-
-                frame.getConexion().guardarActividad(data);
-                setVisible(false);
-                
+            if (jCB3.getSelectedIndex() != -1) {
+                tipoString = jCB3.getSelectedItem().toString();
             }
 
+            pa.guardarActividad(this, txf1.getText(), txf2.getText(), tipoString, txf4.getText(), txf5.getText(),
+                    txf6.getText(), txf7.getText(), txf8.getText());
+
+        } catch (ErrProcException e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            textLOG.append(" -> Error al guardar el evento.\n\n");
         }
+
     }
 
-    private boolean revisarActividad(Data_Actividad data) {
-        
-        if (frame.getConexion().consultarActividad(data.getCodigoActividad())) {
-            JOptionPane.showMessageDialog(frame, "Ya existe una actividad con el código ingresado.", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (!frame.getConexion().consultarEvento(data.getCodigoEvento())) {
-            JOptionPane.showMessageDialog(frame, "No existe el evento ingresado. Por favor registrar el evento primero.", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (revisarImpartidor(data)) {
-            if (data.getHoraFin().compareTo(data.getHoraInicio()) <= 0) {
-                JOptionPane.showMessageDialog(frame, "La hora de fin debe ser posterior a la hora de inicio.", "Error", JOptionPane.ERROR_MESSAGE);
-                return false;
-            } else {
-                return true;
-            }
-        } else {
-            return false;
-        }
-    }   
-    
-
-    private boolean revisarImpartidor(Data_Actividad data) {
-
-        Data_Inscripcion data_ins = frame.getConexion().solicitarInscripcion(data.getCorreoImpartidor(),
-                data.getCodigoEvento());
-
-        if (!frame.getConexion().consultarParticipante(data.getCorreoImpartidor())) {
-            JOptionPane.showMessageDialog(frame, "El correo electrónico del impartidor no está registrado. Por favor registrar el participante primero.", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (data_ins == null) {
-            JOptionPane.showMessageDialog(frame, "El impartidor no está inscrito en el evento. Por favor inscribir al participante primero.", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (data_ins.getValidacion() == false) {
-            JOptionPane.showMessageDialog(frame, "El impartidor no está validado para el evento. Por favor validar al participante primero.", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else if (!frame.getConexion().revisarTipoInscripcion(data.getCorreoImpartidor(), data.getCodigoEvento())) {
-            JOptionPane.showMessageDialog(frame, "El impartidor esta incrito como asistente, no puede impartir actividades.", "Error", JOptionPane.ERROR_MESSAGE);
-            return false;
-        } else {
-            return true;
-        }
-    }
-    private boolean chequearCampo(JTextField campo, int tamaño) {
-        return (campo.getText().length() < tamaño && !campo.getText().isEmpty());
-    }
-
-    public void hacerVisible() {
-
-        setLocation((frame.getWidth() - 400) / 2, (frame.getHeight() - 725) / 2);
-        setVisible(true);
+    public void visible() {
+        hacerVisible();
         txf1.setText("");
         txf2.setText("");
         jCB3.setSelectedIndex(-1);
@@ -289,8 +145,11 @@ public class IF_Actividad extends JInternalFrame {
         txf5.setText("");
         txf6.setText("");
         txf7.setText("");
-        txf8.setText("");
+        txf8.setText("0");
+    }
 
+    public void invisible() {
+        hacerInvisible(" -> Inscripción registrada exitosamente.\n\n");
     }
 
 }
