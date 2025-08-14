@@ -20,7 +20,7 @@ public class ProcPago {
 
         if (correo.length() > 50 || correo.isEmpty()) {
             throw new ErrProcException("Ingrese un correo electrónico válido");
-        } else if (codigo.length() > 7 || codigo.isEmpty()) {
+        } else if (!codigo.matches("EVT-\\d{8}")) {
             throw new ErrProcException("Ingrese un código de evento válido");
         } else if (tipo.isEmpty()) {
             throw new ErrProcException("Seleccione un tipo de pago valido");

@@ -17,7 +17,7 @@ public class ProcAsistencia {
 
         if (correo.length() > 50 || correo.isEmpty()) {
             throw new ErrProcException("Ingrese un correo electrónico válido");
-        } else if (codigo.length() > 7 || codigo.isEmpty()) {
+        } else if (!codigo.matches("EVT-\\d{8}")) {
             throw new ErrProcException("Ingrese un código de actividad válido");
         }
 

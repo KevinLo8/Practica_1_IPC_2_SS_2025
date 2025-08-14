@@ -32,7 +32,7 @@ public class FocLisDinero implements FocusListener {
                 txf.setText(numero.toString());
 
             } catch (NumberFormatException ex) {
-                txf.setText("0.00");
+                
             }      
         }
 
