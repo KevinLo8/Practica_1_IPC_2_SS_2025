@@ -21,7 +21,7 @@ public class ProcParticipante {
             throw new ErrProcException("Seleccione un tipo de participante valido");
         } else if (institucion.length() > 150 || institucion.isEmpty()) {
             throw new ErrProcException("Ingrese una institución valida");
-        } else if (correo.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$") || correo.length() > 255) {
+        } else if (!correo.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$") || correo.length() > 255) {
             throw new ErrProcException("Ingrese un correo electrónico valido");
         }
 

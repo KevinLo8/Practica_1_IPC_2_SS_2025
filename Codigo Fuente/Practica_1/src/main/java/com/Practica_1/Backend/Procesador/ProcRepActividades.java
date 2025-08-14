@@ -30,8 +30,10 @@ public class ProcRepActividades {
             throw new ErrProcException("El evento no está registrado. Por favor, regístrelo primero.");
         } else if (revisarTipo(tipoAct)) {
             throw new ErrProcException("Seleccione un tipo de actividad valido");
-        } else if (correo.length() > 50) {
+        } else if (!correo.isEmpty()) {
+            if (!correo.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$") || correo.length() > 255) {
             throw new ErrProcException("Ingrese un correo electrónico válido");
+            }
         } else if (!correo.isEmpty()) {
             if (!frame.getConexion().consultarParticipante(correo)) {
                 throw new ErrProcException("El participante no está registrado. Por favor, regístrelo primero.");

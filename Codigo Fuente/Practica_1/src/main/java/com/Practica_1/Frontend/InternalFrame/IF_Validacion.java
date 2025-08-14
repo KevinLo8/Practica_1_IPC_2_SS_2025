@@ -17,14 +17,12 @@ public class IF_Validacion extends IF_Padre {
     private ProcValidacion pv;
 
     public IF_Validacion(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Validar Inscripción De Estudiante", 400, 425, 5);
+        super(frame, textLOG, "Validar Inscripción De Estudiante", 400, 250, 3);
         initComponentes();
         pv = new ProcValidacion(frame);
     }
 
     private void initComponentes(){
-
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
 
         JPanel pnl1 = new JPanel();
         JPanel pnl2 = new JPanel();
