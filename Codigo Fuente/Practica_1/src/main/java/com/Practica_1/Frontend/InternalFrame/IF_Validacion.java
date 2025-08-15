@@ -11,25 +11,19 @@ import com.Practica_1.Frontend.Frame_principal;
 
 public class IF_Validacion extends IF_Padre {
 
-    private Frame_principal frame;
     private JTextField txf1, txf2;
-    private JLabel lblf1, lblf2;
     private ProcValidacion pv;
 
     public IF_Validacion(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Validar Inscripción De Estudiante", 400, 250, 3);
+        super(frame, textLOG, "Validar Inscripción De Estudiante", 400, 225, 3);
         initComponentes();
         pv = new ProcValidacion(frame);
     }
 
-    private void initComponentes(){
+    private void initComponentes() {
 
-        JPanel pnl1 = new JPanel();
-        JPanel pnl2 = new JPanel();
-        JPanel pnl3 = new JPanel();
-
-        lblf1 = new JLabel("Ingrese el correo electrónico del participante");
-        lblf2 = new JLabel("Ingrese el código de evento");
+        JLabel lbl1 = new JLabel("Ingrese el correo electrónico del participante");
+        JLabel lbl2 = new JLabel("Ingrese el código de evento");
 
         JButton btn1 = new JButton("Validar Inscripción");
 
@@ -38,17 +32,33 @@ public class IF_Validacion extends IF_Padre {
         txf2 = new JTextField();
         txf2.setPreferredSize(new Dimension(300, 25));
 
-        add(pnl1);
-        add(pnl2);
-        add(pnl3);
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
 
-        pnl1.add(lblf1, BorderLayout.NORTH);
-        pnl1.add(txf1, BorderLayout.SOUTH);
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+                        .addContainerGap(20, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(lbl1)
+                                .addComponent(txf1)
+                                .addComponent(lbl2)
+                                .addComponent(txf2)
+                                .addComponent(btn1))
+                        .addContainerGap(20, Short.MAX_VALUE));
 
-        pnl2.add(lblf2, BorderLayout.NORTH);
-        pnl2.add(txf2, BorderLayout.SOUTH);
-
-        pnl3.add(btn1);
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                        .addContainerGap(20, Short.MAX_VALUE)
+                        .addComponent(lbl1)
+                        .addGap(5)
+                        .addComponent(txf1)
+                        .addGap(20)
+                        .addComponent(lbl2)
+                        .addGap(5)
+                        .addComponent(txf2)
+                        .addGap(20)
+                        .addComponent(btn1)
+                        .addContainerGap(20, Short.MAX_VALUE));
 
         btn1.addActionListener(new ActionListener() {
 
@@ -56,7 +66,7 @@ public class IF_Validacion extends IF_Padre {
             public void actionPerformed(ActionEvent e) {
                 btnGuardarActionPerformer();
             }
-            
+
         });
     }
 
@@ -68,7 +78,7 @@ public class IF_Validacion extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al guardar el evento.\n\n");
+            textLOG.append(" -> Error al guardar la validación.\n\n");
         }
 
     }
@@ -79,8 +89,8 @@ public class IF_Validacion extends IF_Padre {
         txf2.setText("");
     }
 
-    public void invisible(){
-        hacerInvisible(" -> Inscripción registrada exitosamente.\n\n");
+    public void invisible() {
+        hacerInvisible(" -> Validación registrada exitosamente.\n\n");
     }
 
 }
