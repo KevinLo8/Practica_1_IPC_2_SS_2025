@@ -12,30 +12,22 @@ import com.Practica_1.Frontend.Frame_principal;
 
 public class IF_Pago extends IF_Padre {
 
-    private Frame_principal frame;
     private JTextField txf1, txf2, txf4;
     private JComboBox<String> jCB3;
-    private JLabel lblf1, lblf2, lblf3, lblf4;
     private ProcPago pp;
 
     public IF_Pago(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Registrar Pago Participante", 400, 400, 5);
+        super(frame, textLOG, "Registrar Pago Participante", 400, 360, 5);
         initComponentes();
         pp = new ProcPago(frame);
     }
 
     private void initComponentes() {
 
-        JPanel pnl1 = new JPanel();
-        JPanel pnl2 = new JPanel();
-        JPanel pnl3 = new JPanel();
-        JPanel pnl4 = new JPanel();
-        JPanel pnl5 = new JPanel();
-
-        lblf1 = new JLabel("Ingrese el correo electrónico del participante");
-        lblf2 = new JLabel("Ingrese el codigo de evento");
-        lblf3 = new JLabel("Seleccione el tipo de pago");
-        lblf4 = new JLabel("Ingrese el monto del pago");
+        JLabel lbl1 = new JLabel("Ingrese el correo electrónico del participante");
+        JLabel lbl2 = new JLabel("Ingrese el codigo de evento");
+        JLabel lbl3 = new JLabel("Seleccione el tipo de pago");
+        JLabel lbl4 = new JLabel("Ingrese el monto del pago");
 
         JButton btn1 = new JButton("Guardar Pago");
 
@@ -54,25 +46,45 @@ public class IF_Pago extends IF_Padre {
         jCB3.addItem("TRANSFERENCIA");
         jCB3.addItem("TARJETA");
 
-        add(pnl1);
-        add(pnl2);
-        add(pnl3);
-        add(pnl4);
-        add(pnl5);
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
 
-        pnl1.add(lblf1, BorderLayout.NORTH);
-        pnl1.add(txf1, BorderLayout.SOUTH);
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+                        .addContainerGap(20, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(lbl1)
+                                .addComponent(txf1)
+                                .addComponent(lbl2)
+                                .addComponent(txf2)
+                                .addComponent(lbl3)
+                                .addComponent(jCB3)
+                                .addComponent(lbl4)
+                                .addComponent(txf4)
+                                .addComponent(btn1))
+                        .addContainerGap(20, Short.MAX_VALUE));
 
-        pnl2.add(lblf2, BorderLayout.NORTH);
-        pnl2.add(txf2, BorderLayout.SOUTH);
-
-        pnl3.add(lblf3, BorderLayout.NORTH);
-        pnl3.add(jCB3, BorderLayout.SOUTH);
-
-        pnl4.add(lblf4, BorderLayout.NORTH);
-        pnl4.add(txf4, BorderLayout.SOUTH);
-
-        pnl5.add(btn1);
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                        .addContainerGap(20, Short.MAX_VALUE)
+                        .addComponent(lbl1)
+                        .addGap(5)
+                        .addComponent(txf1)
+                        .addGap(20)
+                        .addComponent(lbl2)
+                        .addGap(5)
+                        .addComponent(txf2)
+                        .addGap(20)
+                        .addComponent(lbl3)
+                        .addGap(5)
+                        .addComponent(jCB3)
+                        .addGap(20)
+                        .addComponent(lbl4)
+                        .addGap(5)
+                        .addComponent(txf4)
+                        .addGap(20)
+                        .addComponent(btn1)
+                        .addContainerGap(20, Short.MAX_VALUE));
 
         btn1.addActionListener(new ActionListener() {
 
@@ -99,7 +111,7 @@ public class IF_Pago extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al guardar el evento.\n\n");
+            textLOG.append(" -> Error al guardar el pago.\n\n");
         }
 
     }
@@ -109,11 +121,11 @@ public class IF_Pago extends IF_Padre {
         txf1.setText("");
         txf2.setText("");
         jCB3.setSelectedIndex(-1);
-        txf4.setText("");
+        txf4.setText("0.00");
     }
 
-    public void invisible(){
-        hacerInvisible(" -> Inscripción registrada exitosamente.\n\n");
+    public void invisible() {
+        hacerInvisible(" -> Pago registrado exitosamente.\n\n");
     }
 
 }

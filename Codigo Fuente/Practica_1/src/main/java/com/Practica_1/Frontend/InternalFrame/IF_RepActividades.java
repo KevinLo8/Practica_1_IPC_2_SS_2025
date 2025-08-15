@@ -13,28 +13,19 @@ public class IF_RepActividades extends IF_Padre {
 
     private JTextField txf1, txf3;
     private JComboBox<String> jCB2;
-    private JLabel lblf1, lblf2, lblf3;
     private ProcRepActividades pra;
 
     public IF_RepActividades(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Crear Reporte De Actividades", 400, 425, 4);
-
-        pra = new ProcRepActividades(frame);
-
+        super(frame, textLOG, "Crear Reporte De Actividades", 400, 290, 4);
         initComponentes();
-
+        pra = new ProcRepActividades(frame);
     }
 
     private void initComponentes() {
 
-        JPanel pnl1 = new JPanel();
-        JPanel pnl2 = new JPanel();
-        JPanel pnl3 = new JPanel();
-        JPanel pnl4 = new JPanel();
-
-        lblf1 = new JLabel("Ingrese el código del evento");
-        lblf2 = new JLabel("Seleccione el tipo de actividad (Opcional)");
-        lblf3 = new JLabel("Ingrese el correo del encargado (Opcional)");
+        JLabel lbl1 = new JLabel("Ingrese el código del evento");
+        JLabel lbl2 = new JLabel("Seleccione el tipo de actividad (Opcional)");
+        JLabel lbl3 = new JLabel("Ingrese el correo del encargado (Opcional)");
 
         JButton btn1 = new JButton("Crear Reporte");
 
@@ -52,21 +43,39 @@ public class IF_RepActividades extends IF_Padre {
         jCB2.addItem("DEBATE");
         jCB2.addItem("OTRA");
 
-        add(pnl1);
-        add(pnl2);
-        add(pnl3);
-        add(pnl4);
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
 
-        pnl1.add(lblf1, BorderLayout.NORTH);
-        pnl1.add(txf1, BorderLayout.SOUTH);
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+                        .addContainerGap(20, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(lbl1)
+                                .addComponent(txf1)
+                                .addComponent(lbl2)
+                                .addComponent(jCB2)
+                                .addComponent(lbl3)
+                                .addComponent(txf3)
+                                .addComponent(btn1))
+                        .addContainerGap(20, Short.MAX_VALUE));
 
-        pnl2.add(lblf2, BorderLayout.NORTH);
-        pnl2.add(jCB2, BorderLayout.SOUTH);
-
-        pnl3.add(lblf3, BorderLayout.NORTH);
-        pnl3.add(txf3, BorderLayout.SOUTH);
-
-        pnl4.add(btn1);
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                        .addContainerGap(20, Short.MAX_VALUE)
+                        .addComponent(lbl1)
+                        .addGap(5)
+                        .addComponent(txf1)
+                        .addGap(20)
+                        .addComponent(lbl2)
+                        .addGap(5)
+                        .addComponent(jCB2)
+                        .addGap(20)
+                        .addComponent(lbl3)
+                        .addGap(5)
+                        .addComponent(txf3)
+                        .addGap(20)
+                        .addComponent(btn1)
+                        .addContainerGap(20, Short.MAX_VALUE));
 
         btn1.addActionListener(new ActionListener() {
 
@@ -89,12 +98,12 @@ public class IF_RepActividades extends IF_Padre {
             } else {
                 tipo = jCB2.getSelectedItem().toString();
             }
-            
+
             pra.crearReporte(this, txf1.getText().trim(), tipo, txf3.getText().trim());
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al crear el reporte de actividades\n\n");
+            textLOG.append(" -> Error al crear el reporte de actividades.\n\n");
         }
 
     }
@@ -106,7 +115,7 @@ public class IF_RepActividades extends IF_Padre {
         txf3.setText("");
     }
 
-    public void invisible(){
+    public void invisible() {
         hacerInvisible(" -> Reporte de actividades creado exitosamente.\n\n");
     }
 }

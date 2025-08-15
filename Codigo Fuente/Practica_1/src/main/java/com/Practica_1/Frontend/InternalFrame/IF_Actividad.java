@@ -11,38 +11,26 @@ import com.Practica_1.Frontend.Frame_principal;
 
 public class IF_Actividad extends IF_Padre {
 
-    private Frame_principal frame;
     private JTextField txf1, txf2, txf4, txf5, txf6, txf7, txf8;
     private JComboBox<String> jCB3;
-    private JLabel lblf1, lblf2, lblf3, lblf4, lblf5, lblf6, lblf7, lblf8;
     private ProcActividad pa;
 
     public IF_Actividad(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Registrar Actividad", 400, 700, 9);
+        super(frame, textLOG, "Registrar Actividad", 400, 630, 9);
         initComponentes();
         pa = new ProcActividad(frame);
     }
 
     private void initComponentes() {
 
-        JPanel pnl1 = new JPanel();
-        JPanel pnl2 = new JPanel();
-        JPanel pnl3 = new JPanel();
-        JPanel pnl4 = new JPanel();
-        JPanel pnl5 = new JPanel();
-        JPanel pnl6 = new JPanel();
-        JPanel pnl7 = new JPanel();
-        JPanel pnl8 = new JPanel();
-        JPanel pnl9 = new JPanel();
-
-        lblf1 = new JLabel("Ingrese el código de actividad");
-        lblf2 = new JLabel("Ingrese el código de evento");
-        lblf3 = new JLabel("Seleccione el tipo de actividad");
-        lblf4 = new JLabel("Ingrese el título de la actividad");
-        lblf5 = new JLabel("Ingrese el correo electrónico del impartidor");
-        lblf6 = new JLabel("Ingrese la hora de inicio (HH:MM)");
-        lblf7 = new JLabel("Ingrese la hora de fin (HH:MM)");
-        lblf8 = new JLabel("Ingrese el cupo máximo de participantes");
+        JLabel lbl1 = new JLabel("Ingrese el código de actividad");
+        JLabel lbl2 = new JLabel("Ingrese el código de evento");
+        JLabel lbl3 = new JLabel("Seleccione el tipo de actividad");
+        JLabel lbl4 = new JLabel("Ingrese el título de la actividad");
+        JLabel lbl5 = new JLabel("Ingrese el correo electrónico del impartidor");
+        JLabel lbl6 = new JLabel("Ingrese la hora de inicio (HH:MM)");
+        JLabel lbl7 = new JLabel("Ingrese la hora de fin (HH:MM)");
+        JLabel lbl8 = new JLabel("Ingrese el cupo máximo de participantes");
 
         jCB3 = new JComboBox<String>();
         jCB3.setPreferredSize(new Dimension(300, 25));
@@ -70,41 +58,69 @@ public class IF_Actividad extends IF_Padre {
         txf8 = new JTextField();
         txf8.setPreferredSize(new Dimension(300, 25));
 
-        add(pnl1);
-        add(pnl2);
-        add(pnl3);
-        add(pnl4);
-        add(pnl5);
-        add(pnl6);
-        add(pnl7);
-        add(pnl8);
-        add(pnl9);
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
 
-        pnl1.add(lblf1, BorderLayout.NORTH);
-        pnl1.add(txf1, BorderLayout.SOUTH);
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+                        .addContainerGap(20, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(lbl1)
+                                .addComponent(txf1)
+                                .addComponent(lbl2)
+                                .addComponent(txf2)
+                                .addComponent(lbl3)
+                                .addComponent(jCB3)
+                                .addComponent(lbl4)
+                                .addComponent(txf4)
+                                .addComponent(lbl5)
+                                .addComponent(txf5)
+                                .addComponent(lbl6)
+                                .addComponent(txf6)
+                                .addComponent(lbl7)
+                                .addComponent(txf7)
+                                .addComponent(lbl8)
+                                .addComponent(txf8)
+                                .addComponent(btn1))
+                        .addContainerGap(20, Short.MAX_VALUE));
 
-        pnl2.add(lblf2, BorderLayout.NORTH);
-        pnl2.add(txf2, BorderLayout.SOUTH);
-
-        pnl3.add(lblf3, BorderLayout.NORTH);
-        pnl3.add(jCB3, BorderLayout.SOUTH);
-
-        pnl4.add(lblf4, BorderLayout.NORTH);
-        pnl4.add(txf4, BorderLayout.SOUTH);
-
-        pnl5.add(lblf5, BorderLayout.NORTH);
-        pnl5.add(txf5, BorderLayout.SOUTH);
-
-        pnl6.add(lblf6, BorderLayout.NORTH);
-        pnl6.add(txf6, BorderLayout.SOUTH);
-
-        pnl7.add(lblf7, BorderLayout.NORTH);
-        pnl7.add(txf7, BorderLayout.SOUTH);
-
-        pnl8.add(lblf8, BorderLayout.NORTH);
-        pnl8.add(txf8, BorderLayout.SOUTH);
-
-        pnl9.add(btn1);
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                        .addContainerGap(20, Short.MAX_VALUE)
+                        .addComponent(lbl1)
+                        .addGap(5)
+                        .addComponent(txf1)
+                        .addGap(20)
+                        .addComponent(lbl2)
+                        .addGap(5)
+                        .addComponent(txf2)
+                        .addGap(20)
+                        .addComponent(lbl3)
+                        .addGap(5)
+                        .addComponent(jCB3)
+                        .addGap(20)
+                        .addComponent(lbl4)
+                        .addGap(5)
+                        .addComponent(txf4)
+                        .addGap(20)
+                        .addComponent(lbl5)
+                        .addGap(5)
+                        .addComponent(txf5)
+                        .addGap(20)
+                        .addComponent(lbl6)
+                        .addGap(5)
+                        .addComponent(txf6)
+                        .addGap(20)
+                        .addComponent(lbl7)
+                        .addGap(5)
+                        .addComponent(txf7)
+                        .addGap(20)
+                        .addComponent(lbl8)
+                        .addGap(5)
+                        .addComponent(txf8)
+                        .addGap(20)
+                        .addComponent(btn1)
+                        .addContainerGap(20, Short.MAX_VALUE));
 
         btn1.addActionListener(new ActionListener() {
 
@@ -131,7 +147,7 @@ public class IF_Actividad extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al guardar el evento.\n\n");
+            textLOG.append(" -> Error al guardar la actividad.\n\n");
         }
 
     }
@@ -149,7 +165,7 @@ public class IF_Actividad extends IF_Padre {
     }
 
     public void invisible() {
-        hacerInvisible(" -> Inscripción registrada exitosamente.\n\n");
+        hacerInvisible(" -> Actividad registrada exitosamente.\n\n");
     }
 
 }
