@@ -16,7 +16,7 @@ public class IF_RepParticipantes extends IF_Padre {
     private ProcRepParticipantes prp;
 
     public IF_RepParticipantes(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Crear Reporte De Participantes", 400, 290, 4);
+        super(frame, textLOG, "Crear Reporte De Participantes", 400, 290);
         initComponentes();
         prp = new ProcRepParticipantes(frame);
     }

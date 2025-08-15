@@ -15,7 +15,7 @@ public class IF_Asistencia extends IF_Padre {
     private ProcAsistencia pa;
 
     public IF_Asistencia(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Registrar Asistencia", 400, 225, 3);
+        super(frame, textLOG, "Registrar Asistencia", 400, 225);
         initComponentes();
         pa = new ProcAsistencia(frame);
     }

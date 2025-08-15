@@ -17,7 +17,7 @@ public class IF_Pago extends IF_Padre {
     private ProcPago pp;
 
     public IF_Pago(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Registrar Pago Participante", 400, 360, 5);
+        super(frame, textLOG, "Registrar Pago Participante", 400, 360);
         initComponentes();
         pp = new ProcPago(frame);
     }

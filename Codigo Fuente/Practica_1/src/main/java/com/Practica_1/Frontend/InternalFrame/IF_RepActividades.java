@@ -16,7 +16,7 @@ public class IF_RepActividades extends IF_Padre {
     private ProcRepActividades pra;
 
     public IF_RepActividades(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Crear Reporte De Actividades", 400, 290, 4);
+        super(frame, textLOG, "Crear Reporte De Actividades", 400, 290);
         initComponentes();
         pra = new ProcRepActividades(frame);
     }

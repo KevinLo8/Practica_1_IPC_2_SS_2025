@@ -15,7 +15,7 @@ public class IF_Certificado extends IF_Padre {
     private ProcCertificado pc;
 
     public IF_Certificado(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Crear Certificado", 400, 225, 3);
+        super(frame, textLOG, "Crear Certificado", 400, 225);
         initComponentes();
         pc = new ProcCertificado(frame);
     }

@@ -17,7 +17,7 @@ public class IF_Evento extends IF_Padre {
     private ProcEvento pe;
 
     public IF_Evento(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Registrar Evento", 400, 550, 8);
+        super(frame, textLOG, "Registrar Evento", 400, 550);
         initComponentes();
         pe = new ProcEvento(frame);
     }

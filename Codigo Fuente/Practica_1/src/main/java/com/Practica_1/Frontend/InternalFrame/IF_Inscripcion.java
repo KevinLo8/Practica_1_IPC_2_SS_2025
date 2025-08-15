@@ -16,7 +16,7 @@ public class IF_Inscripcion extends IF_Padre {
     private ProcInscripcion pi;
 
     public IF_Inscripcion(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Inscribir Participante En Evento", 400, 290, 4);
+        super(frame, textLOG, "Inscribir Participante En Evento", 400, 290);
         initComponentes();
         pi = new ProcInscripcion(frame);
     }

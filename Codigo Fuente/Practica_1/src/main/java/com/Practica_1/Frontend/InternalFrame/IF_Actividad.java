@@ -16,7 +16,7 @@ public class IF_Actividad extends IF_Padre {
     private ProcActividad pa;
 
     public IF_Actividad(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Registrar Actividad", 400, 630, 9);
+        super(frame, textLOG, "Registrar Actividad", 400, 630);
         initComponentes();
         pa = new ProcActividad(frame);
     }
