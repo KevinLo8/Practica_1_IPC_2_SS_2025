@@ -16,7 +16,7 @@ public class IF_Participante extends IF_Padre {
     private ProcParticipante pp;
 
     public IF_Participante(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Registrar Participante Nuevo", 400, 370, 5);
+        super(frame, textLOG, "Registrar Participante Nuevo", 400, 370);
         initComponentes();
         pp = new ProcParticipante(frame);
     }

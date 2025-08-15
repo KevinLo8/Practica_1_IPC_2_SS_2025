@@ -12,7 +12,7 @@ public class IF_Padre extends JInternalFrame {
     protected JTextArea textLOG;
     protected int ancho, alto;
 
-    public IF_Padre(Frame_principal frame, JTextArea textLOG, String titulo, int ancho, int alto, int espacios) {
+    public IF_Padre(Frame_principal frame, JTextArea textLOG, String titulo, int ancho, int alto) {
 
         super(titulo, false, true, false, false);
         this.frame = frame;
@@ -22,13 +22,12 @@ public class IF_Padre extends JInternalFrame {
 
         frame.getDesktop().add(this);
 
-        initComponentes(espacios);
+        initComponentes();
     }
 
-    private void initComponentes(int espacios) {
+    private void initComponentes() {
         setDefaultCloseOperation(HIDE_ON_CLOSE);
         setSize(new Dimension(ancho, alto));
-        setLayout(new GridLayout(espacios, 1, 0, 5));
     }
 
     protected void hacerVisible() {

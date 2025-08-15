@@ -16,7 +16,7 @@ public class IF_RepEventos extends IF_Padre {
     private ProcRepEventos pre;
 
     public IF_RepEventos(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Crear Reporte De Eventos", 400, 450, 6);
+        super(frame, textLOG, "Crear Reporte De Eventos", 400, 450);
 
         pre = new ProcRepEventos(frame);
 

@@ -15,7 +15,7 @@ public class IF_Validacion extends IF_Padre {
     private ProcValidacion pv;
 
     public IF_Validacion(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Validar Inscripción De Estudiante", 400, 225, 3);
+        super(frame, textLOG, "Validar Inscripción De Estudiante", 400, 225);
         initComponentes();
         pv = new ProcValidacion(frame);
     }
