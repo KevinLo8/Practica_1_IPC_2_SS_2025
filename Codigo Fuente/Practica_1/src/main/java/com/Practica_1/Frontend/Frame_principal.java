@@ -14,9 +14,7 @@ public class Frame_principal extends JFrame {
     private JDesktopPane desktop;
     private JTextArea textLOG;
 
-    private String pathEntrada;
     private String pathSalida;
-    private int tiempoProcesado;
 
     private Conexión_DB conexion;
 
@@ -46,7 +44,7 @@ public class Frame_principal extends JFrame {
         JScrollPane jScrollPane = new JScrollPane();
         jScrollPane.setBorder(BorderFactory.createLineBorder(Color.GRAY, 3));
 
-        textLOG = new JTextArea("\n -> Aplicación Inicializada.\n\n");
+        textLOG = new JTextArea("\n -> Aplicación Inicializada.");
         textLOG.setEditable(false);
         textLOG.setBackground(Color.BLACK);
         textLOG.setForeground(Color.WHITE);
@@ -58,18 +56,18 @@ public class Frame_principal extends JFrame {
         jM1.add(new JMI_Ajustes(this));
         jM1.add(new JMI_Salir());
 
-        jM2.add(new JMI_Evento(this, textLOG));
-        jM2.add(new JMI_Participante(this, textLOG));
-        jM2.add(new JMI_Inscripcion(this, textLOG));
-        jM2.add(new JMI_Pago(this, textLOG));
-        jM2.add(new JMI_Validacion(this, textLOG));
-        jM2.add(new JMI_Actividad(this, textLOG));
-        jM2.add(new JMI_Asistencia(this, textLOG));
-        jM2.add(new JMI_Certificado(this, textLOG));
+        jM2.add(new JMI_Evento(this));
+        jM2.add(new JMI_Participante(this));
+        jM2.add(new JMI_Inscripcion(this));
+        jM2.add(new JMI_Pago(this));
+        jM2.add(new JMI_Validacion(this));
+        jM2.add(new JMI_Actividad(this));
+        jM2.add(new JMI_Asistencia(this));
+        jM2.add(new JMI_Certificado(this));
 
-        jM3.add(new JMI_RepParticipantes(this, textLOG));
-        jM3.add(new JMI_RepActividades(this, textLOG));
-        jM3.add(new JMI_RepEventos(this, textLOG));
+        jM3.add(new JMI_RepParticipantes(this));
+        jM3.add(new JMI_RepActividades(this));
+        jM3.add(new JMI_RepEventos(this));
 
         jScrollPane.setViewportView(textLOG);
 
@@ -88,14 +86,6 @@ public class Frame_principal extends JFrame {
         return conexion;
     }
 
-    public String getPathEntrada() {
-        return pathEntrada;
-    }
-
-    public void setPathEntrada(String pathEntrada) {
-        this.pathEntrada = pathEntrada;
-    }
-
     public String getPathSalida() {
         return pathSalida;
     }
@@ -104,12 +94,11 @@ public class Frame_principal extends JFrame {
         this.pathSalida = pathSalida;
     }
 
-    public int getTiempoProcesado() {
-        return tiempoProcesado;
-    }
-
-    public void setTiempoProcesado(int tiempoProcesado) {
-        this.tiempoProcesado = tiempoProcesado;
+    public void appendTextLog(String texto) {
+        textLOG.append(texto);
+        textLOG.setCaretPosition(textLOG.getDocument().getLength());
+        repaint();
+        revalidate();
     }
 
 }

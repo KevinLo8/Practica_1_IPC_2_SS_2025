@@ -19,7 +19,7 @@ public class JMI_Ajustes extends JMenuItem {
         addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if_Ajustes.hacerVisible();
+                if_Ajustes.visible();
             }
         });
     }

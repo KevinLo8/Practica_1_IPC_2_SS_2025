@@ -11,10 +11,10 @@ public class JMI_RepActividades extends JMenuItem {
 
     private IF_RepActividades if_RepActividades;
 
-    public JMI_RepActividades(Frame_principal frame, JTextArea textLOG) {
+    public JMI_RepActividades(Frame_principal frame) {
         super("Reporte Actividades");
 
-        if_RepActividades = new IF_RepActividades(frame, textLOG);
+        if_RepActividades = new IF_RepActividades(frame);
 
         addActionListener(new ActionListener() {
             @Override

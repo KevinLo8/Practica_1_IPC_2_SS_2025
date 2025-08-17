@@ -24,9 +24,9 @@ public class Conexión_DB {
 
         try {
             connection = DriverManager.getConnection(URL_MYSQL, USER, PASSWORD);
-            this.jTextArea.append(" -> Conexión a la base de datos establecida.\n\n");
+            this.jTextArea.append("\n\n -> Conexión a la base de datos establecida.");
         } catch (SQLException ex) {
-            this.jTextArea.append(" -> Error al conectar a la base de datos.\n\n");
+            this.jTextArea.append("\n\n -> Error al conectar a la base de datos.");
         }
 
     }
@@ -105,7 +105,7 @@ public class Conexión_DB {
         }
     }
 
-    public void guardarValidacion(Data_Inscripcion data) {
+    public void guardarValidacion(Data_Inscripcion data) throws ErrProcException {
         String query = "UPDATE inscripcion SET estado_validacion = 1 WHERE correo_participante = ? AND codigo_evento = ?";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -113,17 +113,15 @@ public class Conexión_DB {
             preparedStatement.setString(2, data.getCodigoEvento());
 
             int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
-                jTextArea.append(" -> Validación registrada exitosamente.\n\n");
-            } else {
-                jTextArea.append(" -> Error al registrar la validación.\n\n");
+            if (rowsAffected == 0) {
+                throw new ErrProcException("Error al registrar la validación");
             }
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al guardar la validación: " + e.getMessage() + "\n\n");
+            throw new ErrProcException("Error al guardar la validación");
         }
     }
 
-    public void guardarActividad(Data_Actividad data) {
+    public void guardarActividad(Data_Actividad data) throws ErrProcException {
         String query = "INSERT INTO actividad (codigo, codigo_evento, tipo, titulo, correo_impartidor, hora_inicio, hora_fin, cupo_maximo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -137,13 +135,11 @@ public class Conexión_DB {
             preparedStatement.setInt(8, data.getCupoMaximo());
 
             int rowsAffected = preparedStatement.executeUpdate();
-            if (rowsAffected > 0) {
-                jTextArea.append(" -> Actividad registrada exitosamente.\n\n");
-            } else {
-                jTextArea.append(" -> Error al registrar la actividad.\n\n");
+            if (rowsAffected == 0) {
+                throw new ErrProcException("Error al registrar la actividad");
             }
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al guardar la actividad: " + e.getMessage() + "\n\n");
+            throw new ErrProcException("Error al guardar la actividad");
         }
     }
 
@@ -164,22 +160,7 @@ public class Conexión_DB {
         }
     }
 
-    public Boolean consultarParticipante(String correo) {
-        String query = "SELECT * FROM participante WHERE correo = ?";
-        ResultSet resultSet = null;
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query);) {
-            preparedStatement.setString(1, correo);
-            resultSet = preparedStatement.executeQuery();
-
-            return resultSet.next();
-        } catch (SQLException e) {
-            jTextArea.append(" -> Error al consultar el participante: " + e.getMessage() + "\n\n");
-            return false;
-        }
-    }
-
-    public boolean consultarEvento(String codigo) {
+    public boolean consultarEvento(String codigo) throws ErrProcException {
         String query = "SELECT * FROM evento WHERE codigo = ?";
         ResultSet resultSet = null;
 
@@ -189,12 +170,72 @@ public class Conexión_DB {
 
             return resultSet.next();
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al consultar el evento: " + e.getMessage() + "\n\n");
-            return false;
+            throw new ErrProcException("Error al consultar el evento");
         }
     }
 
-    public boolean consultarActividad(String codigoActividad) {
+    public Boolean consultarParticipante(String correo) throws ErrProcException {
+        String query = "SELECT * FROM participante WHERE correo = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+            preparedStatement.setString(1, correo);
+            resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new ErrProcException("Error al consultar el participante");
+        }
+    }
+
+    public Boolean consultarInscripcion(String correo, String codigo) throws ErrProcException {
+        String query = "SELECT * FROM inscripcion WHERE correo_participante = ? AND codigo_evento = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+            preparedStatement.setString(1, correo);
+            preparedStatement.setString(2, codigo);
+            resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new ErrProcException("Error al consultar la inscripcion");
+        }
+    }
+
+    public Boolean consultarPago(String correo, String codigo) throws ErrProcException {
+        String query = "SELECT * FROM inscripcion WHERE correo_participante = ? AND codigo_evento = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+            preparedStatement.setString(1, correo);
+            preparedStatement.setString(2, codigo);
+            resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            return resultSet.getString("metodo_pago") != null;
+        } catch (SQLException e) {
+            throw new ErrProcException("Error al consultar la inscripcion");
+        }
+    }
+
+    public Boolean consultarValidacion(String correo, String codigo) throws ErrProcException {
+        String query = "SELECT * FROM inscripcion WHERE correo_participante = ? AND codigo_evento = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);) {
+            preparedStatement.setString(1, correo);
+            preparedStatement.setString(2, codigo);
+            resultSet = preparedStatement.executeQuery();
+
+            resultSet.next();
+            return resultSet.getInt("estado_validacion") == 1;
+        } catch (SQLException e) {
+            throw new ErrProcException("Error al consultar la inscripcion");
+        }
+    }
+
+    public boolean consultarActividad(String codigoActividad) throws ErrProcException {
         String query = "SELECT * FROM actividad WHERE codigo = ?";
         ResultSet resultSet = null;
 
@@ -204,30 +245,11 @@ public class Conexión_DB {
 
             return resultSet.next();
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al consultar la actividad: " + e.getMessage() + "\n\n");
-            return false;
+            throw new ErrProcException("Error al consultar la actividad");
         }
     }
 
-    public boolean revisarTipoInscripcion(String correo, String codigoEvento) {
-        String query = "SELECT * FROM inscripcion WHERE correo_participante = ? AND codigo_evento = ?";
-        ResultSet resultSet = null;
-
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setString(1, correo);
-            preparedStatement.setString(2, codigoEvento);
-            resultSet = preparedStatement.executeQuery();
-
-            resultSet.next();
-            return !resultSet.getString("tipo_inscripcion").equals("ASISTENTE");
-
-        } catch (SQLException e) {
-            jTextArea.append(" -> Error al revisar el tipo de inscripción: " + e.getMessage() + "\n\n");
-            return false;
-        }
-    }
-
-    public boolean revisarAsistencia(String correo, String codigoActividad) {
+    public boolean consultarAsistencia(String correo, String codigoActividad) throws ErrProcException {
         String query = "SELECT * FROM asistencia WHERE correo_participante = ? AND codigo_actividad = ?";
         ResultSet resultSet = null;
 
@@ -238,12 +260,29 @@ public class Conexión_DB {
 
             return resultSet.next();
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al revisar la asistencia: " + e.getMessage() + "\n\n");
-            return false;
+            throw new ErrProcException("Error al revisar la asistencia");
         }
     }
 
-    public boolean revisarCupoAsistencia(String codigoActividad, int cupoMaximo) {
+    public boolean revisarCupoInscripcion(String codigo, int cupoMaximo) throws ErrProcException {
+        String query = "SELECT * FROM evento WHERE codigo = ?";
+        ResultSet resultSet = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query, ResultSet.TYPE_SCROLL_INSENSITIVE,
+                ResultSet.CONCUR_READ_ONLY)) {
+            preparedStatement.setString(1, codigo);
+            resultSet = preparedStatement.executeQuery();
+
+            resultSet.last();
+
+            return 0 >= cupoMaximo - resultSet.getRow();
+
+        } catch (SQLException e) {
+            throw new ErrProcException("Error al revisar el cupo del evento");
+        }
+    }
+
+    public boolean revisarCupoAsistencia(String codigoActividad, int cupoMaximo) throws ErrProcException {
         String query = "SELECT * FROM asistencia WHERE codigo_actividad = ?";
         ResultSet resultSet = null;
 
@@ -257,12 +296,11 @@ public class Conexión_DB {
             return 0 >= cupoMaximo - resultSet.getRow();
 
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al revisar el cupo de asistencia: " + e.getMessage() + "\n\n");
-            return false;
+            throw new ErrProcException("Error al revisar el cupo de asistencia");
         }
     }
 
-    public Data_Participante solicitarParticipante(String correo) {
+    public Data_Participante solicitarParticipante(String correo) throws ErrProcException {
         String query = "SELECT * FROM participante WHERE correo = ?";
         ResultSet resultSet = null;
 
@@ -289,13 +327,13 @@ public class Conexión_DB {
             }
 
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al solicitar el participante: " + e.getMessage() + "\n\n");
-            return null;
+            throw new ErrProcException("Error al solicitar el participante");
         }
 
     }
 
-    public Data_Participante[] solicitarParticipantes(String evento, String tipo, String institucion) {
+    public Data_Participante[] solicitarParticipantes(String evento, String tipo, String institucion)
+            throws ErrProcException {
         String query = "SELECT * FROM participante p JOIN inscripcion i ON p.correo = i.correo_participante WHERE i.codigo_evento = ?";
         ResultSet resultSet = null;
 
@@ -356,13 +394,12 @@ public class Conexión_DB {
             }
 
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al solicitar el participante: " + e.getMessage() + "\n\n");
-            return null;
+            throw new ErrProcException("Error al solicitar los participantes");
         }
 
     }
 
-    public Data_Evento solicitarEvento(String codigo) {
+    public Data_Evento solicitarEvento(String codigo) throws ErrProcException {
         String query = "SELECT * FROM evento WHERE codigo = ?";
         ResultSet resultSet = null;
 
@@ -390,20 +427,20 @@ public class Conexión_DB {
             }
 
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al solicitar el evento: " + e.getMessage() + "\n\n");
-            return null;
+            throw new ErrProcException("Error al solicitar el evento");
         }
 
     }
 
     public Data_Evento[] solicitarEventos(String tipo, String fechaInicial, String fechaFinal, int cupoMinimo,
-            int cupoMaximo) {
+            int cupoMaximo) throws ErrProcException {
         String query = "SELECT * FROM evento WHERE";
         ResultSet resultSet = null;
 
         int i = 1;
         if (!tipo.equals("")) {
             query = query + " tipo = ?";
+            i++;
         }
 
         if (!fechaInicial.equals("") && !fechaFinal.equals("")) {
@@ -411,6 +448,7 @@ public class Conexión_DB {
                 query = query + " AND";
             }
             query = query + " fecha BETWEEN ? AND ?";
+            i++;
         }
 
         if (cupoMinimo >= 0 && cupoMaximo > 0) {
@@ -481,14 +519,12 @@ public class Conexión_DB {
             return eventos;
 
         } catch (SQLException e) {
-            // jTextArea.append(" -> Error al solicitar el participante: " + e.getMessage()
-            // + "\n\n");
-            return null;
+            throw new ErrProcException("Error al solicitar los eventos");
         }
 
     }
 
-    public Data_Inscripcion solicitarInscripcion(String correo, String codigoEvento) {
+    public Data_Inscripcion solicitarInscripcion(String correo, String codigoEvento) throws ErrProcException {
         String query = "SELECT * FROM inscripcion WHERE correo_participante = ? AND codigo_evento = ?";
         ResultSet resultSet = null;
 
@@ -498,23 +534,25 @@ public class Conexión_DB {
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                return new Data_Inscripcion(resultSet.getString("correo_participante"),
-                        resultSet.getString("codigo_evento"),
-                        resultSet.getString("tipo_inscripcion"), resultSet.getString("metodo_pago"),
-                        resultSet.getDouble("monto_pago"), resultSet.getInt("estado_validacion"));
+                Data_Inscripcion data_Inscripcion = null;
+                try {
+                    data_Inscripcion = new Data_Inscripcion(resultSet.getString("correo_participante"),
+                            resultSet.getString("codigo_evento"),
+                            resultSet.getString("tipo_inscripcion"), resultSet.getString("metodo_pago"),
+                            resultSet.getDouble("monto_pago"), resultSet.getInt("estado_validacion"));
+                } catch (SelecionTipoException e) {
+                    e.printStackTrace();
+                }
+                return data_Inscripcion;
             } else {
                 return null;
             }
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al consultar la inscripción: " + e.getMessage() + "\n\n");
-            return null;
-        } catch (SelecionTipoException e) {
-            jTextArea.append(" -> Error al mapear los tipos de inscripción o pago: " + e.getMessage() + "\n\n");
-            return null;
+            throw new ErrProcException("Error al solicitar la inscripción");
         }
     }
 
-    public Data_Inscripcion solicitarAsiInscripcion(String correo, String codigoActividad) {
+    public Data_Inscripcion solicitarAsiInscripcion(String correo, String codigoActividad) throws ErrProcException {
         String query = "SELECT * FROM inscripcion i JOIN actividad a ON i.codigo_evento = a.codigo_evento WHERE i.correo_participante = ? AND a.codigo = ?";
         ResultSet resultSet = null;
 
@@ -530,12 +568,11 @@ public class Conexión_DB {
             }
 
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al revisar la inscripción para el evento: " + e.getMessage() + "\n\n");
-            return null;
+            throw new ErrProcException("Error al solicitar la inscripción");
         }
     }
 
-    public Data_Actividad[] solicitarActividades(String evento, String tipo, String correo) {
+    public Data_Actividad[] solicitarActividades(String evento, String tipo, String correo) throws ErrProcException {
         String query = "SELECT * FROM actividad WHERE codigo_evento = ?";
         ResultSet resultSet = null;
 
@@ -602,13 +639,12 @@ public class Conexión_DB {
             return actividades;
 
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al solicitar el participante: " + e.getMessage() + "\n\n");
-            return null;
+            throw new ErrProcException("Error al solicitar las actividades");
         }
 
     }
 
-    public Data_Actividad solicitarAsiActividad(String codigoActividad) {
+    public Data_Actividad solicitarActividad(String codigoActividad) throws ErrProcException {
         String query = "SELECT * FROM actividad WHERE codigo = ?";
         ResultSet resultSet = null;
 
@@ -617,18 +653,29 @@ public class Conexión_DB {
             resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                return new Data_Actividad(resultSet.getString("correo_impartidor"), resultSet.getInt("cupo_maximo"));
+                Data_Actividad data = null;
+
+                try {
+                    data = new Data_Actividad(resultSet.getString("codigo"),
+                            resultSet.getString("codigo_evento"), resultSet.getString("tipo"),
+                            resultSet.getString("titulo"), resultSet.getString("correo_impartidor"),
+                            resultSet.getTime("hora_inicio").toString(), resultSet.getTime("hora_fin").toString(),
+                            resultSet.getInt("cupo_maximo"));
+                } catch (SelecionTipoException e) {
+                    e.printStackTrace();
+                }
+
+                return data;
             } else {
                 return null;
             }
 
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al consultar la actividad para asistencia: " + e.getMessage() + "\n\n");
-            return null;
+            throw new ErrProcException("Error al consultar la actividad");
         }
     }
 
-    public Data_Actividad[] solicitarAsistencias(String correo, String codigo) {
+    public Data_Actividad[] solicitarAsistencias(String correo, String codigo) throws ErrProcException {
         String query = "SELECT * FROM asistencia JOIN actividad "
                 + "ON asistencia.codigo_actividad = actividad.codigo "
                 + "WHERE correo_participante = ? AND codigo_evento = ?";
@@ -678,8 +725,7 @@ public class Conexión_DB {
             }
 
         } catch (SQLException e) {
-            jTextArea.append(" -> Error al solicitar el evento: " + e.getMessage() + "\n\n");
-            return null;
+            throw new ErrProcException("Error al solicitar las asistencias");
         }
 
     }
@@ -693,7 +739,7 @@ public class Conexión_DB {
                     ResultSet.CONCUR_READ_ONLY);
             resultSet = statementID.executeQuery(query);
 
-            if (!resultSet.isLast()) {
+            if (resultSet.next()) {
                 resultSet.last();
                 int iD = resultSet.getInt("ID") + 1;
                 return iD;

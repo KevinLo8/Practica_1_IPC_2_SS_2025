@@ -11,10 +11,10 @@ public class JMI_RepEventos extends JMenuItem {
 
     private IF_RepEventos if_RepEventos;
 
-    public JMI_RepEventos(Frame_principal frame, JTextArea textLOG) {
+    public JMI_RepEventos(Frame_principal frame) {
         super("Reporte Eventos");
 
-        if_RepEventos = new IF_RepEventos(frame, textLOG);
+        if_RepEventos = new IF_RepEventos(frame);
 
         addActionListener(new ActionListener() {
             @Override

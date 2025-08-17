@@ -11,10 +11,10 @@ public class JMI_Asistencia extends JMenuItem  {
 
     private IF_Asistencia if_asistencia;
 
-    public JMI_Asistencia(Frame_principal frame, JTextArea textLOG) {
+    public JMI_Asistencia(Frame_principal frame) {
         super("Registrar Asistencia");
 
-        if_asistencia = new IF_Asistencia(frame, textLOG);
+        if_asistencia = new IF_Asistencia(frame);
 
         addActionListener(new ActionListener() {
             @Override

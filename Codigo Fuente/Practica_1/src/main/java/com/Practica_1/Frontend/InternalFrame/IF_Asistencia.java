@@ -14,8 +14,8 @@ public class IF_Asistencia extends IF_Padre {
     private JTextField txf1, txf2;
     private ProcAsistencia pa;
 
-    public IF_Asistencia(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Registrar Asistencia", 400, 225);
+    public IF_Asistencia(Frame_principal frame) {
+        super(frame, "Registrar Asistencia", 400, 225);
         initComponentes();
         pa = new ProcAsistencia(frame);
     }
@@ -79,7 +79,7 @@ public class IF_Asistencia extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al guardar la asistencia.\n\n");
+            frame.appendTextLog("\n\n -> Error al guardar la asistencia.");
         }
 
     }
@@ -91,7 +91,7 @@ public class IF_Asistencia extends IF_Padre {
     }
 
     public void invisible() {
-        hacerInvisible(" -> Asistencia registrada exitosamente.\n\n");
+        hacerInvisible("\n\n -> Asistencia registrada exitosamente.");
     }
 
 }

@@ -15,8 +15,8 @@ public class IF_Actividad extends IF_Padre {
     private JComboBox<String> jCB3;
     private ProcActividad pa;
 
-    public IF_Actividad(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Registrar Actividad", 400, 630);
+    public IF_Actividad(Frame_principal frame) {
+        super(frame, "Registrar Actividad", 400, 630);
         initComponentes();
         pa = new ProcActividad(frame);
     }
@@ -147,7 +147,7 @@ public class IF_Actividad extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al guardar la actividad.\n\n");
+            frame.appendTextLog("\n\n -> Error al guardar la actividad.");
         }
 
     }
@@ -165,7 +165,7 @@ public class IF_Actividad extends IF_Padre {
     }
 
     public void invisible() {
-        hacerInvisible(" -> Actividad registrada exitosamente.\n\n");
+        hacerInvisible("\n\n -> Actividad registrada exitosamente.");
     }
 
 }

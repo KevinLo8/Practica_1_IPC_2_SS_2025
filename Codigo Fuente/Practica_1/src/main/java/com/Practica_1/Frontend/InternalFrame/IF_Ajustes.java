@@ -2,38 +2,29 @@ package com.Practica_1.Frontend.InternalFrame;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.File;
 
 import javax.swing.*;
 
+import com.Practica_1.Backend.Exception.ErrProcException;
+import com.Practica_1.Backend.Procesador.ProcAjustes;
 import com.Practica_1.Frontend.Frame_principal;
 
-public class IF_Ajustes extends JInternalFrame {
+public class IF_Ajustes extends IF_Padre {
 
-    private Frame_principal frame;
     private JTextField txf1, txf2, txf3;
+    private ProcAjustes pa;
 
     public IF_Ajustes(Frame_principal frame) {
-        super("Ajustes", false, true, false, false);
-        this.frame = frame;
-
-        setSize(new Dimension(400, 400));
-        setLayout(new GridLayout(4, 1, 0, 5));
-
-        frame.getDesktop().add(this);
-
+        super(frame, "Ajustes", 400, 305);
+        pa = new ProcAjustes(frame);
         initComponentes();
-
     }
 
     private void initComponentes() {
 
-        setDefaultCloseOperation(HIDE_ON_CLOSE);
-
-        JPanel pnl1 = new JPanel(new FlowLayout());
-        JPanel pnl2 = new JPanel();
-        JPanel pnl3 = new JPanel(new FlowLayout());
-        JPanel pnl4 = new JPanel();
+        JLabel lbl1 = new JLabel("Dirección de archivo de entrada");
+        JLabel lbl2 = new JLabel("Velocidad de procesamiento (milisegundos)");
+        JLabel lbl3 = new JLabel("Dirección de salida de archivos");
 
         txf1 = new JTextField();
         txf1.setPreferredSize(new Dimension(250, 25));
@@ -46,23 +37,47 @@ public class IF_Ajustes extends JInternalFrame {
         JButton btn2 = new JButton("Seleccionar");
         JButton btn3 = new JButton("Guardar");
 
-        add(pnl1);
-        add(pnl2);
-        add(pnl3);
-        add(pnl4);
+        GroupLayout layout = new GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
 
-        pnl1.add(new JLabel("Dirección de archivo de entrada"), BorderLayout.NORTH);
-        pnl1.add(txf1);
-        pnl1.add(btn1);
+        layout.setHorizontalGroup(
+                layout.createSequentialGroup()
+                        .addContainerGap(20, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(lbl1)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txf1)
+                                        .addComponent(btn1))
+                                .addComponent(lbl2)
+                                .addComponent(txf2)
+                                .addComponent(lbl3)
+                                .addGroup(layout.createSequentialGroup()
+                                        .addComponent(txf3)
+                                        .addComponent(btn2))
+                                .addComponent(btn3))
+                        .addContainerGap(20, Short.MAX_VALUE));
 
-        pnl2.add(new JLabel("Velocidad de procesamiento (milisegundos)"), BorderLayout.NORTH);
-        pnl2.add(txf2, BorderLayout.SOUTH);
-
-        pnl3.add(new JLabel("Dirección de salida de archivos"), BorderLayout.NORTH);
-        pnl3.add(txf3);
-        pnl3.add(btn2);
-
-        pnl4.add(btn3);
+        layout.setVerticalGroup(
+                layout.createSequentialGroup()
+                        .addContainerGap(20, Short.MAX_VALUE)
+                        .addComponent(lbl1)
+                        .addGap(5)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(txf1)
+                                .addComponent(btn1))
+                        .addGap(20)
+                        .addComponent(lbl2)
+                        .addGap(5)
+                        .addComponent(txf2)
+                        .addGap(20)
+                        .addComponent(lbl3)
+                        .addGap(5)
+                        .addGroup(layout.createParallelGroup(GroupLayout.Alignment.CENTER)
+                                .addComponent(txf3)
+                                .addComponent(btn2))
+                        .addGap(20)
+                        .addComponent(btn3)
+                        .addContainerGap(20, Short.MAX_VALUE));
 
         btn1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
@@ -103,58 +118,35 @@ public class IF_Ajustes extends JInternalFrame {
                 txf3.setText(fileChooser.getSelectedFile().getAbsolutePath());
             }
         } catch (NullPointerException e) {
-            JOptionPane.showMessageDialog(frame,
-                    "No se selecciono ningun archivo.",
+            JOptionPane.showMessageDialog(frame, "No se selecciono ningun archivo.",
                     "Error", JOptionPane.ERROR_MESSAGE);
         }
 
     }
 
+
     private void btnGuardarActionPerformer() {
 
-        File file = new File(txf1.getText());
-        if (file.exists()) {
-            if (!file.isDirectory()) {
-                frame.setPathEntrada(txf1.getText());
-            } else {
-                //lbl1.setText("Archivo seleccionado no valido");
-            }
-        } else {
-           // lbl1.setText("Archivo seleccionado no existe");
-        }
-
         try {
-            if (Integer.parseInt(txf2.getText()) > 0) {
-                frame.setTiempoProcesado(Integer.parseInt(txf2.getText()));
-            } else {
-                //lbl2.setText("Ingrese un numero mayor a 0");
-            }
-        } catch (NumberFormatException e) {
-           // lbl2.setText("Velocidad ingresada no valida");
+
+            pa.guardaAjustes(this, txf1.getText(), txf2.getText(), txf3.getText());
+
+        } catch (ErrProcException e) {
+            JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            frame.appendTextLog("\n\n -> Error al guardar la actividad.");
         }
 
-        file = new File(txf3.getText());
-        if (file.exists()) {
-            if (file.isDirectory()) {
-                frame.setPathSalida(txf3.getText());
-            } else {
-                //lbl3.setText("Direccion ingresada no valida");
-            }
-        } else {
-            //lbl3.setText("Direccion seleccionada no existe");
-        }
-
-        setVisible(false);
     }
 
-    public void hacerVisible() {
-
-        setLocation((frame.getWidth() - 400) / 2, (frame.getHeight() - 400) / 2);
-        setVisible(true);
+    public void visible() {
+        hacerVisible();
         txf1.setText("");
-        txf2.setText("");
+        txf2.setText("0");
         txf3.setText("");
+    }
 
+    public void invisible(String mensaje) {
+        hacerInvisible("\n\n -> " + mensaje);
     }
 
 }

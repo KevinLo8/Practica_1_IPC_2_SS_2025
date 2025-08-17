@@ -9,14 +9,12 @@ import com.Practica_1.Frontend.Frame_principal;
 public class IF_Padre extends JInternalFrame {
 
     protected Frame_principal frame;
-    protected JTextArea textLOG;
     protected int ancho, alto;
 
-    public IF_Padre(Frame_principal frame, JTextArea textLOG, String titulo, int ancho, int alto) {
+    public IF_Padre(Frame_principal frame, String titulo, int ancho, int alto) {
 
         super(titulo, false, true, false, false);
         this.frame = frame;
-        this.textLOG = textLOG;
         this.ancho = ancho;
         this.alto = alto;
 
@@ -37,7 +35,7 @@ public class IF_Padre extends JInternalFrame {
 
     protected void hacerInvisible(String mensaje) {
         setVisible(false);
-        textLOG.append(mensaje);
+        frame.appendTextLog(mensaje);
     }
 
 }

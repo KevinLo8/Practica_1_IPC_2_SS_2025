@@ -14,8 +14,8 @@ public class IF_Validacion extends IF_Padre {
     private JTextField txf1, txf2;
     private ProcValidacion pv;
 
-    public IF_Validacion(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Validar Inscripción De Estudiante", 400, 225);
+    public IF_Validacion(Frame_principal frame) {
+        super(frame, "Validar Inscripción De Estudiante", 400, 225);
         initComponentes();
         pv = new ProcValidacion(frame);
     }
@@ -78,7 +78,7 @@ public class IF_Validacion extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al guardar la validación.\n\n");
+            frame.appendTextLog("\n\n -> Error al guardar la validación.");
         }
 
     }
@@ -90,7 +90,7 @@ public class IF_Validacion extends IF_Padre {
     }
 
     public void invisible() {
-        hacerInvisible(" -> Validación registrada exitosamente.\n\n");
+        hacerInvisible("\n\n -> Validación registrada exitosamente.");
     }
 
 }

@@ -11,10 +11,10 @@ public class JMI_Participante extends JMenuItem {
 
     private IF_Participante if_participante;
 
-    public JMI_Participante(Frame_principal frame, JTextArea textLOG) {
+    public JMI_Participante(Frame_principal frame) {
         super("Registrar Participante");
 
-        if_participante = new IF_Participante(frame, textLOG);
+        if_participante = new IF_Participante(frame);
 
         addActionListener(new ActionListener() {
             @Override

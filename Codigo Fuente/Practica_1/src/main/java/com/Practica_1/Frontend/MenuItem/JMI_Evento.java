@@ -11,10 +11,10 @@ public class JMI_Evento extends JMenuItem {
 
     private IF_Evento if_Evento;
 
-    public JMI_Evento(Frame_principal frame, JTextArea textLOG) {
+    public JMI_Evento(Frame_principal frame) {
         super("Registrar Evento");
 
-        if_Evento = new IF_Evento(frame, textLOG);
+        if_Evento = new IF_Evento(frame);
 
         addActionListener(new ActionListener() {
             @Override

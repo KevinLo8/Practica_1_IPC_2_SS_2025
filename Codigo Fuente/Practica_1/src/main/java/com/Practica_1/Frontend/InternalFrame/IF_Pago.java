@@ -16,8 +16,8 @@ public class IF_Pago extends IF_Padre {
     private JComboBox<String> jCB3;
     private ProcPago pp;
 
-    public IF_Pago(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Registrar Pago Participante", 400, 360);
+    public IF_Pago(Frame_principal frame) {
+        super(frame, "Registrar Pago Participante", 400, 360);
         initComponentes();
         pp = new ProcPago(frame);
     }
@@ -111,7 +111,7 @@ public class IF_Pago extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al guardar el pago.\n\n");
+            frame.appendTextLog("\n\n -> Error al guardar el pago.");
         }
 
     }
@@ -125,7 +125,7 @@ public class IF_Pago extends IF_Padre {
     }
 
     public void invisible() {
-        hacerInvisible(" -> Pago registrado exitosamente.\n\n");
+        hacerInvisible("\n\n -> Pago registrado exitosamente.");
     }
 
 }

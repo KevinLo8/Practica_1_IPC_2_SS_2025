@@ -31,7 +31,7 @@ public class ProcRepParticipantes {
             throw new ErrProcException("El evento no está registrado. Por favor, regístrelo primero.");
         } else if (revisarTipo(tipoPar)) {
             throw new ErrProcException("Seleccione un tipo de participante valido");
-        } else if (institucionPar.length() > 150) {
+        } else if (institucionPar.trim().length() > 150) {
             throw new ErrProcException("Ingrese un nombre de intitucion que sea valido.");
         }
 
