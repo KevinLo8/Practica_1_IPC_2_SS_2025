@@ -191,7 +191,7 @@ public class ProcRepEventos {
         return fecha;
     }
 
-    private String generarTexto(Data_Evento evento, int numero) {
+    private String generarTexto(Data_Evento evento, int numero) throws ErrProcException {
         String texto;
 
         Data_Participante[] participantes = frame.getConexion().solicitarParticipantes(evento.getCodigoEvento(), "",

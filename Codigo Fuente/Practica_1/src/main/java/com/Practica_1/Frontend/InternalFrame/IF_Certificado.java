@@ -14,8 +14,8 @@ public class IF_Certificado extends IF_Padre {
     private JTextField txf1, txf2;
     private ProcCertificado pc;
 
-    public IF_Certificado(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Crear Certificado", 400, 225);
+    public IF_Certificado(Frame_principal frame) {
+        super(frame, "Crear Certificado", 400, 225);
         initComponentes();
         pc = new ProcCertificado(frame);
     }
@@ -77,7 +77,7 @@ public class IF_Certificado extends IF_Padre {
             pc.crearCertificado(this, txf1.getText(), txf2.getText());
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al crear el certificado.\n\n");
+            frame.appendTextLog("\n\n -> Error al crear el certificado.");
         }
 
     }
@@ -89,7 +89,7 @@ public class IF_Certificado extends IF_Padre {
     }
 
     public void invisible() {
-        hacerInvisible(" -> Certificado creado exitosamente.\n\n");
+        hacerInvisible("\n\n -> Certificado creado exitosamente.");
     }
 
 }

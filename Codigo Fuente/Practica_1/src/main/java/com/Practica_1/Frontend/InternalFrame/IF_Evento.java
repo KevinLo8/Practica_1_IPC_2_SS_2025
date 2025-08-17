@@ -16,8 +16,8 @@ public class IF_Evento extends IF_Padre {
     private JComboBox<String> jCB3;
     private ProcEvento pe;
 
-    public IF_Evento(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Registrar Evento", 400, 550);
+    public IF_Evento(Frame_principal frame) {
+        super(frame, "Registrar Evento", 400, 550);
         initComponentes();
         pe = new ProcEvento(frame);
     }
@@ -140,7 +140,7 @@ public class IF_Evento extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al guardar el evento.\n\n");
+            frame.appendTextLog("\n\n -> Error al guardar el evento.");
         }
 
     }
@@ -157,7 +157,7 @@ public class IF_Evento extends IF_Padre {
     }
 
     public void invisible() {
-        hacerInvisible(" -> Evento registrado exitosamente.\n\n");
+        hacerInvisible("\n\n -> Evento registrado exitosamente.");
     }
 
 }

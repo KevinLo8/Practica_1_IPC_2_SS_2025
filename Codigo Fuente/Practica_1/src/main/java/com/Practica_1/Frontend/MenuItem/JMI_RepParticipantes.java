@@ -11,10 +11,10 @@ public class JMI_RepParticipantes extends JMenuItem {
 
     private IF_RepParticipantes if_RepParticipantes;
 
-    public JMI_RepParticipantes(Frame_principal frame, JTextArea textLOG) {
+    public JMI_RepParticipantes(Frame_principal frame) {
         super("Reporte Participantes");
 
-        if_RepParticipantes = new IF_RepParticipantes(frame, textLOG);
+        if_RepParticipantes = new IF_RepParticipantes(frame);
 
         addActionListener(new ActionListener() {
             @Override

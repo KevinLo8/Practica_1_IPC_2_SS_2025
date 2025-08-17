@@ -15,8 +15,8 @@ public class IF_RepParticipantes extends IF_Padre {
     private JComboBox<String> jCB2;
     private ProcRepParticipantes prp;
 
-    public IF_RepParticipantes(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Crear Reporte De Participantes", 400, 290);
+    public IF_RepParticipantes(Frame_principal frame) {
+        super(frame, "Crear Reporte De Participantes", 400, 290);
         initComponentes();
         prp = new ProcRepParticipantes(frame);
     }
@@ -102,7 +102,7 @@ public class IF_RepParticipantes extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al crear el reporte de participantes.\n\n");
+            frame.appendTextLog("\n\n -> Error al crear el reporte de participantes.");
         }
 
     }
@@ -115,6 +115,6 @@ public class IF_RepParticipantes extends IF_Padre {
     }
 
     public void invisible() {
-        hacerInvisible(" -> Reporte de participantes creado exitosamente.\n\n");
+        hacerInvisible("\n\n -> Reporte de participantes creado exitosamente.");
     }
 }

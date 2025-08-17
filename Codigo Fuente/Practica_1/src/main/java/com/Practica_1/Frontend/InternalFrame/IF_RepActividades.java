@@ -15,8 +15,8 @@ public class IF_RepActividades extends IF_Padre {
     private JComboBox<String> jCB2;
     private ProcRepActividades pra;
 
-    public IF_RepActividades(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Crear Reporte De Actividades", 400, 290);
+    public IF_RepActividades(Frame_principal frame) {
+        super(frame, "Crear Reporte De Actividades", 400, 290);
         initComponentes();
         pra = new ProcRepActividades(frame);
     }
@@ -103,7 +103,7 @@ public class IF_RepActividades extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al crear el reporte de actividades.\n\n");
+            frame.appendTextLog("\n\n -> Error al crear el reporte de actividades.");
         }
 
     }
@@ -116,6 +116,6 @@ public class IF_RepActividades extends IF_Padre {
     }
 
     public void invisible() {
-        hacerInvisible(" -> Reporte de actividades creado exitosamente.\n\n");
+        hacerInvisible("\n\n -> Reporte de actividades creado exitosamente.");
     }
 }

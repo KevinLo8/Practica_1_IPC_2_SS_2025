@@ -63,7 +63,7 @@ public class Data_Inscripcion {
     }
 
     public void setTipoInscripcion(String tipoInscripcion) throws SelecionTipoException {
-        if (tipoInscripcion == null) {
+        if (tipoInscripcion.isEmpty()) {
             this.tipoPago = null;
         } else {
             switch (tipoInscripcion) {
@@ -90,7 +90,7 @@ public class Data_Inscripcion {
     }
 
     public void setTipoPago(String tipoPagoString) throws SelecionTipoException {
-        if (tipoPagoString == null) {
+        if (tipoPagoString.isEmpty()) {
             this.tipoPago = null;
         } else {
             switch (tipoPagoString) {

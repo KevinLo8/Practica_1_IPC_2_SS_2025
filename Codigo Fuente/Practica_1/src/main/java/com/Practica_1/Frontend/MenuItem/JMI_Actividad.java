@@ -11,10 +11,10 @@ public class JMI_Actividad extends JMenuItem {
     
     private IF_Actividad if_actividad;
 
-    public JMI_Actividad(Frame_principal frame, JTextArea textLOG) {
+    public JMI_Actividad(Frame_principal frame) {
         super("Registrar Actividad");
 
-        if_actividad = new IF_Actividad(frame, textLOG);
+        if_actividad = new IF_Actividad(frame);
 
         addActionListener(new ActionListener() {
             @Override

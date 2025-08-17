@@ -15,8 +15,8 @@ public class IF_RepEventos extends IF_Padre {
     private JComboBox<String> jCB1;
     private ProcRepEventos pre;
 
-    public IF_RepEventos(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Crear Reporte De Eventos", 400, 450);
+    public IF_RepEventos(Frame_principal frame) {
+        super(frame, "Crear Reporte De Eventos", 400, 450);
 
         pre = new ProcRepEventos(frame);
 
@@ -133,7 +133,7 @@ public class IF_RepEventos extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al crear el reporte de eventos.\n\n");
+            frame.appendTextLog("\n\n -> Error al crear el reporte de eventos.");
         }
 
     }
@@ -148,6 +148,6 @@ public class IF_RepEventos extends IF_Padre {
     }
 
     public void invisible() {
-        hacerInvisible(" -> Reporte de eventos creado exitosamente.\n\n");
+        hacerInvisible("\n\n -> Reporte de eventos creado exitosamente.");
     }
 }

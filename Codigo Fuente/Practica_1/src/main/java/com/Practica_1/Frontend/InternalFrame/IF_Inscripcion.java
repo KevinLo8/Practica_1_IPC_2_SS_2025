@@ -15,8 +15,8 @@ public class IF_Inscripcion extends IF_Padre {
     private JComboBox<String> jCB3;
     private ProcInscripcion pi;
 
-    public IF_Inscripcion(Frame_principal frame, JTextArea textLOG) {
-        super(frame, textLOG, "Inscribir Participante En Evento", 400, 290);
+    public IF_Inscripcion(Frame_principal frame) {
+        super(frame, "Inscribir Participante En Evento", 400, 290);
         initComponentes();
         pi = new ProcInscripcion(frame);
     }
@@ -101,7 +101,7 @@ public class IF_Inscripcion extends IF_Padre {
 
         } catch (ErrProcException e) {
             JOptionPane.showMessageDialog(frame, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            textLOG.append(" -> Error al guardar la inscripción.\n\n");
+            frame.appendTextLog("\n\n -> Error al guardar la inscripción.");
         }
 
     }
@@ -114,7 +114,7 @@ public class IF_Inscripcion extends IF_Padre {
     }
 
     public void invisible() {
-        hacerInvisible(" -> Inscripción registrada exitosamente.\n\n");
+        hacerInvisible("\n\n -> Inscripción registrada exitosamente.");
     }
 
 }

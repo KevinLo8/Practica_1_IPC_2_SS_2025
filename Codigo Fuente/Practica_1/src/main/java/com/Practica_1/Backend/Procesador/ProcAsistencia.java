@@ -37,7 +37,7 @@ public class ProcAsistencia {
     private void revisarAsistencia(String correo, String codigo) throws ErrProcException {
 
         Data_Inscripcion data_ins = frame.getConexion().solicitarAsiInscripcion(correo, codigo);
-        Data_Actividad data_act = frame.getConexion().solicitarAsiActividad(codigo);
+        Data_Actividad data_act = frame.getConexion().solicitarActividad(codigo);
 
         if (!frame.getConexion().consultarParticipante(correo)) {
             throw new ErrProcException("El participante no está registrado. Por favor, regístrelo primero.");
@@ -51,7 +51,7 @@ public class ProcAsistencia {
             throw new ErrProcException("La actividad con el código proporcionado no existe.");
         } else if (data_act.getCorreoImpartidor().equals(correo)) {
             throw new ErrProcException("El participante no puede registrarse a sí mismo como asistente de su propia actividad.");
-        } else if (frame.getConexion().revisarAsistencia(correo, codigo)) {
+        } else if (frame.getConexion().consultarAsistencia(correo, codigo)) {
             throw new ErrProcException("El participante ya ha registrado asistencia para esta actividad.");
         } else if (frame.getConexion().revisarCupoAsistencia(codigo, data_act.getCupoMaximo())) {
             throw new ErrProcException("No hay cupo disponible para registrar asistencia en esta actividad.");
