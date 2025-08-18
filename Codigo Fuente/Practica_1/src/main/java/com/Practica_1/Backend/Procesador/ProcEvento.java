@@ -36,6 +36,10 @@ public class ProcEvento {
             throw new ErrProcException("Ingrese un costo de inscripción valido");
         }
 
+        if (frame.getConexion().consultarEvento(codigo)) {
+            throw new ErrProcException("El evento que se intento guardar ya existe");
+        }
+
         LocalDate dataFecha;
         int dataCupo;
         Double dataCosto;

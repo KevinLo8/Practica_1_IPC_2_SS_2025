@@ -64,8 +64,10 @@ public class ProcPago {
             throw new ErrProcException("El participante no está inscrito en el evento. Por favor, incribalo primero.");
         } else if (data_ins.getTipoPago() != null) {
             throw new ErrProcException("El participante ya pago la inscripción.");
-        }else if (dataMonto < data_eve.getCostoinscripcion()) {
+        } else if (dataMonto < data_eve.getCostoinscripcion()) {
             throw new ErrProcException("El monto de pago es insuficiente para la inscripción.");
+        } else if (dataMonto > data_eve.getCostoinscripcion()) {
+            throw new ErrProcException("El monto de pago es mas de lo requerido para la inscripción");
         }
         
     }
