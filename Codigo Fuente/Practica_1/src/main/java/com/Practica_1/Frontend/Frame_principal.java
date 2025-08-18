@@ -14,6 +14,8 @@ public class Frame_principal extends JFrame {
     private JDesktopPane desktop;
     private JTextArea textLOG;
 
+    JMenuItem jMI1, jMI2, jMI3, jMI4;
+
     private String pathSalida;
 
     private Conexión_DB conexion;
@@ -63,11 +65,20 @@ public class Frame_principal extends JFrame {
         jM2.add(new JMI_Validacion(this));
         jM2.add(new JMI_Actividad(this));
         jM2.add(new JMI_Asistencia(this));
-        jM2.add(new JMI_Certificado(this));
+        jMI1 = new JMI_Certificado(this);
+        jM2.add(jMI1);
 
-        jM3.add(new JMI_RepParticipantes(this));
-        jM3.add(new JMI_RepActividades(this));
-        jM3.add(new JMI_RepEventos(this));
+        jMI2 = new JMI_RepParticipantes(this);
+        jM3.add(jMI2);
+        jMI3 = new JMI_RepActividades(this);
+        jM3.add(jMI3);
+        jMI4 = new JMI_RepEventos(this);
+        jM3.add(jMI4);
+
+        jMI1.setEnabled(false);
+        jMI2.setEnabled(false);
+        jMI3.setEnabled(false);
+        jMI4.setEnabled(false);
 
         jScrollPane.setViewportView(textLOG);
 
@@ -92,6 +103,13 @@ public class Frame_principal extends JFrame {
 
     public void setPathSalida(String pathSalida) {
         this.pathSalida = pathSalida;
+    }
+
+    public void activarCreacion() {
+        jMI1.setEnabled(true);
+        jMI2.setEnabled(true);
+        jMI3.setEnabled(true);
+        jMI4.setEnabled(true);
     }
 
     public void appendTextLog(String texto) {
