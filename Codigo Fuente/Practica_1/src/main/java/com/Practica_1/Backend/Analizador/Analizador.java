@@ -30,6 +30,7 @@ public class Analizador implements Runnable {
 
     @Override
     public void run() {
+        texto = texto.replaceAll("\\/\\*.*\\*\\/", texto);
         String[] lineas = texto.split(";");
 
         for (String linea : lineas) {

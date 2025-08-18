@@ -86,6 +86,7 @@ public class ProcAjustes {
 
     public void finalizacion(String mensaje) {
         if_Aju.invisible(mensaje);
+        frame.activarCreacion();
     }
 
     private String getFileExtension(String fullName) {

@@ -10,7 +10,7 @@ import com.Practica_1.Backend.Exception.SelecionTipoException;
 
 public class Conexión_DB {
 
-    private static final String URL_MYSQL = "jdbc:mysql://localhost:3306/administracion_eventos";
+    private static final String URL_MYSQL = "jdbc:mysql://localhost:3306/ADMINISTRACION_EVENTOS";
     private static final String USER = "admindba";
     private static final String PASSWORD = "12345";
 
@@ -25,10 +25,10 @@ public class Conexión_DB {
         try {
             connection = DriverManager.getConnection(URL_MYSQL, USER, PASSWORD);
             this.jTextArea.append("\n\n -> Conexión a la base de datos establecida.");
-        } catch (SQLException ex) {
+        } catch (SQLException e) {
             this.jTextArea.append("\n\n -> Error al conectar a la base de datos.");
+            this.jTextArea.append("\n -> " + e.getMessage() + ".");
         }
-
     }
 
     public void guardarEvento(Data_Evento data) throws ErrProcException {
