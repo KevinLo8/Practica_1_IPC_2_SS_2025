@@ -223,6 +223,10 @@ public class Analizador implements Runnable {
                 throw new AnalizadorException("", "El monto de pago es insuficiente para la inscripción");
             }
 
+            if (monto > conexion.solicitarEvento(codigo).getCostoinscripcion()) {
+                throw new AnalizadorException("", "El monto de pago es mas de lo requerido para la inscripción");
+            }
+
             try {
                 Data_Inscripcion data = new Data_Inscripcion(correo, codigo, "", tipo, monto, 0);
                 conexion.guardarPago(data);
@@ -518,12 +522,14 @@ public class Analizador implements Runnable {
         if (partes.length == 3 || partes.length == 5) {
 
             String tipo = revisarParteTexto(partes[0], "\"[\\w-]*\"", 15);
+            int cantidad = 0;
 
             if (!tipo.isEmpty()) {
                 Data_Evento data = new Data_Evento();
 
                 try {
                     data.setTipoEvento(tipo);
+                    cantidad++;
                 } catch (SelecionTipoException e) {
                     throw new AnalizadorException("",
                             "El reporte de eventos que intento crear tiene datos erroneos o inexistentes");
@@ -532,19 +538,15 @@ public class Analizador implements Runnable {
 
             if (!partes[1].matches("\"\"")) {
                 LocalDate fechaInicio = null, fechaFin = null;
-                try {
-                    fechaInicio = revisarParteFecha(partes[1]);
-                    if (!partes[2].matches("\"\"")) {
-                        fechaFin = revisarParteFecha(partes[2]);
-                        if (fechaFin.isBefore(fechaInicio)) {
-                            throw new AnalizadorException("",
-                                    "El reporte de eventos que intento crear tiene datos erroneos o inexistentes");
-                        }
-                    } else {
+                fechaInicio = revisarParteFecha(partes[1]);
+                if (!partes[2].matches("\"\"")) {
+                    fechaFin = revisarParteFecha(partes[2]);
+                    if (fechaFin.isBefore(fechaInicio)) {
                         throw new AnalizadorException("",
                                 "El reporte de eventos que intento crear tiene datos erroneos o inexistentes");
                     }
-                } catch (DateTimeException e) {
+                    cantidad++;
+                } else {
                     throw new AnalizadorException("",
                             "El reporte de eventos que intento crear tiene datos erroneos o inexistentes");
                 }
@@ -564,6 +566,11 @@ public class Analizador implements Runnable {
                     throw new AnalizadorException("",
                             "El reporte de eventos que intento crear tiene datos erroneos o inexistentes");
                 }
+                cantidad++;
+            }
+
+            if (cantidad == 0) {
+                throw new AnalizadorException("", "Se necesita un requisito para generar el repote");
             }
 
             Data_Evento[] eventos = conexion.solicitarEventos(tipo, partes[1].replace("\"", ""),

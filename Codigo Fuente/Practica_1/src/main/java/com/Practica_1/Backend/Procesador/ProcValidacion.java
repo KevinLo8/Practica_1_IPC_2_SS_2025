@@ -38,19 +38,15 @@ public class ProcValidacion {
 
     private void revisarPago(String correo, String codigo) throws ErrProcException {
 
-        Data_Participante data_par = frame.getConexion().solicitarParticipante(correo);
-        Data_Evento data_eve = frame.getConexion().solicitarEvento(codigo);
-        Data_Inscripcion data_ins = frame.getConexion().solicitarInscripcion(correo, codigo);
-
-        if (data_par == null) {
+        if (!frame.getConexion().consultarParticipante(correo)) {
             throw new ErrProcException("El participante no está registrado. Por favor, regístrelo primero.");
-        } else if (data_eve == null) {
+        } else if (!frame.getConexion().consultarEvento(codigo)) {
             throw new ErrProcException("El evento no está registrado. Por favor, regístrelo primero.");
-        } else if (data_ins == null) {
-            throw new ErrProcException("El participante no está inscrito en el evento. Por favor, incribalo primero.");
-        } else if (data_ins.getTipoInscripcion() == null) {
-            throw new ErrProcException("El participante no a pagado su inscripción. Por favor, realize el pago primero.");
-        } else if (data_ins.getValidacion()) {
+        } else if (!frame.getConexion().consultarInscripcion(correo, codigo)) {
+            throw new ErrProcException("El participante no está inscrito en el evento. Por favor, inscribir al participante primero.");
+        } else if (!frame.getConexion().consultarPago(correo, codigo)) {
+            throw new ErrProcException("El participante no ha realizado el pago de inscripción. Por favor, realizar el pago primero.");
+        } else if (frame.getConexion().consultarValidacion(correo, codigo)) {
             throw new ErrProcException("El participante ya ha validado su inscripción.");
         }
         

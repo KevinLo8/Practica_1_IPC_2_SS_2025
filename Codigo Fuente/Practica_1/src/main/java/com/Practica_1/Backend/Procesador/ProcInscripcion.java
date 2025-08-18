@@ -14,7 +14,8 @@ public class ProcInscripcion {
         this.frame = frame;
     }
 
-    public void guardarAsistencia(IF_Inscripcion if_Ins, String correo, String codigo, String tipo) throws ErrProcException {
+    public void guardarAsistencia(IF_Inscripcion if_Ins, String correo, String codigo, String tipo)
+            throws ErrProcException {
 
         if (!correo.matches("^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$") || correo.length() > 255) {
             throw new ErrProcException("Ingrese un correo electrónico válido");
@@ -26,13 +27,17 @@ public class ProcInscripcion {
 
         revisarInscripcion(correo, codigo);
 
+        if (frame.getConexion().revisarCupoInscripcion(codigo, frame.getConexion().solicitarEvento(codigo).getCupoEvento())) {
+            throw new ErrProcException("No hay cupo disponible para registrar la inscripci+on en este evento.");
+        }
+
         Data_Inscripcion data_Inscripcion;
         try {
             data_Inscripcion = new Data_Inscripcion(correo, codigo, tipo, "", 0, 0);
         } catch (SelecionTipoException e) {
             throw new ErrProcException(e.getMessage());
         }
-        
+
         frame.getConexion().guardarInscripción(data_Inscripcion);
 
         if_Ins.invisible();
@@ -40,17 +45,13 @@ public class ProcInscripcion {
 
     private void revisarInscripcion(String correo, String codigo) throws ErrProcException {
 
-        Data_Participante data_par = frame.getConexion().solicitarParticipante(correo);
-        Data_Evento data_eve = frame.getConexion().solicitarEvento(codigo);
-        Data_Inscripcion data_ins = frame.getConexion().solicitarInscripcion(correo, codigo);
-
-        if (data_par == null) {
+        if (!frame.getConexion().consultarParticipante(correo)) {
             throw new ErrProcException("El participante no está registrado. Por favor, regístrelo primero.");
-        } else if (data_eve == null) {
+        } else if (!frame.getConexion().consultarEvento(codigo)) {
             throw new ErrProcException("El evento no está registrado. Por favor, regístrelo primero.");
-        } else if (data_ins != null) {
+        } else if (frame.getConexion().consultarInscripcion(correo, codigo)) {
             throw new ErrProcException("El participante ya está inscrito en este evento.");
         }
-        
+
     }
 }

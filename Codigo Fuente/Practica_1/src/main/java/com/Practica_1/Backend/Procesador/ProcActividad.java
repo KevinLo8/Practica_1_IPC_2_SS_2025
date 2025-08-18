@@ -36,7 +36,7 @@ public class ProcActividad {
 
         int dataCupo = Integer.parseInt(cupoMaximo);
 
-        revisarActividad(codigo, codigoEvento, horaInicio, horaFin);
+        revisarActividad(codigo, correoImpartidor, codigoEvento, horaInicio, horaFin);
 
         Data_Actividad data_Actividad;
         try {
@@ -50,12 +50,16 @@ public class ProcActividad {
         if_Act.invisible();
     }
 
-    private void revisarActividad(String codigo, String codigoEvento, String horaInicio, String horaFin) throws ErrProcException {
+    private void revisarActividad(String codigo, String correo, String codigoEvento, String horaInicio, String horaFin) throws ErrProcException {
 
-        if (frame.getConexion().consultarActividad(codigo)) {
-            throw new ErrProcException("Ya existe una actividad con el código ingresado.");
-        } else if (!frame.getConexion().consultarEvento(codigoEvento)) {
+        if (!frame.getConexion().consultarEvento(codigoEvento)) {
             throw new ErrProcException("No existe el evento ingresado. Por favor registrar el evento primero.");
+        } else if (frame.getConexion().consultarParticipante(correo)) {
+            throw new ErrProcException("El participante no está registrado. Por favor, regístrelo primero.");
+        } else if (frame.getConexion().consultarActividad(codigo)) {
+            throw new ErrProcException("Ya existe una actividad con el código ingresado.");
+        } else if (frame.getConexion().solicitarParticipante(correo).getTipoParticipante().toString().equals("ASISTENTE")) {
+            throw new ErrProcException("La actividad no puede ser impartida por un asistente");
         } else if (horaFin.compareTo(horaInicio) <= 0) {
             throw new ErrProcException("La hora de fin debe ser posterior a la hora de inicio.");
         }
